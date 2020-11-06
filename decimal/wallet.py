@@ -1,6 +1,11 @@
+from mnemonic import Mnemonic
+
+
 class Wallet:
     def __init__(self, mnemonic: str = None):
-        pass
+        if not mnemonic:
+            mnemonic = Mnemonic('english').generate()
+        self.mnemonic = mnemonic
 
     def get_address(self) -> str:
         pass
