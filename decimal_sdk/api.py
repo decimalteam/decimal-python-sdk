@@ -3,7 +3,7 @@ import json
 import requests
 from requests import Response
 
-from transaction import Transaction
+from .transaction import Transaction
 
 
 class DecimalAPI:
