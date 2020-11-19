@@ -12,7 +12,11 @@ class Wallet:
         mnemo = Mnemonic('english')
         if not mnemonic:
             mnemonic = mnemo.generate()
-        self.mnemonic = mnemonic
+
+        if not mnemo.check(mnemonic):
+            raise Exception('Invalid Mnemonic')
+        self.__mnemonic = mnemonic
+
         # Generate and save seed
         seed = mnemo.to_seed(mnemonic)
         self._seed = seed
