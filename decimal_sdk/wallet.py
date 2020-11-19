@@ -17,9 +17,7 @@ class Wallet:
         seed = mnemo.to_seed(mnemonic)
         self._seed = seed
         # Derive public key
-        bip32 = BIP32.from_seed(seed)
-        self._public_key = bip32.get_xpub_from_path(DERIVATION_PATH)
-        self._public_key_binary = bip32.get_pubkey_from_path(DERIVATION_PATH)
+        self.__generate_keys()
         self.__generate_address()
 
     def get_address(self) -> str:
@@ -32,9 +30,16 @@ class Wallet:
         return self._public_key
 
     def __generate_address(self):
-        sha256_object = SHA256.new(self._public_key_binary)
-        sha256_hash = sha256_object.digest()
-        ripemd160_object = RIPEMD160.new(sha256_hash)
-        ripemd160_hash = ripemd160_object.digest()
-        address = bech32.bech32_encode('dx', bech32.convertbits(ripemd160_hash, 8, 5))
+        prepared_hash = self.__hash_public_key()
+        address = bech32.bech32_encode('dx', bech32.convertbits(prepared_hash, 8, 5))
         self._address = address
+
+    def __generate_keys(self):
+        bip32 = BIP32.from_seed(self._seed)
+        self._public_key = bip32.get_xpub_from_path(DERIVATION_PATH)
+        self._public_key_binary = bip32.get_pubkey_from_path(DERIVATION_PATH)
+
+    def __hash_public_key(self):
+        sha256_hash = SHA256.new(self._public_key_binary).digest()
+        ripemd160_hash = RIPEMD160.new(sha256_hash).digest()
+        return ripemd160_hash
