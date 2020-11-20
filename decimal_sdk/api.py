@@ -3,6 +3,9 @@ import json
 import requests
 from requests import Response
 
+"""
+That's a stub
+"""
 from .transaction import Transaction
 
 

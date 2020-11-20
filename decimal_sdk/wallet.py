@@ -7,6 +7,9 @@ DERIVATION_PATH = "m/44'/60'/0'/0/0"
 
 
 class Wallet:
+    """
+    Decimal wallet class
+    """
 
     def __init__(self, mnemonic: str = None):
         mnemo = Mnemonic('english')

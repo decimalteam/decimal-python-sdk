@@ -1,0 +1,14 @@
+asn1crypto==1.4.0
+base58==2.0.0
+bech32==1.2.0
+bip32==0.0.8
+certifi==2020.11.8
+cffi==1.14.3
+chardet==3.0.4
+coincurve==13.0.0
+idna==2.10
+mnemonic==0.19
+pycparser==2.20
+pycryptodomex==3.9.9
+requests==2.25.0
+urllib3==1.26.2

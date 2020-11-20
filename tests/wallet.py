@@ -20,13 +20,6 @@ class WalletTest(unittest.TestCase):
         address = self.wallet.get_address()
         self.assertEqual('dx1puvhlmaf9tvttrmwrsdc8jqxnvtva2hnfde0ex', address)
 
-        with open('wallets.json') as test_wallets:
-            wallets = json.load(test_wallets)['wallets']
-            for wallet in wallets:
-                test_wallet = Wallet(wallet['mnemonic'])
-                test_address = test_wallet.get_address()
-                self.assertEqual(wallet['address'], test_address)
-
 
 if __name__ == '__main__':
     unittest.main()
