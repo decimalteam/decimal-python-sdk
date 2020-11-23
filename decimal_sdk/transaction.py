@@ -1,7 +1,9 @@
 from .wallet import Wallet
+
 """
 That's a stub
 """
+
 
 class Transaction:
     def __init__(self, **kwargs):
