@@ -1,3 +1,5 @@
+# from abc import ABC
+
 from .wallet import Wallet
 
 """
@@ -7,6 +9,18 @@ That's a stub
 
 class Transaction:
     def __init__(self, **kwargs):
+        pass
+
+    def sign(self, private_key):
+        pass
+
+    def __generate_signature(self):
+        pass
+
+    def serialise(self):
+        pass
+
+    def _validate_params(self):
         pass
 
 

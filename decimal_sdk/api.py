@@ -6,7 +6,7 @@ from requests import Response
 """
 That's a stub
 """
-from .transaction import Transaction
+from .transactions import Transaction
 
 
 class DecimalAPI:
