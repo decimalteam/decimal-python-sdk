@@ -8,8 +8,11 @@ That's a stub
 
 
 class Transaction:
+    signature = ''
+
     def __init__(self, **kwargs):
-        pass
+        self._validate_params(**kwargs)
+        self._value = kwargs
 
     def sign(self, private_key):
         pass
@@ -20,7 +23,7 @@ class Transaction:
     def serialise(self):
         pass
 
-    def _validate_params(self):
+    def _validate_params(self, **kwargs):
         pass
 
 
@@ -44,7 +47,7 @@ class CreateCoinTransaction(Transaction):
 
 class SendCoinTransaction(Transaction):
     def __init__(self, recipient, coin_to_send, amount):
-        pass
+        super().__init__(recipient=recipient, coin_to_send=coin_to_send, amount=amount)
 
 
 class DeclareCandidateTransaction(Transaction):
