@@ -12,3 +12,6 @@ pycparser==2.20
 pycryptodomex==3.9.9
 requests==2.25.0
 urllib3==1.26.2
+
+setuptools~=44.0.0
+sslcrypto~=5.3

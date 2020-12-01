@@ -8,7 +8,7 @@ class TransactionsTest(unittest.TestCase):
     def test_tx_signature(self):
         wallet = Wallet('hollow luggage slice soup leg vague icon walnut session candy improve struggle')
         private_key = wallet.get_private_key()
-        tx = SendCoinTransaction(recipient='dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g', coin_to_send='del', amount=1)
+        tx = SendCoinTransaction(to='dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g', coin='del', value=1)
         tx.sign(private_key)
         self.assertEqual('KlvVn/tUBBYMQVfSOA99ZT4qkxKfXEAloyGztcCi8DdZLvjunc+kcpiSEDbbjiaayxUf3etBnWgcMuv6IJoENg==',
                          tx.signature)

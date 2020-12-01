@@ -45,7 +45,7 @@ class Wallet:
         bip32 = BIP32.from_seed(self._seed)
         self._public_key = bip32.get_xpub_from_path(DERIVATION_PATH)
         self._public_key_binary = bip32.get_pubkey_from_path(DERIVATION_PATH)
-        self._private_key = bip32.get_xpriv_from_path(DERIVATION_PATH)
+        self._private_key = bip32.get_privkey_from_path(DERIVATION_PATH)
 
     def __hash_public_key(self):
         sha256_hash = SHA256.new(self._public_key_binary).digest()
