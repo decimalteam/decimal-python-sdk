@@ -1,4 +1,6 @@
 # from abc import ABC
+import codecs
+
 import rlp
 import sslcrypto
 from Cryptodome.Hash import SHA256
@@ -31,10 +33,10 @@ class Transaction:
         self.__body = {**self.GENERAL_TX_DATA, **params}
 
     def sign(self, private_key):
-        self.signature = self.__rlp_tx_body()
+        self.signature = self.__generate_signature(private_key)
 
     def __hash_tx_body(self):
-        return keccak.new().update(self.__rlp_tx_body())
+        return keccak.new(digest_bits=512).update(self.__rlp_tx_body()).digest()
 
     def __rlp_tx_body(self):
         list_data = list(self.__body.values())
@@ -42,15 +44,15 @@ class Transaction:
         return rlp.encode(list_data)
 
     def __generate_signature(self, private_key):
-        # curve = sslcrypto.ecc.get_curve('secp256k1')
-        # pub_key_len = curve._backend.public_key_length
-        # signature = curve.sign(b'text', private_key, hash=None)
-        # v = signature[0]
-        # r = int.from_bytes(signature[1:pub_key_len + 1], byteorder='big')
-        # s = int.from_bytes(signature[pub_key_len + 1:], byteorder='big')
-        # signature = rlp.encode([v, r, s]).hex()
-        # return signature
-        pass
+        data = self.__hash_tx_body()
+        curve = sslcrypto.ecc.get_curve('secp256k1')
+        pub_key_len = curve._backend.public_key_length
+        signature = curve.sign(data, private_key, hash=None)
+        v = signature[0]
+        r = int.from_bytes(signature[1:pub_key_len + 1], byteorder='big')
+        s = int.from_bytes(signature[pub_key_len + 1:], byteorder='big')
+        signature = rlp.encode([v, r, s]).hex()
+        return codecs.encode(codecs.decode(signature, 'hex'), 'base64').decode()
 
     def serialise(self):
         pass
