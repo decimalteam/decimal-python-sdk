@@ -1,7 +1,7 @@
 import base64
 import codecs
 import json
-from hashlib import sha256
+from hashlib import sha256, sha3_256
 
 import base58
 import rlp
@@ -10,7 +10,7 @@ from rlp.sedes import text, List, CountableList
 import sslcrypto
 from Cryptodome.Hash import keccak
 from ecdsa import ecdsa, SigningKey, SECP256k1
-from ecdsa.util import sigencode_der
+from ecdsa.util import sigencode_der, sigencode_strings_canonize, sigencode_string_canonize
 
 from decimal_sdk.msgs import SendCoinMsgValue
 from decimal_sdk.tx_types import COIN_SEND
@@ -136,9 +136,10 @@ class StdSignMsg(rlp.Serializable):
     def __generate_signature(self, private_key):
         data = self.__rlp_tx_body()
         hash_ = sha256(data.encode('utf-8')).digest()
-        pk = secp256k1.PrivateKey(private_key, raw=True)
-        # sk = SigningKey.from_string(private_key, curve=SECP256k1)
-        signature = pk.ecdsa_serialize(pk.ecdsa_sign(hash_, raw=True))
+        sk = SigningKey.from_string(private_key, curve=SECP256k1)
+
+        signature = sk.sign_digest_deterministic(hash_, hashfunc=sha256, sigencode=sigencode_string_canonize)
+
         base_signature = base64.b64encode(signature)
 
         return base_signature.decode('utf-8')
