@@ -1,5 +1,5 @@
 from decimal_sdk.msgs.base import BaseMsg
-from decimal_sdk.tx_types import COIN_SEND, COIN_BUY, COIN_CREATE, COIN_SELL, COIN_SELL_ALL
+from decimal_sdk.tx_types import *
 from decimal_sdk.types import Coin
 
 
@@ -93,3 +93,29 @@ class SellAllCoinsMsg(BaseMsg):
     def __dict__(self):
         return {'type': self.type, 'value': {'sender': self.sender, 'coin_to_sell': self.coin_to_sell.__dict__(),
                                              'min_coin_to_buy': self.min_coin_to_buy.__dict__()}}
+
+
+class MultisendSend:
+    receiver: str
+    coin: Coin
+
+    def __init__(self, receiver: str, coin: Coin):
+        self.receiver = receiver
+        self.coin = coin
+
+    def __dict__(self):
+        return {'coin': self.coin, 'receiver': self.receiver}
+
+
+class MultisendCoinMsg(BaseMsg):
+    type = COIN_MULTISEND
+
+    sender: str
+    sends: [MultisendSend]
+
+    def __init__(self, sender: str, sends: [MultisendSend]):
+        self.sender = sender
+        self.sends = sends
+
+    def __dict__(self):
+        return {'type': self.type, 'value': {'sender': self.sender, 'sends': [send.__dict__() for send in self.sends]}}
