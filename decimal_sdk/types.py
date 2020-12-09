@@ -1,7 +1,6 @@
 import base64
 import json
 from hashlib import sha256
-from typing import Union
 
 from ecdsa import SigningKey, SECP256k1
 from ecdsa.util import sigencode_string_canonize
@@ -62,17 +61,20 @@ class SignMeta:
 class Tx:
     fee: Fee
     memo: str
-    msg: [BaseMsg]
+    msgs: [BaseMsg]
 
-    def __init__(self, msg=None, fee: Fee = None, memo: str = ''):
-        if msg is None:
-            msg = []
+    def __init__(self, msgs=None, fee: Fee = None, memo: str = ''):
+        if msgs is None:
+            msgs = []
         if fee is None:
             # TODO: Calculate fee
             fee = Fee([], '0')
         self.fee = fee
         self.memo = memo
-        self.msg = msg
+        self.msgs = msgs
+
+    def add_msg(self, msg: BaseMsg):
+        self.msgs.append(msg)
 
 
 class StdSignMsg:
@@ -89,7 +91,7 @@ class StdSignMsg:
 
     def __init__(self, tx: Tx, meta: SignMeta):
         self.fee = tx.fee
-        self.msgs = tx.msg
+        self.msgs = tx.msgs
         self.memo = tx.memo
 
         self.account_number = meta.account_number
