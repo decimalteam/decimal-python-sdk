@@ -1,7 +1,7 @@
 from decimal_sdk import Wallet
 from decimal_sdk.msgs.base import BaseMsg
 from decimal_sdk.msgs.coin import SendCoinMsg
-from decimal_sdk.types import Signature, StdSignMsg, SignMeta, Tx, Fee, Coin
+from decimal_sdk.types import Signature, StdSignMsg, SignMeta, Fee, Coin
 from decimal_sdk.utils import prepare_number
 
 
@@ -15,7 +15,7 @@ class Transaction:
     message: BaseMsg
 
     def __init__(self, **kwargs):
-        self.meta = SignMeta('18', 'decimal-devnet-11-20-18-00', '7')
+        self.meta = SignMeta()
         self.fee = Fee([], '0')
         self.memo = 'sdk test'
         self.signer = StdSignMsg(self, meta=self.meta)

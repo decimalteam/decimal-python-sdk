@@ -3,7 +3,7 @@ import unittest
 from decimal_sdk import Wallet
 from decimal_sdk.msgs.coin import SendCoinMsg
 from decimal_sdk.transactions import SendCoinTransaction
-from decimal_sdk.types import Coin, SignMeta, Tx, StdSignMsg
+from decimal_sdk.types import Coin, SignMeta, StdSignMsg
 
 
 class TransactionsTest(unittest.TestCase):

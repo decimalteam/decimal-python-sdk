@@ -52,29 +52,10 @@ class SignMeta:
     chain_id: str
     sequence: str
 
-    def __init__(self, account_number: str, chain_id: str, sequence: str):
+    def __init__(self, account_number: str = '18', chain_id: str = 'decimal-devnet-11-20-18-00', sequence: str = '7'):
         self.account_number = account_number
         self.chain_id = chain_id
         self.sequence = sequence
-
-
-class Tx:
-    fee: Fee
-    memo: str
-    msgs: [BaseMsg]
-
-    def __init__(self, msgs=None, fee: Fee = None, memo: str = ''):
-        if msgs is None:
-            msgs = []
-        if fee is None:
-            # TODO: Calculate fee
-            fee = Fee([], '0')
-        self.fee = fee
-        self.memo = memo
-        self.msgs = msgs
-
-    def add_msg(self, msg: BaseMsg):
-        self.msgs.append(msg)
 
 
 class StdSignMsg:
