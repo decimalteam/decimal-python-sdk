@@ -18,7 +18,6 @@ class TransactionsTest(unittest.TestCase):
                         coin=Coin(denom='del', amount='1000000000000000000')
                         )
         )
-        # tx = SendCoinTx(wallet=etc, )
         std_msg.sign(wallet)
         self.assertEqual('lg1p+YnF7Ly61x5aZXjGu2TBQ4uYemMVmpQxHyJ71VklO09jYhFeowLl8JUM59r1dQPjdeSYsfhV1dE1KIdqgw==',
                          std_msg.signatures[0].signature)
