@@ -2,6 +2,7 @@ from decimal_sdk import Wallet
 from decimal_sdk.msgs.base import BaseMsg
 from decimal_sdk.msgs.coin import SendCoinMsg
 from decimal_sdk.types import Signature, StdSignMsg, SignMeta, Tx, Fee, Coin
+from decimal_sdk.utils import prepare_number
 
 
 class Transaction:
@@ -32,6 +33,6 @@ class SendCoinTransaction(Transaction):
     message: SendCoinMsg
 
     def __init__(self, sender, receiver, denom, amount, **kwargs):
-        coin = Coin(denom, amount)
+        coin = Coin(denom, prepare_number(amount))
         self.message = SendCoinMsg(sender, receiver, coin)
         super().__init__(**kwargs)

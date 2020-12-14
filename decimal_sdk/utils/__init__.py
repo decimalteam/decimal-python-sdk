@@ -7,3 +7,7 @@ def beautify_json(value):
         return {key: beautify_json(value[key]) for key in keys}
     else:
         return value
+
+
+def prepare_number(number):
+    return str(number * (10 ** 18))

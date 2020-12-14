@@ -12,7 +12,7 @@ class TransactionsTest(unittest.TestCase):
         tx = SendCoinTransaction(sender=wallet.get_address(),
                                  receiver='dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
                                  denom='del',
-                                 amount='1')
+                                 amount=1)
         tx.sign(wallet)
         self.assertEqual('lg1p+YnF7Ly61x5aZXjGu2TBQ4uYemMVmpQxHyJ71VklO09jYhFeowLl8JUM59r1dQPjdeSYsfhV1dE1KIdqgw==',
                          tx.signatures[0].signature)
