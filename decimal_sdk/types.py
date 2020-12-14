@@ -89,7 +89,7 @@ class StdSignMsg:
 
     signatures: [Signature] = []
 
-    def __init__(self, tx: Tx, meta: SignMeta):
+    def __init__(self, tx, meta: SignMeta):
         self.fee = tx.fee
         self.msgs = tx.msgs
         self.memo = tx.memo

@@ -1,110 +1,37 @@
-# from abc import ABC
-import codecs
-
-import rlp
-import sslcrypto
-from Cryptodome.Hash import SHA256
-from Cryptodome.Hash import keccak
-from Cryptodome.Signature import DSS
-
-from .wallet import Wallet
-
-"""
-That's a stub
-"""
+from decimal_sdk import Wallet
+from decimal_sdk.msgs.base import BaseMsg
+from decimal_sdk.msgs.coin import SendCoinMsg
+from decimal_sdk.types import Signature, StdSignMsg, SignMeta, Tx, Fee, Coin
 
 
 class Transaction:
-    signature = ''
-    GENERAL_TX_DATA = {
-        'nonce': 0x0,
-        'gas_limit': 0,
-        'gas_amount': 0,
-        'gas_coin': 'DEL',
-        'chain_id': 0
-    }
+    fee: Fee
+    memo: str
+    meta: SignMeta
+    signatures = []
+    msgs = []
+    signer: StdSignMsg
+    message: BaseMsg
 
     def __init__(self, **kwargs):
-        params = {
-            'coin': kwargs['coin'],
-            'to': kwargs['to'],
-            'value': kwargs['value']
-        }
-        self.__body = {**self.GENERAL_TX_DATA, **params}
+        self.meta = SignMeta('18', 'decimal-devnet-11-20-18-00', '7')
+        self.fee = Fee([], '0')
+        self.memo = 'sdk test'
+        self.signer = StdSignMsg(self, meta=self.meta)
+        self.signer.add_msg(self.message)
 
-    def sign(self, private_key):
-        self.signature = self.__generate_signature(private_key)
+    def add_msg(self, msg: BaseMsg):
+        self.msgs.append(msg)
 
-    def __hash_tx_body(self):
-        return keccak.new(digest_bits=512).update(self.__rlp_tx_body()).digest()
-
-    def __rlp_tx_body(self):
-        list_data = list(self.__body.values())
-
-        return rlp.encode(list_data)
-
-    def __generate_signature(self, private_key):
-        data = self.__hash_tx_body()
-        curve = sslcrypto.ecc.get_curve('secp256k1')
-        pub_key_len = curve._backend.public_key_length
-        signature = curve.sign(data, private_key, hash=None)
-        v = signature[0]
-        r = int.from_bytes(signature[1:pub_key_len + 1], byteorder='big')
-        s = int.from_bytes(signature[pub_key_len + 1:], byteorder='big')
-        signature = rlp.encode([v, r, s]).hex()
-        return codecs.encode(codecs.decode(signature, 'hex'), 'base64').decode()
-
-    def serialise(self):
-        pass
-
-    def _validate_params(self, **kwargs):
-        pass
-
-
-# class BuyCoinTransaction(Transaction):
-#     def __init__(self, coin_to_buy, amount, coin_to_sell, **kwargs):
-#         self.coin_to_buy = coin_to_buy.upper()
-#         self.amount = amount
-#         self.coin_to_sell = coin_to_sell
-#         super().__init__(**kwargs)
-
-
-# class SellCoinTransaction(Transaction):
-#     def __init__(self, coin_to_buy, amount, coin_to_sell):
-#         pass
-#
-#
-# class CreateCoinTransaction(Transaction):
-#     def __init__(self, coin_name, ticker, initial_supply, max_supply, reserve, crr):
-#         pass
+    def sign(self, wallet: Wallet):
+        self.signer.sign(wallet)
+        self.signatures = self.signer.signatures
 
 
 class SendCoinTransaction(Transaction):
-    def __init__(self, to, coin, value):
-        super().__init__(to=to, coin=coin, value=value)
+    message: SendCoinMsg
 
-
-class DeclareCandidateTransaction(Transaction):
-    def __init__(self):
-        pass
-
-
-class DelegateTransaction(Transaction):
-    def __init__(self, address, coin, stake):
-        pass
-
-
-class UnbondTransaction(Transaction):
-    pass
-
-
-class SetOnlineTransaction(Transaction):
-    pass
-
-
-class SetOfflineTransaction(Transaction):
-    pass
-
-
-class EditCandidate(Transaction):
-    pass
+    def __init__(self, sender, receiver, denom, amount, **kwargs):
+        coin = Coin(denom, amount)
+        self.message = SendCoinMsg(sender, receiver, coin)
+        super().__init__(**kwargs)
