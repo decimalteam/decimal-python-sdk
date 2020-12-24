@@ -1,6 +1,6 @@
 from decimal_sdk import Wallet
 from decimal_sdk.msgs.base import BaseMsg
-from decimal_sdk.msgs.coin import SendCoinMsg
+from decimal_sdk.msgs.coin import SendCoinMsg, BuyCoinMsg, CreateCoinMsg
 from decimal_sdk.types import Signature, StdSignMsg, SignMeta, Fee, Coin
 from decimal_sdk.utils import prepare_number
 
@@ -39,11 +39,21 @@ class SendCoinTransaction(Transaction):
 
 
 class BuyCoinTransaction(Transaction):
-    pass
+    message: BuyCoinMsg
+
+    def __init__(self, sender, coin_to_buy, coin_to_spend, amount_to_buy, limit=100000000000, **kwargs):
+        coin_to_buy = Coin(coin_to_buy, prepare_number(amount_to_buy))
+        max_coin_to_sell = Coin(coin_to_spend, prepare_number(limit))
+        self.message = BuyCoinMsg(sender, coin_to_buy, max_coin_to_sell)
+        super().__init__(**kwargs)
 
 
 class CreateCoinTransaction(Transaction):
     pass
+
+# message: CreateCoinMsg
+#
+# def __init__(self, sender, title, symbol, crr = 10, initial_volume = ):
 
 
 class DelegateTransaction(Transaction):

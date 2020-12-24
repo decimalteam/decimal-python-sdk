@@ -19,36 +19,39 @@ class TransactionsTest(unittest.TestCase):
         self.check_tx(tx, 'lg1p+YnF7Ly61x5aZXjGu2TBQ4uYemMVmpQxHyJ71VklO09jYhFeowLl8JUM59r1dQPjdeSYsfhV1dE1KIdqgw==')
 
     def test_buy_coin(self):
-        tx = BuyCoinTransaction(sender=self.wallet.get_address(),
-                                amount=10,
-                                denom='del')
-        self.check_tx(tx, '')
+        tx1 = BuyCoinTransaction(sender=self.wallet.get_address(),
+                                amount_to_buy=10,
+                                coin_to_buy='FINALTEST',
+                                coin_to_spend='del')
+        self.check_tx(tx1, '')
 
     def test_create_coin(self):
-        tx = CreateCoinTransaction(sender=self.wallet.get_address(),
+        tx2 = CreateCoinTransaction(sender=self.wallet.get_address(),
                                    title='Test coin',
                                    symbol='TESTTT',
                                    crr=45,
                                    initial_volume=50000,
                                    initial_reserve=100000,
                                    limit_volume=12000)
+        self.check_tx(tx2, '')
 
     def test_delegate(self):
-        tx = DelegateTransaction(delegator_address=self.wallet.get_address(),
+        tx2 = DelegateTransaction(delegator_address=self.wallet.get_address(),
                                  validator_address='dxvaloper1azre0dtclv5y05ufynkhswzh0cwh4ktzr0huw2',
                                  amount=10,
                                  denom='del')
-        self.check_tx(tx, '')
+        self.check_tx(tx2, '')
 
     def test_unbond(self):
-        tx = UnbondTransaction(delegator_address=self.wallet.get_address(),
+        tx3 = UnbondTransaction(delegator_address=self.wallet.get_address(),
                                validator_address='dxvaloper1ajytg8jg8ypx0rj9p792x32fuxyezga4dq2uk0',
                                amount=10,
                                denom='del')
-        self.check_tx(tx, '')
+        self.check_tx(tx3, '')
 
     def check_tx(self, tx, signature):
         tx.sign(self.wallet)
+        [print(i.signature) for i in tx.signatures]
         self.assertEqual(signature, tx.signatures[0].signature)
 
 
