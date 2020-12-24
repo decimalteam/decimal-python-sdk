@@ -36,3 +36,19 @@ class SendCoinTransaction(Transaction):
         coin = Coin(denom, prepare_number(amount))
         self.message = SendCoinMsg(sender, receiver, coin)
         super().__init__(**kwargs)
+
+
+class BuyCoinTransaction(Transaction):
+    pass
+
+
+class CreateCoinTransaction(Transaction):
+    pass
+
+
+class DelegateTransaction(Transaction):
+    pass
+
+
+class UnbondTransaction(Transaction):
+    pass
