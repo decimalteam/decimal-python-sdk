@@ -1,8 +1,8 @@
 import json
 
 import requests
-from requests import Response
-from wallet import Wallet
+# from requests import Response
+from .wallet import Wallet as wallet
 
 """
 That's a stub
@@ -24,7 +24,6 @@ class DecimalAPI:
         return self.__request(f'address/{address}')
 
     def get_coin(self, name: str):
-        # todo validate name?
         return self.__request(f'coin/{name}')
 
     def get_coins_list(self):
@@ -38,7 +37,7 @@ class DecimalAPI:
         self.validate_address(address)
         return self.__request(f'/address/{address}/multisigs')
 
-    def get_my_transactions(self, wallet: Wallet):
+    def get_my_transactions(self, wallet: wallet):
         return self.__request(f'/address/${wallet.get_address()}/txs')
 
     def get_nonce(self, address: str):
