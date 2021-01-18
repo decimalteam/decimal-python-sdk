@@ -10,6 +10,25 @@ from decimal_sdk.msgs.base import BaseMsg
 from decimal_sdk.utils import beautify_json
 
 
+class Candidate:
+    moniker: str
+    identity: str
+    website: str
+    security_contact: str
+    details: str
+
+    def __init__(self, moniker: str, identity: str, website: str, security_contact: str, details: str):
+        self.moniker = moniker
+        self.identity = identity
+        self.website = website
+        self.security_contact = security_contact
+        self.details = details
+
+    def __dict__(self):
+        return {"moniker": self.moniker, "identity": self.identity, "website": self.website,
+                "security_contact": self.security_contact, "details": self.details}
+
+
 class Coin:
     denom: str
     amount: str
@@ -45,6 +64,18 @@ class Fee:
 
     def __dict__(self):
         return {'gas': self.gas, 'amount': [coin.__dict__() for coin in self.amount]}
+
+
+class PublicKey:
+    key_type: str
+    value: str
+
+    def __init__(self, value: str, key_type: str = 'tendermint/PubKeyEd25519'):
+        self.value = value
+        self.key_type = key_type
+
+    def __dict__(self):
+        return {"type": self.key_type, "value": self.value}
 
 
 class SignMeta:
