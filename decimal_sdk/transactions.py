@@ -49,11 +49,11 @@ class BuyCoinTransaction(Transaction):
 
 
 class CreateCoinTransaction(Transaction):
-    pass
+    message: CreateCoinMsg
 
-# message: CreateCoinMsg
-#
-# def __init__(self, sender, title, symbol, crr = 10, initial_volume = ):
+    def __init__(self, sender, title, symbol, crr, initial_volume, initial_reserve, limit_volume, **kwargs):
+        self.message = CreateCoinMsg(sender, title, symbol, crr, initial_volume, initial_reserve, limit_volume)
+        super().__init__(**kwargs)
 
 
 class DelegateTransaction(Transaction):
