@@ -1,7 +1,7 @@
 import unittest
 
 from decimal_sdk import Wallet
-from decimal_sdk.msgs.coin import SendCoinMsg
+from decimal_sdk.msgs.msgs import SendCoinMsg
 from decimal_sdk.transactions import SendCoinTransaction, BuyCoinTransaction, CreateCoinTransaction, \
     DelegateTransaction, UnbondTransaction
 from decimal_sdk.types import Coin, SignMeta, StdSignMsg

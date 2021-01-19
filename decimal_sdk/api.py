@@ -2,7 +2,7 @@ import json
 
 import requests
 # from requests import Response
-from .wallet import Wallet as wallet
+from .wallet import Wallet
 
 """
 That's a stub
@@ -37,7 +37,8 @@ class DecimalAPI:
         self.validate_address(address)
         return self.__request(f'/address/{address}/multisigs')
 
-    def get_my_transactions(self, wallet: wallet):
+    def get_my_transactions(self, wallet: Wallet):
+
         return self.__request(f'/address/${wallet.get_address()}/txs')
 
     def get_nonce(self, address: str):
@@ -48,11 +49,14 @@ class DecimalAPI:
         self.validate_address(address)
         return self.__request(f'/address/{address}/stakes')
 
-    def get_tx(self):
-        pass
+    def get_tx(self, tx_hash: str):
+        if len(tx_hash) < 1:
+            raise Exception('Hash is empty')
+        return self.__request("rpc/tx", "get", '{ "params": { "hash": "0x$' + tx_hash + '"}}')
 
-    def get_txs_multisign(self):
-        pass
+    def get_txs_multisign(self, address: str, limit: int = 1, offset: int = 0):
+        self.validate_address(address)
+        return self.__request(f"/multisig/${address}/txs")
 
     def get_validator(self, address: str):
         self.validate_address(address)

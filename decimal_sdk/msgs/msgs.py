@@ -58,137 +58,7 @@ class SellCoinMsg(BaseMsg):
                 'value': {
                     'sender': self.sender,
                     'coin_to_sell': self.coin_to_sell.__dict__(),
-                    'min_coin_to_buy': self.min_coin_to_buy.__dict__()}
-                }
-
-
-class SellAllCoinsMsg(BaseMsg):
-    type = COIN_SELL_ALL
-    sender: str
-    coin_to_sell: Coin
-    min_coin_to_buy: Coin
-
-    def __init__(self, sender: str, coin_to_sell: Coin, min_coin_to_buy: Coin):
-        self.sender = sender
-        self.coin_to_sell = coin_to_sell
-        self.min_coin_to_buy = min_coin_to_buy
-        self.min_coin_to_buy.amount = '0'
-
-    def __dict__(self):
-        return {'type': self.type,
-                'value': {
-                    'sender': self.sender,
-                    'coin_to_sell': self.coin_to_sell.__dict__(),
-                    'min_coin_to_buy': self.min_coin_to_buy.__dict__()}
-                }
-
-
-class Delegate(BaseMsg):
-    type = VALIDATOR_DELEGATE
-    delegator_address: str
-    validator_address: str
-    coin: Coin
-
-    def __init__(self, delegator_address: str, validator_address: str, coin: Coin):
-        self.delegator_address = delegator_address
-        self.validator_address = validator_address
-        self.coin = coin
-
-    def __dict__(self):
-        return {"type": self.type,
-                "value": {
-                    "delegator_address": self.delegator_address,
-                    "validator_address": self.validator_address,
-                    "coin": self.coin.__dict__()
-                }}
-
-
-class Unbound(BaseMsg):
-    type = VALIDATOR_UNBOND
-    delegator_address: str
-    validator_address: str
-    coin: Coin
-
-    def __init__(self, delegator_address: str, validator_address: str, coin: Coin):
-        self.delegator_address = delegator_address
-        self.validator_address = validator_address
-        self.coin = coin
-
-    def __dict__(self):
-        return {"type": self.type,
-                "value": {
-                    "delegator_address": self.delegator_address,
-                    "validator_address": self.validator_address,
-                    "coin": self.coin.__dict__()
-                }}
-
-
-class DeclareCandidate(BaseMsg):
-    type = VALIDATOR_CANDIDATE
-    commission: int
-    validator_addr: str
-    reward_addr: str
-    pub_key: PublicKey
-    stake: Coin
-    description: Candidate
-
-    def __init__(self, commission: int, validator_addr: str, reward_addr: str, pub_key: PublicKey, stake: Coin,
-                 description: Candidate):
-        self.commission = commission
-        self.validator_addr = validator_addr
-        self.reward_addr = reward_addr
-        self.pub_key = pub_key
-        self.stake = stake
-        self.description = description
-
-    def __dict__(self):
-        return {"type": self.type,
-                "value": {
-                    "commission": "",
-                    "validator_addr": "",
-                    "reward_addr": "",
-                "pub_key": self.pub_key.__dict__(),
-                "stake": self.stake.__dict__(),
-                "description": self.description.__dict__()
-                }}
-
-
-class EditCandidate(BaseMsg):
-    type = VALIDATOR_CANDIDATE_EDIT
-    validator_address: str
-    reward_address: str
-    description: Candidate
-
-    def __init__(self, validator_address: str, reward_address: str, description: Candidate):
-        self.validator_address = validator_address
-        self.reward_address = reward_address
-        self.description = description
-
-    def __dict__(self):
-        return {"type": self.type,
-                "value": { "validator_address": self.validator_address,
-                           "reward_address": self.validator_address,
-                           "description": self.description.__dict__()
-                }}
-
-
-class DisableEnableValidator(BaseMsg):
-    type: str
-    validator_address: str
-
-    state = {
-        "disable": VALIDATOR_SET_OFFLINE,
-        "enable": VALIDATOR_SET_ONLINE
-    }
-
-    def __init__(self, set_state: str, validator_address: str):
-        self.type = self.state[set_state]
-        self.validator_address = validator_address
-
-    def __dict__(self):
-        return {"type": self.type,
-                "value": {
-                    "delegator_address": self.validator_address
+                    'min_coin_to_buy': self.min_coin_to_buy.__dict__()
                 }}
 
 
@@ -219,7 +89,137 @@ class CreateCoinMsg(BaseMsg):
                                              'limit_volume': self.limit_volume}}
 
 
-class MultysigCreate(BaseMsg):
+class SellAllCoinsMsg(BaseMsg):
+    type = COIN_SELL_ALL
+    sender: str
+    coin_to_sell: Coin
+    min_coin_to_buy: Coin
+
+    def __init__(self, sender: str, coin_to_sell: Coin, min_coin_to_buy: Coin):
+        self.sender = sender
+        self.coin_to_sell = coin_to_sell
+        self.min_coin_to_buy = min_coin_to_buy
+        self.min_coin_to_buy.amount = '0'
+
+    def __dict__(self):
+        return {'type': self.type,
+                'value': {
+                    'sender': self.sender,
+                    'coin_to_sell': self.coin_to_sell.__dict__(),
+                    'min_coin_to_buy': self.min_coin_to_buy.__dict__()
+                }}
+
+
+class DelegateMsg(BaseMsg):
+    type = VALIDATOR_DELEGATE
+    delegator_address: str
+    validator_address: str
+    coin: Coin
+
+    def __init__(self, delegator_address: str, validator_address: str, coin: Coin):
+        self.delegator_address = delegator_address
+        self.validator_address = validator_address
+        self.coin = coin
+
+    def __dict__(self):
+        return {"type": self.type,
+                "value": {
+                    "delegator_address": self.delegator_address,
+                    "validator_address": self.validator_address,
+                    "coin": self.coin.__dict__()
+                }}
+
+
+class UnboundMsg(BaseMsg):
+    type = VALIDATOR_UNBOND
+    delegator_address: str
+    validator_address: str
+    coin: Coin
+
+    def __init__(self, delegator_address: str, validator_address: str, coin: Coin):
+        self.delegator_address = delegator_address
+        self.validator_address = validator_address
+        self.coin = coin
+
+    def __dict__(self):
+        return {"type": self.type,
+                "value": {
+                    "delegator_address": self.delegator_address,
+                    "validator_address": self.validator_address,
+                    "coin": self.coin.__dict__()
+                }}
+
+
+class DeclareCandidateMsg(BaseMsg):
+    type = VALIDATOR_CANDIDATE
+    commission: int
+    validator_addr: str
+    reward_addr: str
+    pub_key: PublicKey
+    stake: Coin
+    description: Candidate
+
+    def __init__(self, commission: int, validator_addr: str, reward_addr: str, pub_key: PublicKey,
+                 stake: Coin, description: Candidate):
+        self.commission = commission
+        self.validator_addr = validator_addr
+        self.reward_addr = reward_addr
+        self.pub_key = pub_key
+        self.stake = stake
+        self.description = description
+
+    def __dict__(self):
+        return {"type": self.type,
+                "value": {
+                    "commission": "",
+                    "validator_addr": "",
+                    "reward_addr": "",
+                "pub_key": self.pub_key.__dict__(),
+                "stake": self.stake.__dict__(),
+                "description": self.description.__dict__()
+                }}
+
+
+class EditCandidateMsg(BaseMsg):
+    type = VALIDATOR_CANDIDATE_EDIT
+    validator_address: str
+    reward_address: str
+    description: Candidate
+
+    def __init__(self, validator_address: str, reward_address: str, description: Candidate):
+        self.validator_address = validator_address
+        self.reward_address = reward_address
+        self.description = description
+
+    def __dict__(self):
+        return {"type": self.type,
+                "value": { "validator_address": self.validator_address,
+                           "reward_address": self.validator_address,
+                           "description": self.description.__dict__()
+                }}
+
+
+class DisableEnableValidatorMsg(BaseMsg):
+    type: str
+    validator_address: str
+
+    state = {
+        "disable": VALIDATOR_SET_OFFLINE,
+        "enable": VALIDATOR_SET_ONLINE
+    }
+
+    def __init__(self, set_state: str, validator_address: str):
+        self.type = self.state[set_state]
+        self.validator_address = validator_address
+
+    def __dict__(self):
+        return {"type": self.type,
+                "value": {
+                    "delegator_address": self.validator_address
+                }}
+
+
+class MultysigCreateMsg(BaseMsg):
     type = MULTISIG_CREATE_WALLET
     sender: str
     owners: str
@@ -242,7 +242,7 @@ class MultysigCreate(BaseMsg):
                 }}
 
 
-class MultysigCreateTX(BaseMsg):
+class MultysigCreateTXMsg(BaseMsg):
     type = MULTISIG_CREATE_TX
     sender: str
     wallet: str
@@ -265,7 +265,7 @@ class MultysigCreateTX(BaseMsg):
                 }}
 
 
-class MultysigSignTX(BaseMsg):
+class MultysigSignTXMsg(BaseMsg):
     type = MULTISIG_SIGN_TX
 
     sender: str
@@ -313,7 +313,7 @@ class MultisendCoinMsg(BaseMsg):
                 }}
 
 
-class SubmitProposal(BaseMsg):
+class SubmitProposalMsg(BaseMsg):
     type = PROPOSAL_SUBMIT
     # todo check wallet can submit proposal
     content: str
@@ -337,7 +337,7 @@ class SubmitProposal(BaseMsg):
                 }}
 
 
-class VoteProposal(BaseMsg):
+class VoteProposalMsg(BaseMsg):
     type = PROPOSAL_VOTE
     proposal_id: int
     voter: str
@@ -357,7 +357,7 @@ class VoteProposal(BaseMsg):
                 }}
 
 
-class SwapHtlt(BaseMsg):
+class SwapHtltMsg(BaseMsg):
     type = SWAP_HTLT
     transfer_type: str
     sender: str
@@ -386,7 +386,7 @@ class SwapHtlt(BaseMsg):
                 }}
 
 
-class SwapRedeem(BaseMsg):
+class SwapRedeemMsg(BaseMsg):
     type = SWAP_REDEEM
     secret: str
     sender: str
@@ -398,11 +398,12 @@ class SwapRedeem(BaseMsg):
     def __dict__(self):
         return {"type": self.type,
                 "value": {
-                    "from": f'"{self.sender}", {self.secret}' #todo check how it works
+                    "from": {self.sender},
+                    "secret": {self.secret}
                 }}
 
 
-class SwapRefund(BaseMsg):
+class SwapRefundMsg(BaseMsg):
     type = SWAP_REFUND
     sender: str
     hashed_secret: str
@@ -416,7 +417,3 @@ class SwapRefund(BaseMsg):
             "from": self.sender,
             "hashed_secret": self.hashed_secret
         }}
-
-
-
-
