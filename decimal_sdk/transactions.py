@@ -1,6 +1,6 @@
 from .wallet import Wallet
 from decimal_sdk.msgs.base import BaseMsg
-from decimal_sdk.types import Signature, StdSignMsg, SignMeta, Fee, Coin, PublicKey, Candidate
+from decimal_sdk.types import Signature, StdSignMsg, SignMeta, Fee, Coin, Candidate
 from decimal_sdk.utils import prepare_number
 from decimal_sdk.msgs.msgs import (SendCoinMsg, BuyCoinMsg, CreateCoinMsg, SellAllCoinsMsg,
                                    DelegateMsg, UnboundMsg,
@@ -99,7 +99,7 @@ class DeclareCandidateTransaction(Transaction):
                  moniker: str, identity: str, website: str, security_contact: str, details: str,
                  key_value: str, key_type: str = 'tendermint/PubKeyEd25519', **kwargs):
         stake = Coin(denom, amount)
-        pub_key = PublicKey(key_value, key_type)
+        pub_key = Signature(key_value, key_type)
         description = Candidate(moniker, identity, website, security_contact, details)
         self.message = DeclareCandidateMsg(commission, validator_addr, reward_addr, pub_key, stake, description)
         super().__init__(**kwargs)

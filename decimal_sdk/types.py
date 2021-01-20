@@ -99,17 +99,6 @@ class Fee:
     def __get_tx_size(self):
         pass
 
-class PublicKey:
-    key_type: str
-    value: str
-
-    def __init__(self, value: str, key_type: str = 'tendermint/PubKeyEd25519'):
-        self.value = value
-        self.key_type = key_type
-
-    def __dict__(self):
-        return {"type": self.key_type, "value": self.value}
-
 
 class SignMeta:
     account_number: str

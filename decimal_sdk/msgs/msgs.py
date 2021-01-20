@@ -1,6 +1,6 @@
 from decimal_sdk.msgs.base import BaseMsg
 from decimal_sdk.tx_types import *
-from decimal_sdk.types import Coin, Candidate, PublicKey
+from decimal_sdk.types import Coin, Candidate, Signature
 
 
 class SendCoinMsg(BaseMsg):
@@ -155,11 +155,11 @@ class DeclareCandidateMsg(BaseMsg):
     commission: int
     validator_addr: str
     reward_addr: str
-    pub_key: PublicKey
+    pub_key: Signature
     stake: Coin
     description: Candidate
 
-    def __init__(self, commission: int, validator_addr: str, reward_addr: str, pub_key: PublicKey,
+    def __init__(self, commission: int, validator_addr: str, reward_addr: str, pub_key: Signature,
                  stake: Coin, description: Candidate):
         self.commission = commission
         self.validator_addr = validator_addr
