@@ -72,9 +72,10 @@ class DecimalAPI:
         tx.sign(wallet)
         payload = {"tx": {}, "mode": "sync"}
         payload["tx"]["msg"] = [tx_data]
-        payload["tx"]["fee"] = {"amount": [], "gas": "0"}
         payload["tx"]["memo"] = tx.memo
         payload["tx"]["signatures"] = []
+        comission = self.__get_comission(payload["tx"])
+        payload["tx"]["fee"] = {"amount": [], "gas": comission}
         for sig in tx.signatures:
             payload["tx"]["signatures"].append(sig.get_signature())
             print(sig.get_signature())
@@ -86,6 +87,40 @@ class DecimalAPI:
     def validate_address(address: str):
         if len(address) != 41 or not address.startswith('dx'):
             raise Exception('Invalid address')
+
+    def get_coin_price(self, name: str):
+        coin = json.loads(self.get_coin(name))
+        if not coin:
+            raise Exception('Coin not found')
+        reserve = coin["reserve"]
+        supply = coin["volume"]
+        crr = coin["crr"] / 100;
+
+        if supply < 1:
+            amount = 1
+        else:
+            amount = supply
+
+        if supply == 0:
+            return 0
+
+        return 1 - (((1 - (amount / supply)) / crr) * reserve)
+
+    def __get_tx_size(self, tx):
+        signatureSize = 109
+        preparedTx = {
+            "type": 'cosmos-sdk/StdTx',
+            "value": {
+                tx
+            }
+        }
+        resp = json.loads(self.__request('/rpc/txs/encode', 'post', preparedTx))
+        encoded_tx_base64 = resp["tx"]
+        size = ((len(encoded_tx_base64) * 3) / 4) - signatureSize
+        return size
+
+    def __get_comission(self, tx):
+        msg_size = self.__get_tx_size(tx)
 
     def __request(self, path: str, method: str = 'get', payload=None):
         url = (self.base_url + path).lower()
