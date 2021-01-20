@@ -1,3 +1,5 @@
+import base64
+
 from Cryptodome.Hash import SHA256, RIPEMD160
 from mnemonic import Mnemonic
 from bip32 import BIP32
@@ -44,7 +46,7 @@ class Wallet:
 
     def __generate_keys(self):
         bip32 = BIP32.from_seed(self._seed)
-        self._public_key = bip32.get_xpub_from_path(DERIVATION_PATH)
+        self._public_key = base64.b64encode(bip32.get_pubkey_from_path(DERIVATION_PATH)).decode('utf-8')
         self._public_key_binary = bip32.get_pubkey_from_path(DERIVATION_PATH)
         self._private_key = bip32.get_privkey_from_path(DERIVATION_PATH)
 

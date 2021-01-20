@@ -70,7 +70,7 @@ class DecimalAPI:
         url = "rpc/txs"
         tx_data = tx.message.get_message()
         tx.sign(wallet)
-        payload = {"tx":{}, "mode": "sync"}
+        payload = {"tx": {}, "mode": "sync"}
         payload["tx"]["msg"] = [tx_data]
         payload["tx"]["fee"] = {"amount": [], "gas": "0"}
         payload["tx"]["memo"] = tx.memo
