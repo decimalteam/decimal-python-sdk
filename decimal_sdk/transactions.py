@@ -1,4 +1,4 @@
-from decimal_sdk import Wallet
+from .wallet import Wallet
 from decimal_sdk.msgs.base import BaseMsg
 from decimal_sdk.types import Signature, StdSignMsg, SignMeta, Fee, Coin, PublicKey, Candidate
 from decimal_sdk.utils import prepare_number

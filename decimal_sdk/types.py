@@ -5,9 +5,34 @@ from hashlib import sha256
 from ecdsa import SigningKey, SECP256k1
 from ecdsa.util import sigencode_string_canonize
 
-from decimal_sdk import Wallet
+from .wallet import Wallet
 from decimal_sdk.msgs.base import BaseMsg
 from decimal_sdk.utils import beautify_json
+from .tx_types import *
+
+FEES = {
+    COIN_SEND: 10,
+    COIN_BUY: 100,
+    COIN_CREATE: 100,
+    COIN_SELL: 100,
+    COIN_MULTISEND: 8,
+    COIN_SELL_ALL: 100,
+    COIN_REDEEM_CHECK: 30,
+    VALIDATOR_CANDIDATE: 10000,
+    VALIDATOR_DELEGATE: 200,
+    VALIDATOR_SET_ONLINE: 100,
+    VALIDATOR_SET_OFFLINE: 100,
+    VALIDATOR_UNBOND: 200,
+    VALIDATOR_CANDIDATE_EDIT: 10000,
+    MULTISIG_CREATE_WALLET: 100,
+    MULTISIG_CREATE_TX: 100,
+    MULTISIG_SIGN_TX: 100,
+    PROPOSAL_SUBMIT: 0,
+    PROPOSAL_VOTE: 0,
+    SWAP_HTLT: 33000,
+    SWAP_REDEEM: 0,
+    SWAP_REFUND: 0,
+}
 
 
 class Candidate:
@@ -45,6 +70,9 @@ class Signature:
     pub_key: str
     signature: str
 
+    def get_signature(self):
+        return self.__dict__()
+
     def __init__(self, signature: str, pub_key: str):
         self.signature = signature
         self.pub_key = pub_key
@@ -65,6 +93,11 @@ class Fee:
     def __dict__(self):
         return {'gas': self.gas, 'amount': [coin.__dict__() for coin in self.amount]}
 
+    def get_message_fee(msg):
+        pass
+
+    def __get_tx_size(self):
+        pass
 
 class PublicKey:
     key_type: str

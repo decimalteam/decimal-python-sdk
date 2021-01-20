@@ -2,7 +2,10 @@ import json
 
 import requests
 # from requests import Response
+from .transactions import Transaction
 from .wallet import Wallet
+import pprint
+import json
 
 """
 That's a stub
@@ -62,8 +65,22 @@ class DecimalAPI:
         self.validate_address(address)
         return self.__request(f'/validator/{address}')
 
-    def send_tx(self, tx: Transaction):
-        return self.__request('', 'post', tx)
+    def send_tx(self, tx: Transaction, wallet: Wallet):
+        """Method to sign and send prepared transaction"""
+        url = "rpc/txs"
+        tx_data = tx.message.get_message()
+        tx.sign(wallet)
+        payload = {"tx":{}, "mode": "sync"}
+        payload["tx"]["msg"] = [tx_data]
+        payload["tx"]["fee"] = {"amount": [], "gas": "0"}
+        payload["tx"]["memo"] = tx.memo
+        payload["tx"]["signatures"] = []
+        for sig in tx.signatures:
+            payload["tx"]["signatures"].append(sig.get_signature())
+            print(sig.get_signature())
+        print(json.dumps(payload))
+        # print(payload)
+        return self.__request(url, 'post', json.dumps(payload))
 
     @staticmethod
     def validate_address(address: str):
@@ -71,8 +88,10 @@ class DecimalAPI:
             raise Exception('Invalid address')
 
     def __request(self, path: str, method: str = 'get', payload=None):
-        url = self.base_url + path
+        url = (self.base_url + path).lower()
+        print(url)
         if method == 'get':
+            print(url)
             response = requests.get(url)
         else:
             response = requests.post(url, payload)
