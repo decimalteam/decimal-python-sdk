@@ -94,7 +94,7 @@ class Fee:
         return {'gas': self.gas, 'amount': [coin.__dict__() for coin in self.amount]}
 
     def get_coin_price(self):
-
+        pass
 
     def get_message_fee(msg):
         pass

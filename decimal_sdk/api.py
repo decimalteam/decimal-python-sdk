@@ -1,11 +1,15 @@
 import json
-
+import hashlib
 import requests
-# from requests import Response
+import base58
+from ecdsa import SigningKey, SECP256k1
+import bech32
+from mnemonic import Mnemonic
+
 from .transactions import Transaction
 from .wallet import Wallet
 import pprint
-import json
+
 
 """
 That's a stub
@@ -74,8 +78,8 @@ class DecimalAPI:
         payload["tx"]["msg"] = [tx_data]
         payload["tx"]["memo"] = tx.memo
         payload["tx"]["signatures"] = []
-        comission = self.__get_comission(payload["tx"])
-        payload["tx"]["fee"] = {"amount": [], "gas": comission}
+        # comission = self.__get_comission(payload["tx"])
+        payload["tx"]["fee"] = {"amount": [], "gas": 0}
         for sig in tx.signatures:
             payload["tx"]["signatures"].append(sig.get_signature())
             print(sig.get_signature())
@@ -88,7 +92,17 @@ class DecimalAPI:
         if len(address) != 41 or not address.startswith('dx'):
             raise Exception('Invalid address')
 
-    def get_coin_price(self, name: str):
+    @staticmethod
+    def __rpl_hash(data):
+        return hashlib.sha3_256(data)
+
+    def __get_chain_id(self):
+        url = "rpc/node_info"
+        resp = json.loads(self.__request(url))
+        chain_id = resp["node_info"]["network"]
+        return chain_id
+
+    def __get_coin_price(self, name: str):
         coin = json.loads(self.get_coin(name))
         if not coin:
             raise Exception('Coin not found')
@@ -121,6 +135,11 @@ class DecimalAPI:
 
     def __get_comission(self, tx):
         msg_size = self.__get_tx_size(tx)
+        fee = {
+            "amount": [],
+            "gas": "0"
+        }
+        return fee
 
     def __request(self, path: str, method: str = 'get', payload=None):
         url = (self.base_url + path).lower()
@@ -131,3 +150,61 @@ class DecimalAPI:
         else:
             response = requests.post(url, payload)
         return response.text
+
+    def issue_check(self, wallet: Wallet, inc_data):
+        chain_id = self.__get_chain_id()
+        data = {
+            "coin": inc_data["coin"].lower(),
+            "amount": inc_data["amount"],
+            "nonce": inc_data["nonce"],
+            "due_block": inc_data["due_block"],
+            "passphrase": inc_data["password"]
+        }
+        passphrase_hash = hashlib.sha256(data["passphrase"]).digest()
+        passphrase_priv_key = passphrase_hash
+        check_hash = self.__rpl_hash([
+            chain_id,
+            data["coin"],
+            data["amount"],
+            data["nonce"],
+            data["due_block"],
+        ])
+
+        lock_obj = SigningKey.from_string(check_hash, passphrase_priv_key)
+        lock_signature = []
+        i = 0
+        while i < 64:
+            lock_signature[i] = lock_obj.privkey[i]
+            i += 1
+
+        lock_signature[64] = lock_obj # todo what is it recid
+
+        check_locked_hash = self.__rpl_hash([
+            chain_id,
+            data["coin"],
+            data["amount"],
+            data["nonce"],
+            data["due_block"],
+            lock_signature
+        ])
+
+        check_obj = SigningKey.from_string(check_locked_hash, wallet.get_private_key())
+        check = self.__rpl_hash([
+            chain_id,
+            data["coin"],
+            data["amount"],
+            data["nonce"],
+            data["due_block"],
+            lock_signature,
+            check_obj.recid + 27, # todo what is recid
+            check_obj.privkey[0:32],
+            check_obj.privkey[32:64],
+        ])
+
+        return base58.b58encode(check)
+
+    def redeem_check(self, data, wallet: Wallet):
+        passphrase_hash = hashlib.sha256(data["passphrase"]).digest()
+        passphrase_priv_key = passphrase_hash
+        words = bech32.bech32_decode(wallet.get_address())
+        # sender_address = self.__rpl_hash(bech32.)
