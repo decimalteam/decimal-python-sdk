@@ -73,14 +73,14 @@ class DecimalAPI:
         payload["tx"]["msg"] = [tx_data]
         payload["tx"]["memo"] = tx.memo
         payload["tx"]["signatures"] = []
-        payload["tx"]["fee"] = {"amount": [], "gas": 0}
-        comission = self.__get_comission(payload["tx"])
-        payload["tx"]["fee"]["amount"].append({"denom": tx.fee.amount[0]["denom"], "value": comission["base"]})
+        comission = self.__get_comission(tx, "del", 0)
+        fee_amount = {"denom": "del", "value": comission["base"]}
+        payload["tx"]["fee"] = {"amount": [fee_amount], "gas": "0"}
+
         for sig in tx.signatures:
             payload["tx"]["signatures"].append(sig.get_signature())
-            print(sig.get_signature())
-        print(json.dumps(payload))
-        # print(payload)
+
+        print(payload)
         return self.__request(url, 'post', json.dumps(payload))
 
     @staticmethod
@@ -130,19 +130,14 @@ class DecimalAPI:
         }
         resp = json.loads(self.__request('rpc/txs/encode', 'post', json.dumps(preparedTx)))
         encoded_tx_base64 = resp["tx"]
-        # print(encoded_tx_base64)
-        # print(base64.b64decode(encoded_tx_base64))
         decoded = int.from_bytes(base64.b64decode(encoded_tx_base64), 'big')
-        # print("decoded:", decoded)
         size = decoded + signatureSize
-        # print("size", size)
         return size
 
     def __get_comission(self, tx: Transaction, fee_coin, operation_fee):
         ticker = fee_coin
-        text_ize = self.get_tx_size(tx)
-
-        fee_for_text = text_ize * 2
+        text_size = self.get_tx_size(tx)
+        fee_for_text = text_size * 2
         fee_in_base = operation_fee + fee_for_text + 10
 
         if tx.message.get_type() == 'coin/multi_send_coin':
@@ -151,19 +146,17 @@ class DecimalAPI:
             fee_in_base = fee_in_base + fee_for_participants
 
         if fee_coin in ['del', 'tdel']:
-            print({'coinPrice': '1', 'value': fee_in_base, 'base': fee_in_base})
+            # print({'coinPrice': '1', 'value': fee_in_base, 'base': fee_in_base})
             return {'coinPrice': '1', 'value': fee_in_base, 'base': fee_in_base}
 
         coin_price = self.__get_coin_price(ticker)
         fee_in_custom = fee_in_base / (coin_price / self.unit)
-        print({"coinPrice": str(coin_price), 'value': fee_in_custom, 'base': fee_in_base})
+        # print({"coinPrice": str(coin_price), 'value': fee_in_custom, 'base': fee_in_base})
         return {"coinPrice": str(coin_price), 'value': fee_in_custom, 'base': fee_in_base}
 
     def __request(self, path: str, method: str = 'get', payload=None):
         url = (self.base_url + path).lower()
-        print(url)
         if method == 'get':
-            print(url)
             response = requests.get(url)
         else:
             response = requests.post(url, payload)
