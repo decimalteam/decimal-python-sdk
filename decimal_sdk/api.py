@@ -1,14 +1,9 @@
 import json
 import hashlib
 import requests
-import base58
-from ecdsa import SigningKey, SECP256k1
-import bech32
-from mnemonic import Mnemonic
+import base64
 
-from .transactions import Transaction
 from .wallet import Wallet
-import pprint
 
 
 """
@@ -18,6 +13,7 @@ from .transactions import Transaction
 
 
 class DecimalAPI:
+    unit = 0.001
     """
     Base class to perform operations on Decimal API
     """
@@ -38,23 +34,22 @@ class DecimalAPI:
 
     def get_multisig(self, address: str):
         self.validate_address(address)
-        return self.__request(f'/multisig/{address}')
+        return self.__request(f'multisig/{address}')
 
     def get_multisigs(self, address: str):
         self.validate_address(address)
-        return self.__request(f'/address/{address}/multisigs')
+        return self.__request(f'address/{address}/multisigs')
 
     def get_my_transactions(self, wallet: Wallet):
-
-        return self.__request(f'/address/${wallet.get_address()}/txs')
+        return self.__request(f'address/${wallet.get_address()}/txs')
 
     def get_nonce(self, address: str):
         self.validate_address(address)
-        return self.__request(f'/rpc/auth/accounts/{address}')
+        return self.__request(f'rpc/auth/accounts/{address}')
 
     def get_stakes(self, address: str):
         self.validate_address(address)
-        return self.__request(f'/address/{address}/stakes')
+        return self.__request(f'address/{address}/stakes')
 
     def get_tx(self, tx_hash: str):
         if len(tx_hash) < 1:
@@ -63,11 +58,11 @@ class DecimalAPI:
 
     def get_txs_multisign(self, address: str, limit: int = 1, offset: int = 0):
         self.validate_address(address)
-        return self.__request(f"/multisig/${address}/txs")
+        return self.__request(f"multisig/${address}/txs")
 
     def get_validator(self, address: str):
         self.validate_address(address)
-        return self.__request(f'/validator/{address}')
+        return self.__request(f'validator/{address}')
 
     def send_tx(self, tx: Transaction, wallet: Wallet):
         """Method to sign and send prepared transaction"""
@@ -78,8 +73,9 @@ class DecimalAPI:
         payload["tx"]["msg"] = [tx_data]
         payload["tx"]["memo"] = tx.memo
         payload["tx"]["signatures"] = []
-        # comission = self.__get_comission(payload["tx"])
         payload["tx"]["fee"] = {"amount": [], "gas": 0}
+        comission = self.__get_comission(payload["tx"])
+        payload["tx"]["fee"]["amount"].append({"denom": tx.fee.amount[0]["denom"], "value": comission["base"]})
         for sig in tx.signatures:
             payload["tx"]["signatures"].append(sig.get_signature())
             print(sig.get_signature())
@@ -89,7 +85,7 @@ class DecimalAPI:
 
     @staticmethod
     def validate_address(address: str):
-        if len(address) != 41 or not address.startswith('dx'):
+        if len(address) < 41 or not address.startswith('dx'):
             raise Exception('Invalid address')
 
     @staticmethod
@@ -118,28 +114,50 @@ class DecimalAPI:
         if supply == 0:
             return 0
 
-        return 1 - (((1 - (amount / supply)) / crr) * reserve)
+        result = amount / supply
+        result = 1 - result
+        result = pow(result, 1 / crr)
+        result = (1 - result) * reserve
 
-    def __get_tx_size(self, tx):
+        return result
+
+    def get_tx_size(self, tx: Transaction):
         signatureSize = 109
         preparedTx = {
             "type": 'cosmos-sdk/StdTx',
-            "value": {
-                tx
-            }
+            "value":
+                tx.message.get_message()
         }
-        resp = json.loads(self.__request('/rpc/txs/encode', 'post', preparedTx))
+        resp = json.loads(self.__request('rpc/txs/encode', 'post', json.dumps(preparedTx)))
         encoded_tx_base64 = resp["tx"]
-        size = ((len(encoded_tx_base64) * 3) / 4) - signatureSize
+        # print(encoded_tx_base64)
+        # print(base64.b64decode(encoded_tx_base64))
+        decoded = int.from_bytes(base64.b64decode(encoded_tx_base64), 'big')
+        # print("decoded:", decoded)
+        size = decoded + signatureSize
+        # print("size", size)
         return size
 
-    def __get_comission(self, tx):
-        msg_size = self.__get_tx_size(tx)
-        fee = {
-            "amount": [],
-            "gas": "0"
-        }
-        return fee
+    def __get_comission(self, tx: Transaction, fee_coin, operation_fee):
+        ticker = fee_coin
+        text_ize = self.get_tx_size(tx)
+
+        fee_for_text = text_ize * 2
+        fee_in_base = operation_fee + fee_for_text + 10
+
+        if tx.message.get_type() == 'coin/multi_send_coin':
+            number_of_participants = len(tx.message.get_value().sends)
+            fee_for_participants = 5 * (number_of_participants - 1)
+            fee_in_base = fee_in_base + fee_for_participants
+
+        if fee_coin in ['del', 'tdel']:
+            print({'coinPrice': '1', 'value': fee_in_base, 'base': fee_in_base})
+            return {'coinPrice': '1', 'value': fee_in_base, 'base': fee_in_base}
+
+        coin_price = self.__get_coin_price(ticker)
+        fee_in_custom = fee_in_base / (coin_price / self.unit)
+        print({"coinPrice": str(coin_price), 'value': fee_in_custom, 'base': fee_in_base})
+        return {"coinPrice": str(coin_price), 'value': fee_in_custom, 'base': fee_in_base}
 
     def __request(self, path: str, method: str = 'get', payload=None):
         url = (self.base_url + path).lower()
@@ -150,61 +168,3 @@ class DecimalAPI:
         else:
             response = requests.post(url, payload)
         return response.text
-
-    def issue_check(self, wallet: Wallet, inc_data):
-        chain_id = self.__get_chain_id()
-        data = {
-            "coin": inc_data["coin"].lower(),
-            "amount": inc_data["amount"],
-            "nonce": inc_data["nonce"],
-            "due_block": inc_data["due_block"],
-            "passphrase": inc_data["password"]
-        }
-        passphrase_hash = hashlib.sha256(data["passphrase"]).digest()
-        passphrase_priv_key = passphrase_hash
-        check_hash = self.__rpl_hash([
-            chain_id,
-            data["coin"],
-            data["amount"],
-            data["nonce"],
-            data["due_block"],
-        ])
-
-        lock_obj = SigningKey.from_string(check_hash, passphrase_priv_key)
-        lock_signature = []
-        i = 0
-        while i < 64:
-            lock_signature[i] = lock_obj.privkey[i]
-            i += 1
-
-        lock_signature[64] = lock_obj # todo what is it recid
-
-        check_locked_hash = self.__rpl_hash([
-            chain_id,
-            data["coin"],
-            data["amount"],
-            data["nonce"],
-            data["due_block"],
-            lock_signature
-        ])
-
-        check_obj = SigningKey.from_string(check_locked_hash, wallet.get_private_key())
-        check = self.__rpl_hash([
-            chain_id,
-            data["coin"],
-            data["amount"],
-            data["nonce"],
-            data["due_block"],
-            lock_signature,
-            check_obj.recid + 27, # todo what is recid
-            check_obj.privkey[0:32],
-            check_obj.privkey[32:64],
-        ])
-
-        return base58.b58encode(check)
-
-    def redeem_check(self, data, wallet: Wallet):
-        passphrase_hash = hashlib.sha256(data["passphrase"]).digest()
-        passphrase_priv_key = passphrase_hash
-        words = bech32.bech32_decode(wallet.get_address())
-        # sender_address = self.__rpl_hash(bech32.)

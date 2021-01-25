@@ -23,3 +23,13 @@ wallet = Wallet("grant trust else animal manual cart wait hand taste obvious ind
 api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
 tx3 = SellAllCoinsMsgTransaction(wallet.get_address(), "tdel", "1", "btc", "1")
 api.send_tx(tx3, wallet)
+
+
+from decimal_sdk import Wallet
+from decimal_sdk import DecimalAPI
+from decimal_sdk import SendCoinTransaction
+
+api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
+wallet = Wallet("grant trust else animal manual cart wait hand taste obvious indicate swarm judge witness split choose obtain label trial home oil snake dwarf cost")
+tx2 = SendCoinTransaction(wallet.get_address(), "dx1xre7cdvkmqg848tyxeyl657q0nc6tqmtmceyv6", "tdel", 1)
+api.get_tx_size(tx2)
