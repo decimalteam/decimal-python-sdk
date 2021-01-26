@@ -23,7 +23,7 @@ class DecimalAPI:
             self.base_url += '/'
 
     def get_address(self, address: str):
-        self.validate_address(address)
+        self.__validate_address(address)
         return self.__request(f'address/{address}')
 
     def get_coin(self, name: str):
@@ -33,22 +33,22 @@ class DecimalAPI:
         return self.__request('coin')
 
     def get_multisig(self, address: str):
-        self.validate_address(address)
+        self.__validate_address(address)
         return self.__request(f'multisig/{address}')
 
     def get_multisigs(self, address: str):
-        self.validate_address(address)
+        self.__validate_address(address)
         return self.__request(f'address/{address}/multisigs')
 
     def get_my_transactions(self, wallet: Wallet):
         return self.__request(f'address/${wallet.get_address()}/txs')
 
     def get_nonce(self, address: str):
-        self.validate_address(address)
+        self.__validate_address(address)
         return self.__request(f'rpc/auth/accounts/{address}')
 
     def get_stakes(self, address: str):
-        self.validate_address(address)
+        self.__validate_address(address)
         return self.__request(f'address/{address}/stakes')
 
     def get_tx(self, tx_hash: str):
@@ -57,11 +57,11 @@ class DecimalAPI:
         return self.__request("rpc/tx", "get", '{ "params": { "hash": "0x$' + tx_hash + '"}}')
 
     def get_txs_multisign(self, address: str, limit: int = 1, offset: int = 0):
-        self.validate_address(address)
+        self.__validate_address(address)
         return self.__request(f"multisig/${address}/txs")
 
     def get_validator(self, address: str):
-        self.validate_address(address)
+        self.__validate_address(address)
         return self.__request(f'validator/{address}')
 
     def send_tx(self, tx: Transaction, wallet: Wallet):
@@ -84,7 +84,7 @@ class DecimalAPI:
         return self.__request(url, 'post', json.dumps(payload))
 
     @staticmethod
-    def validate_address(address: str):
+    def __validate_address(address: str):
         if len(address) < 41 or not address.startswith('dx'):
             raise Exception('Invalid address')
 
@@ -100,28 +100,34 @@ class DecimalAPI:
 
     def __get_coin_price(self, name: str):
         coin = json.loads(self.get_coin(name))
-        if not coin:
+        print(coin)
+        if not coin["ok"]:
             raise Exception('Coin not found')
-        reserve = coin["reserve"]
+        coin = coin["result"]
+        reserve = int(coin["reserve"])
         supply = coin["volume"]
-        crr = coin["crr"] / 100;
 
-        if supply < 1:
-            amount = 1
-        else:
-            amount = supply
+        if int(coin["crr"]) == 0:
+            return 1
 
-        if supply == 0:
+        crr = int(coin["crr"]) / 100
+
+        if int(supply) == 0:
             return 0
 
-        result = amount / supply
+        if int(supply) < 1:
+            amount = 1
+        else:
+            amount = int(supply)
+
+        result = amount / int(supply)
         result = 1 - result
         result = pow(result, 1 / crr)
         result = (1 - result) * reserve
 
         return result
 
-    def get_tx_size(self, tx: Transaction):
+    def __get_tx_size(self, tx: Transaction):
         signatureSize = 109
         preparedTx = {
             "type": 'cosmos-sdk/StdTx',
@@ -136,7 +142,7 @@ class DecimalAPI:
 
     def __get_comission(self, tx: Transaction, fee_coin, operation_fee):
         ticker = fee_coin
-        text_size = self.get_tx_size(tx)
+        text_size = self.__get_tx_size(tx)
         fee_for_text = text_size * 2
         fee_in_base = operation_fee + fee_for_text + 10
 
