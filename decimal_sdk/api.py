@@ -69,7 +69,6 @@ class DecimalAPI:
         url = "rpc/txs"
         wallet.nonce = json.loads(self.get_nonce(wallet.get_address()))
         print("nonce ", wallet.nonce)
-        # print("--------------------")
         tx_data = tx.message.get_message()
         tx.sign(wallet)
         payload = {"tx": {}, "mode": "sync"}
