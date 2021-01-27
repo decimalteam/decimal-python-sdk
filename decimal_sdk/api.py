@@ -77,7 +77,9 @@ class DecimalAPI:
         payload["tx"]["signatures"] = []
         comission = self.__get_comission(tx, "del", 0)
         fee_amount = {"denom": "del", "value": comission["base"]}
-        payload["tx"]["fee"] = {"amount": [fee_amount], "gas": "0"}
+        # TODO: enable tx fee calc
+        payload["tx"]["fee"] = {"amount": [], "gas": "0"}
+        # payload["tx"]["fee"] = {"amount": [fee_amount], "gas": "0"}
 
         for sig in tx.signatures:
             payload["tx"]["signatures"].append(sig.get_signature())
