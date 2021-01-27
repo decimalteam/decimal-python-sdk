@@ -10,5 +10,5 @@ def amount_uni_recalculate(amount, reverse = False):
     if reverse:
         exp = -18
     numb = amount * pow(10, exp)
-    prepared_num = number_format(numb, 0, ',', '')
+    prepared_num = number_format(numb, 0)
     return prepared_num

@@ -67,6 +67,9 @@ class DecimalAPI:
     def send_tx(self, tx: Transaction, wallet: Wallet):
         """Method to sign and send prepared transaction"""
         url = "rpc/txs"
+        wallet.nonce = json.loads(self.get_nonce(wallet.get_address()))
+        print("nonce ", wallet.nonce)
+        # print("--------------------")
         tx_data = tx.message.get_message()
         tx.sign(wallet)
         payload = {"tx": {}, "mode": "sync"}
