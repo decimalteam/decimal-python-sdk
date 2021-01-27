@@ -104,11 +104,11 @@ class Fee:
 
 
 class SignMeta:
-    account_number: str
+    account_number: int
     chain_id: str
-    sequence: str
+    sequence: int
 
-    def __init__(self, account_number: str = '18', chain_id: str = 'decimal-devnet-11-20-18-00', sequence: str = '7'):
+    def __init__(self, account_number: int = 18, chain_id: str = 'decimal-devnet-11-20-18-00', sequence: int = 10):
         self.account_number = account_number
         self.chain_id = chain_id
         self.sequence = sequence

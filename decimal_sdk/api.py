@@ -68,6 +68,8 @@ class DecimalAPI:
         """Method to sign and send prepared transaction"""
         url = "rpc/txs"
         tx_data = tx.message.get_message()
+        wallet.nonce = json.loads(self.get_nonce(wallet.get_address()))
+        print(wallet.nonce)
         tx.sign(wallet)
         payload = {"tx": {}, "mode": "sync"}
         payload["tx"]["msg"] = [tx_data]
@@ -83,6 +85,12 @@ class DecimalAPI:
         print(payload)
         return self.__request(url, 'post', json.dumps(payload))
 
+    def get_chain_id(self):
+        url = "rpc/node_info"
+        resp = json.loads(self.__request(url))
+        chain_id = resp["node_info"]["network"]
+        return chain_id
+
     @staticmethod
     def __validate_address(address: str):
         if len(address) < 41 or not address.startswith('dx'):
@@ -91,12 +99,6 @@ class DecimalAPI:
     @staticmethod
     def __rpl_hash(data):
         return hashlib.sha3_256(data)
-
-    def __get_chain_id(self):
-        url = "rpc/node_info"
-        resp = json.loads(self.__request(url))
-        chain_id = resp["node_info"]["network"]
-        return chain_id
 
     def __get_coin_price(self, name: str):
         coin = json.loads(self.get_coin(name))
