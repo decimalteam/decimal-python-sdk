@@ -108,7 +108,7 @@ class SignMeta:
     chain_id: str
     sequence: str
 
-    def __init__(self, account_number: str = '18', chain_id: str = 'decimal-devnet-11-20-18-00', sequence: str = '10'):
+    def __init__(self, account_number: str = '0', chain_id: str = 'decimal-testnet-12-09-13-00', sequence: str = '1'):
         self.account_number = account_number
         self.chain_id = chain_id
         self.sequence = sequence

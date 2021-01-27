@@ -66,10 +66,13 @@ class DecimalAPI:
 
     def send_tx(self, tx: Transaction, wallet: Wallet):
         """Method to sign and send prepared transaction"""
+
         url = "rpc/txs"
+        wallet.nonce = json.loads(self.get_nonce(wallet.get_address()))["result"]
+        tx.signer.chain_id = self.get_chain_id()
+        tx.signer.account_number = str(wallet.nonce["value"]["account_number"])
+        tx.signer.sequence = str(wallet.nonce["value"]["sequence"])
         tx_data = tx.message.get_message()
-        wallet.nonce = json.loads(self.get_nonce(wallet.get_address()))
-        print(wallet.nonce)
         tx.sign(wallet)
         payload = {"tx": {}, "mode": "sync"}
         payload["tx"]["msg"] = [tx_data]
