@@ -79,6 +79,7 @@ class DecimalAPI:
         payload["tx"]["msg"] = [tx_data]
         payload["tx"]["memo"] = tx.memo
         payload["tx"]["signatures"] = []
+
         comission = self.__get_comission(tx, "del", FEES["coin/send_coin"])
         fee_amount = {"denom": "del", "value": comission["base"]}
         # TODO: enable tx fee calc
