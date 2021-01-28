@@ -3,6 +3,7 @@ import hashlib
 import requests
 import base64
 
+from .types import FEES
 from .wallet import Wallet
 
 
@@ -78,11 +79,11 @@ class DecimalAPI:
         payload["tx"]["msg"] = [tx_data]
         payload["tx"]["memo"] = tx.memo
         payload["tx"]["signatures"] = []
-        comission = self.__get_comission(tx, "del", 0)
+        comission = self.__get_comission(tx, "del", FEES["coin/send_coin"])
         fee_amount = {"denom": "del", "value": comission["base"]}
         # TODO: enable tx fee calc
-        payload["tx"]["fee"] = {"amount": [], "gas": "0"}
-        # payload["tx"]["fee"] = {"amount": [fee_amount], "gas": "0"}
+        # payload["tx"]["fee"] = {"amount": [], "gas": "0"}
+        payload["tx"]["fee"] = {"amount": [fee_amount], "gas": "0"}
 
         for sig in tx.signatures:
             payload["tx"]["signatures"].append(sig.get_signature())

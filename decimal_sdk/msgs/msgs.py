@@ -315,7 +315,6 @@ class MultisendCoinMsg(BaseMsg):
 
 class SubmitProposalMsg(BaseMsg):
     type = PROPOSAL_SUBMIT
-    # todo check wallet can submit proposal
     content: str
     proposer: str
     voting_start_block: str
