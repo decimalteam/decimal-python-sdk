@@ -93,15 +93,6 @@ class Fee:
     def __dict__(self):
         return {'gas': self.gas, 'amount': [coin.__dict__() for coin in self.amount]}
 
-    def get_coin_price(self):
-        pass
-
-    def get_message_fee(msg):
-        pass
-
-    def __get_tx_size(self):
-        pass
-
 
 class SignMeta:
     account_number: str

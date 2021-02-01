@@ -70,27 +70,23 @@ class DecimalAPI:
         """Method to sign and send prepared transaction"""
         url = "rpc/txs"
 
-
-        comission = self.__get_comission(tx, "del", FEES["coin/send_coin"])
-        fee_amount = {"denom": "del", "value": comission["base"]}
+        commission = self.__get_comission(tx, "del", FEES["coin/send_coin"])
+        fee_amount = {"denom": "del", "value": commission["base"]}
 
         wallet.nonce = json.loads(self.get_nonce(wallet.get_address()))["result"]
         tx.signer.chain_id = self.get_chain_id()
         tx.signer.account_number = str(wallet.nonce["value"]["account_number"])
         tx.signer.sequence = str(wallet.nonce["value"]["sequence"])
         tx_data = tx.message.get_message()
+        tx_data["fee"] = fee_amount
         tx.fee = fee_amount
         tx.sign(wallet)
         payload = {"tx": {}, "mode": "sync"}
         payload["tx"]["msg"] = [tx_data]
         payload["tx"]["memo"] = tx.memo
         payload["tx"]["signatures"] = []
-
-        comission = self.__get_comission(tx, "del", FEES["coin/send_coin"])
-        fee_amount = {"denom": "del", "value": comission["base"]}
-        # TODO: enable tx fee calc
-        # payload["tx"]["fee"] = {"amount": [], "gas": "0"}
-        payload["tx"]["fee"] = {"amount": [fee_amount], "gas": "0"}
+        print("Payload: ")
+        print(payload)
 
         for sig in tx.signatures:
             payload["tx"]["signatures"].append(sig.get_signature())

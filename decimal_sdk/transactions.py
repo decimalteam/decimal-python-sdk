@@ -150,9 +150,9 @@ class MultysigSignTXTransaction(Transaction):
 
 class MultisendCoinTransaction(Transaction):
     message: MultisendCoinMsg
-    # todo
 
-    def __init__(self, **kwargs):
+    def __init__(self, sender: str, sends: [MultisendSend], **kwargs):
+        self.message = MultisendCoinMsg(sender, sends)
         super().__init__(**kwargs)
 
 
