@@ -5,19 +5,20 @@ import base64
 
 from .types import FEES
 from .wallet import Wallet
-
-
+from .transactions import Transaction
+from .utils.helpers import get_amount_uni
 """
 That's a stub
 """
-from .transactions import Transaction
 
 
 class DecimalAPI:
+    """
+    Base class to perform operations on Decimal API.
+    Create new instance of api with passing base URL to DecimalAPI class.
+    """
     unit = 0.001
-    """
-    Base class to perform operations on Decimal API
-    """
+
     def __init__(self, base_url: str):
         self.base_url = base_url
         if self.base_url[-1]:
@@ -67,13 +68,18 @@ class DecimalAPI:
 
     def send_tx(self, tx: Transaction, wallet: Wallet):
         """Method to sign and send prepared transaction"""
-
         url = "rpc/txs"
+
+
+        comission = self.__get_comission(tx, "del", FEES["coin/send_coin"])
+        fee_amount = {"denom": "del", "value": comission["base"]}
+
         wallet.nonce = json.loads(self.get_nonce(wallet.get_address()))["result"]
         tx.signer.chain_id = self.get_chain_id()
         tx.signer.account_number = str(wallet.nonce["value"]["account_number"])
         tx.signer.sequence = str(wallet.nonce["value"]["sequence"])
         tx_data = tx.message.get_message()
+        tx.fee = fee_amount
         tx.sign(wallet)
         payload = {"tx": {}, "mode": "sync"}
         payload["tx"]["msg"] = [tx_data]
@@ -109,25 +115,24 @@ class DecimalAPI:
 
     def __get_coin_price(self, name: str):
         coin = json.loads(self.get_coin(name))
-        print(coin)
         if not coin["ok"]:
             raise Exception('Coin not found')
         coin = coin["result"]
-        reserve = int(coin["reserve"])
-        supply = coin["volume"]
+        reserve = get_amount_uni(int(coin["reserve"]), True)
+        supply = get_amount_uni(int(coin["volume"]), True)
 
-        if int(coin["crr"]) == 0:
-            return 1
+        # if int(coin["crr"]) == 0:
+        #     return 1
 
         crr = int(coin["crr"]) / 100
-
-        if int(supply) == 0:
-            return 0
 
         if int(supply) < 1:
             amount = 1
         else:
             amount = int(supply)
+
+        if int(supply) == 0:
+            return 0
 
         result = amount / int(supply)
         result = 1 - result
@@ -137,21 +142,23 @@ class DecimalAPI:
         return result
 
     def __get_tx_size(self, tx: Transaction):
-        signatureSize = 109
         preparedTx = {
             "type": 'cosmos-sdk/StdTx',
             "value":
                 tx.message.get_message()
         }
+        signatureSize = 109
         resp = json.loads(self.__request('rpc/txs/encode', 'post', json.dumps(preparedTx)))
         encoded_tx_base64 = resp["tx"]
-        decoded = int.from_bytes(base64.b64decode(encoded_tx_base64), 'big')
-        size = decoded + signatureSize
+        encoded_tx = len(base64.b64decode(encoded_tx_base64))
+        size = encoded_tx + signatureSize
         return size
 
     def __get_comission(self, tx: Transaction, fee_coin, operation_fee):
         ticker = fee_coin
         text_size = self.__get_tx_size(tx)
+        print("text size: ", text_size)
+        print("operation fee", operation_fee)
         fee_for_text = text_size * 2
         fee_in_base = operation_fee + fee_for_text + 10
 
@@ -162,7 +169,7 @@ class DecimalAPI:
 
         if fee_coin in ['del', 'tdel']:
             # print({'coinPrice': '1', 'value': fee_in_base, 'base': fee_in_base})
-            return {'coinPrice': '1', 'value': fee_in_base, 'base': fee_in_base}
+            return {"coinPrice": "1", "value": fee_in_base, "base": fee_in_base}
 
         coin_price = self.__get_coin_price(ticker)
         fee_in_custom = fee_in_base / (coin_price / self.unit)

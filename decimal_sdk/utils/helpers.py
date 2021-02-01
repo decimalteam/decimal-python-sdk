@@ -5,7 +5,7 @@ def number_format(num, places=0):
     return locale.format_string("%.*f", (places, num), True)
 
 
-def amount_uni_recalculate(amount, reverse = False):
+def get_amount_uni(amount, reverse = False):
     exp = 18
     if reverse:
         exp = -18
