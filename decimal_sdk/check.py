@@ -79,7 +79,6 @@ class Check:
         self.v = int((sig[64] + 27).to_bytes())
 
     def recover_plain(self, sighash, r, s, v):
-
         pass
 
     @staticmethod

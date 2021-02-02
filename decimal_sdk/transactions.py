@@ -95,11 +95,11 @@ class DeclareCandidateTransaction(Transaction):
     message: DeclareCandidateMsg
 
     def __init__(self, commission: int, validator_addr: str, reward_addr: str,
-                 denom: str, amount: str,
+                 denom: str, amount: int,
                  moniker: str, identity: str, website: str, security_contact: str, details: str,
                  key_value: str, key_type: str = 'tendermint/PubKeyEd25519', **kwargs):
-        stake = Coin(denom, amount)
-        pub_key = Signature(key_value, key_type)
+        stake = Coin(denom, str(amount))
+        pub_key = {"type": key_type, "value": key_value}
         description = Candidate(moniker, identity, website, security_contact, details)
         self.message = DeclareCandidateMsg(commission, validator_addr, reward_addr, pub_key, stake, description)
         super().__init__(**kwargs)
@@ -126,7 +126,7 @@ class DisableEnableValidatorTransaction(Transaction):
 class MultysigCreateTransaction(Transaction):
     message: MultysigCreateMsg
 
-    def __init__(self, sender: str, owners: str, weights: int, threshold: int, **kwargs):
+    def __init__(self, sender: str, owners: list, weights: list, threshold: int, **kwargs):
         self.message = MultysigCreateMsg(sender, owners, weights, threshold)
         super().__init__(**kwargs)
 

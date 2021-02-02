@@ -6,7 +6,7 @@ from bip32 import BIP32
 import bech32
 
 DERIVATION_PATH = "m/44'/60'/0'/0/0"
-
+VALIDATOR_PREFIX = 'dxvaloper'
 
 class Wallet:
     """
@@ -28,9 +28,13 @@ class Wallet:
         # Derive public key
         self.__generate_keys()
         self.__generate_address()
+        self.__generate_validator_address()
 
     def get_address(self) -> str:
         return self._address
+
+    def get_validator_address(self) -> str:
+        return self._validator_address
 
     def get_private_key(self) -> str:
         return self._private_key
@@ -42,6 +46,11 @@ class Wallet:
         prepared_hash = self.__hash_public_key()
         address = bech32.bech32_encode('dx', bech32.convertbits(prepared_hash, 8, 5))
         self._address = address
+
+    def __generate_validator_address(self):
+        prepared_hash = self.__hash_public_key()
+        address = bech32.bech32_encode(VALIDATOR_PREFIX, bech32.convertbits(prepared_hash, 8, 5))
+        self._validator_address = address
 
     def __generate_keys(self):
         bip32 = BIP32.from_seed(self._seed)

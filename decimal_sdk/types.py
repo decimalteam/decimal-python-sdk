@@ -74,8 +74,8 @@ class Signature:
         return self.__dict__()
 
     def __init__(self, signature: str, pub_key: str):
-        self.signature = signature
         self.pub_key = pub_key
+        self.signature = signature
 
     def __dict__(self):
         return {'pub_key': {'type': 'tendermint/PubKeySecp256k1', 'value': self.pub_key},

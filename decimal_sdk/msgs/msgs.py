@@ -171,10 +171,10 @@ class DeclareCandidateMsg(BaseMsg):
     def __dict__(self):
         return {"type": self.type,
                 "value": {
-                    "commission": "",
-                    "validator_addr": "",
-                    "reward_addr": "",
-                "pub_key": self.pub_key.__dict__(),
+                    "commission": str(self.commission),
+                    "validator_addr": self.validator_addr,
+                    "reward_addr": self.reward_addr,
+                "pub_key": self.pub_key,
                 "stake": self.stake.__dict__(),
                 "description": self.description.__dict__()
                 }}
@@ -194,7 +194,7 @@ class EditCandidateMsg(BaseMsg):
     def __dict__(self):
         return {"type": self.type,
                 "value": { "validator_address": self.validator_address,
-                           "reward_address": self.validator_address,
+                           "reward_address": self.reward_address,
                            "description": self.description.__dict__()
                 }}
 
@@ -215,18 +215,18 @@ class DisableEnableValidatorMsg(BaseMsg):
     def __dict__(self):
         return {"type": self.type,
                 "value": {
-                    "delegator_address": self.validator_address
+                    "validator_address": self.validator_address
                 }}
 
 
 class MultysigCreateMsg(BaseMsg):
     type = MULTISIG_CREATE_WALLET
     sender: str
-    owners: str
-    weights: int
+    owners: list
+    weights: list
     threshold: int
 
-    def __init__(self, sender: str, owners: str, weights: int, threshold: int):
+    def __init__(self, sender: str, owners: list, weights: list, threshold: int):
         self.sender = sender
         self.owners = owners
         self.weights = weights
@@ -272,8 +272,8 @@ class MultysigSignTXMsg(BaseMsg):
     tx_id: str
 
     def __init__(self, sender: str, tx_id: str):
-        self.sender: sender
-        self.tx_id: tx_id
+        self.sender = sender
+        self.tx_id = tx_id
 
     def __dict__(self):
         return {"type": self.type,
@@ -292,7 +292,7 @@ class MultisendSend:
         self.coin = coin
 
     def __dict__(self):
-        return {'coin': self.coin, 'receiver': self.receiver}
+        return {"coin": self.coin.__dict__(), "receiver": self.receiver}
 
 
 class MultisendCoinMsg(BaseMsg):
@@ -306,10 +306,20 @@ class MultisendCoinMsg(BaseMsg):
         self.sends = sends
 
     def __dict__(self):
+        snds = []
+        for send in self.sends:
+            snds.append({
+                "receiver": send["receiver"],
+                "coin": {
+                    "amount": send["amount"],
+                    "denom": send["coin"]
+                }
+            })
+
         return {'type': self.type,
                 'value': {
                     'sender': self.sender,
-                    'sends': [send.__dict__() for send in self.sends]
+                    'sends': snds
                 }}
 
 

@@ -2,7 +2,9 @@ import json
 import hashlib
 import requests
 import base64
+import base58
 import bech32
+import sha3
 
 from Cryptodome.Hash import SHA256
 import ethereum.transactions as crypto
@@ -90,18 +92,18 @@ class DecimalAPI:
         payload["tx"]["memo"] = tx.memo
         payload["tx"]["signatures"] = []
         print("Payload: ")
-        print(payload)
+        print(json.dumps(payload))
 
         for sig in tx.signatures:
             payload["tx"]["signatures"].append(sig.get_signature())
 
-        print(payload)
+        print(json.dumps(payload))
         return self.__request(url, 'post', json.dumps(payload))
 
     def issue_check(self, wallet, data):
         new_data = {
             "coin": data["coin"].lower(),
-            "amount": get_amount_uni(data["amount"]),
+            "amount": get_amount_uni(int(data["amount"]), True),
             "nonce": data["nonce"],
             "due_block": +data["due_block"],
             "passphrase": data["password"],
@@ -120,9 +122,63 @@ class DecimalAPI:
             new_data["due_block"],
         ])
 
-        sig = crypto.ecsign(check_hash, passphrase_priv_key)
-        self.set_signature(sig)
+        lock_obj = crypto.ecsign(check_hash, passphrase_priv_key)
+        lock_signature = bytearray(65)
 
+        i = 0
+        while i<64:
+            lock_signature[i] = lock_obj[i]
+            i += 1
+
+        lock_signature[64] = lock_obj.recid #todo
+
+        check_locked_hash = self.__rpl_hash([
+            chain_id,
+            new_data["coin"],
+            new_data["amount"],
+            new_data["nonce"],
+            new_data["due_block"],
+            lock_signature
+        ])
+
+        check_obj = crypto.ecsign(check_locked_hash, wallet.get_private_key())
+        check = self.__rpl_hash([
+            chain_id,
+            new_data["coin"],
+            new_data["amount"],
+            new_data["nonce"],
+            new_data["due_block"],
+            lock_signature,
+            check_obj.recid + 27,
+            # check_obj.signature.slice(0, 32),
+            # check_obj.signature.slice(32, 64),
+        ])
+        return base58.b58encode(check)
+
+    def redeem_check(self, data, wallet):
+        passphrase_hash = SHA256.new(data["passphrase"]).digest()
+        passphrase_priv_key = passphrase_hash
+
+        words = bech32.decode(wallet.get_address())
+        sender_address_hash = self.__rpl_hash(bech32.encode(words))
+
+        proof_obj = crypto.ecsign(sender_address_hash, passphrase_priv_key)
+        proof_signature = bytearray(65)
+
+        i = 0
+        while i<64:
+            proof_signature[i] = proof_obj[i]
+            i += 1
+
+        proof_signature[64] = proof_obj.recid
+
+        proof = proof_signature
+
+        return {
+            "sender": wallet.get_address(),
+            "check": data["check"],
+            "proof": proof
+        }
 
     def get_chain_id(self):
         url = "rpc/node_info"
@@ -137,7 +193,8 @@ class DecimalAPI:
 
     @staticmethod
     def __rpl_hash(data):
-        return hashlib.sha3_256(data)
+        khash = sha3.keccak_256()
+        return khash.update(data)
 
     def __get_coin_price(self, name: str):
         coin = json.loads(self.get_coin(name))
@@ -189,7 +246,7 @@ class DecimalAPI:
         fee_in_base = operation_fee + fee_for_text + 10
 
         if tx.message.get_type() == 'coin/multi_send_coin':
-            number_of_participants = len(tx.message.get_value().sends)
+            number_of_participants = len(tx.message.get_message()["value"]["sends"])
             fee_for_participants = 5 * (number_of_participants - 1)
             fee_in_base = fee_in_base + fee_for_participants
 
