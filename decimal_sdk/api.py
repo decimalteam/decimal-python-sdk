@@ -2,6 +2,10 @@ import json
 import hashlib
 import requests
 import base64
+import bech32
+
+from Cryptodome.Hash import SHA256
+import ethereum.transactions as crypto
 
 from .types import FEES
 from .wallet import Wallet
@@ -94,6 +98,32 @@ class DecimalAPI:
         print(payload)
         return self.__request(url, 'post', json.dumps(payload))
 
+    def issue_check(self, wallet, data):
+        new_data = {
+            "coin": data["coin"].lower(),
+            "amount": get_amount_uni(data["amount"]),
+            "nonce": data["nonce"],
+            "due_block": +data["due_block"],
+            "passphrase": data["password"],
+        }
+
+        chain_id = self.get_chain_id()
+
+        passphrase_hash = SHA256.new(new_data["passphrase"]).digest()
+        passphrase_priv_key = passphrase_hash
+
+        check_hash = self.__rpl_hash([
+            chain_id,
+            new_data["coin"],
+            new_data["amount"],
+            new_data["nonce"],
+            new_data["due_block"],
+        ])
+
+        sig = crypto.ecsign(check_hash, passphrase_priv_key)
+        self.set_signature(sig)
+
+
     def get_chain_id(self):
         url = "rpc/node_info"
         resp = json.loads(self.__request(url))
@@ -164,12 +194,10 @@ class DecimalAPI:
             fee_in_base = fee_in_base + fee_for_participants
 
         if fee_coin in ['del', 'tdel']:
-            # print({'coinPrice': '1', 'value': fee_in_base, 'base': fee_in_base})
             return {"coinPrice": "1", "value": fee_in_base, "base": fee_in_base}
 
         coin_price = self.__get_coin_price(ticker)
         fee_in_custom = fee_in_base / (coin_price / self.unit)
-        # print({"coinPrice": str(coin_price), 'value': fee_in_custom, 'base': fee_in_base})
         return {"coinPrice": str(coin_price), 'value': fee_in_custom, 'base': fee_in_base}
 
     def __request(self, path: str, method: str = 'get', payload=None):

@@ -4,7 +4,6 @@ from Cryptodome.Hash import SHA256, RIPEMD160
 from mnemonic import Mnemonic
 from bip32 import BIP32
 import bech32
-import ecdsa
 
 DERIVATION_PATH = "m/44'/60'/0'/0/0"
 
