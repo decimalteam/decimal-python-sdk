@@ -328,4 +328,18 @@ data = {
 api.issue_check(wallet, data)
 ```
 
+## Redeem Check
+```python
+from decimal_sdk import Wallet
+from decimal_sdk import DecimalAPI
+
+api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
+wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
+data = {
+    "check": "ERp9FR24Vz19XG....",
+    "password": "123",
+}
+
+api.redeem_check(data, wallet);
+```
 

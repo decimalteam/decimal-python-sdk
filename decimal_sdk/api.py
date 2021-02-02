@@ -1,5 +1,5 @@
 import json
-import hashlib
+import rlp
 import requests
 import base64
 import base58
@@ -105,14 +105,15 @@ class DecimalAPI:
             "coin": data["coin"].lower(),
             "amount": get_amount_uni(int(data["amount"]), True),
             "nonce": data["nonce"],
-            "due_block": +data["due_block"],
+            "due_block": data["due_block"],
             "passphrase": data["password"],
         }
 
         chain_id = self.get_chain_id()
 
-        passphrase_hash = SHA256.new(new_data["passphrase"]).digest()
+        passphrase_hash = SHA256.new(str.encode(new_data["passphrase"])).digest()
         passphrase_priv_key = passphrase_hash
+        print("Passphrase ", passphrase_priv_key)
 
         check_hash = self.__rpl_hash([
             chain_id,
@@ -122,8 +123,15 @@ class DecimalAPI:
             new_data["due_block"],
         ])
 
-        lock_obj = crypto.ecsign(check_hash, passphrase_priv_key)
+        print(check_hash)
+
+        v,r,s = crypto.ecsign(check_hash, passphrase_priv_key)
         lock_signature = bytearray(65)
+        lock_obj = v+r+s
+        print(v,r,s)
+        # v = safe_ord(signature[64]) + 27
+        # r = big_endian_to_int(signature[0:32])
+        # s = big_endian_to_int(signature[32:64])
 
         i = 0
         while i<64:
@@ -156,7 +164,7 @@ class DecimalAPI:
         return base58.b58encode(check)
 
     def redeem_check(self, data, wallet):
-        passphrase_hash = SHA256.new(data["passphrase"]).digest()
+        passphrase_hash = SHA256.new(str.encode(data["password"])).digest()
         passphrase_priv_key = passphrase_hash
 
         words = bech32.decode(wallet.get_address())
@@ -194,7 +202,12 @@ class DecimalAPI:
     @staticmethod
     def __rpl_hash(data):
         khash = sha3.keccak_256()
-        return khash.update(data)
+        print("khash", khash)
+        dt = rlp.encode(data)
+        # print("dt", dt)
+        res = khash.update(data)
+        print("res", res)
+        return res.digest()
 
     def __get_coin_price(self, name: str):
         coin = json.loads(self.get_coin(name))
