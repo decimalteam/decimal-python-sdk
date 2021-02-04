@@ -8,6 +8,8 @@ import sha3
 
 from Cryptodome.Hash import SHA256
 import ethereum.transactions as crypto
+import secp256k1
+import ecdsa
 
 from .types import FEES
 from .wallet import Wallet
@@ -124,21 +126,21 @@ class DecimalAPI:
         ])
 
         print(check_hash)
+        # sk = ecdsa.SigningKey.generate(curve=ecdsa.SECP256k1)
+        # lock_obj = sk.sign(check_hash)
+        # print("lock_obj ", lock_obj)
+        # recid = lock_obj
 
-        v,r,s = crypto.ecsign(check_hash, passphrase_priv_key)
-        lock_signature = bytearray(65)
-        lock_obj = v+r+s
-        print(v,r,s)
         # v = safe_ord(signature[64]) + 27
         # r = big_endian_to_int(signature[0:32])
         # s = big_endian_to_int(signature[32:64])
-
+        lock_signature = bytearray(65)
         i = 0
         while i<64:
             lock_signature[i] = lock_obj[i]
             i += 1
 
-        lock_signature[64] = lock_obj.recid #todo
+        lock_signature[64] = lock_obj.recid
 
         check_locked_hash = self.__rpl_hash([
             chain_id,
@@ -202,12 +204,9 @@ class DecimalAPI:
     @staticmethod
     def __rpl_hash(data):
         khash = sha3.keccak_256()
-        print("khash", khash)
         dt = rlp.encode(data)
-        # print("dt", dt)
-        res = khash.update(data)
-        print("res", res)
-        return res.digest()
+        khash.update(dt)
+        return khash.digest()
 
     def __get_coin_price(self, name: str):
         coin = json.loads(self.get_coin(name))
