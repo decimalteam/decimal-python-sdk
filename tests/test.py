@@ -232,7 +232,7 @@ data = {
     "nonce": "34",
     "coin": "tdel",
     "amount": "100",
-    "password": "decimal-testnet-12-09-13-00",
+    "password": "123",
     "due_block": "999999999",
 }
 
