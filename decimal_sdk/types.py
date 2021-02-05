@@ -133,7 +133,7 @@ class StdSignMsg:
         private_key = wallet.get_private_key()
         pub_key = wallet.get_public_key()
         sig = self.__generate_signature(private_key)
-        self.signatures.append(Signature(signature=sig, pub_key=pub_key))
+        self.signatures = [Signature(signature=sig, pub_key=pub_key)]
 
     def __get_body_bytes(self):
         data = beautify_json(

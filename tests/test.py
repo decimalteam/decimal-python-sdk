@@ -225,29 +225,25 @@ api.send_tx(tx13, wallet)
 
 from decimal_sdk import Wallet
 from decimal_sdk import DecimalAPI
-
 api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
 wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
 data = {
     "nonce": "34",
     "coin": "tdel",
     "amount": "100",
-    "password": "decimal-testnet-12-09-13-00",
+    "password": "123",
     "due_block": "999999999",
 }
-
 api.issue_check(wallet, data)
 
 ###########################################################################################
 
 from decimal_sdk import Wallet
 from decimal_sdk import DecimalAPI
-
 api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
 wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
 data = {
     "check": "43Svif3CiZYwHHUr2UTmdVrNG5QjT1xSoqG7DLzdCmiZnKbb9v7b1eLSBccL2R48cpXEb5HhDdgSSmHewsYZJPmBXDLUQk6tpjfCtBDnaBDSEe3sivinUop32xXw1CaaRZthQDpP6emvBM75SRqzWG4uVuVhJjDgGDUhnQxwRDVrZixj2HHrPUG5EJ9KsBYPxY7gHFUMifjLgoMxtGuWeZ3SzP7wcDA6zEs6mvMLK14UbcDdkVs23Mu1t5un",
     "password": "123321",
 }
-
 api.redeem_check(data, wallet)

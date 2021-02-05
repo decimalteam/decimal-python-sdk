@@ -6,6 +6,11 @@ import base58
 import bech32
 import sha3
 
+from hashlib import sha256
+from ecdsa import SigningKey, SECP256k1
+from ecdsa.util import sigencode_string_canonize
+import bip_utils
+
 from Cryptodome.Hash import SHA256
 import ethereum.transactions as crypto
 
@@ -103,17 +108,21 @@ class DecimalAPI:
     def issue_check(self, wallet, data):
         new_data = {
             "coin": data["coin"].lower(),
-            "amount": get_amount_uni(int(data["amount"]), True),
+            "amount": int(get_amount_uni(int(data["amount"]), False)),
             "nonce": data["nonce"],
-            "due_block": data["due_block"],
+            "due_block": int(data["due_block"]),
             "passphrase": data["password"],
         }
 
         chain_id = self.get_chain_id()
 
+        print('chain_id ', chain_id)
+
         passphrase_hash = SHA256.new(str.encode(new_data["passphrase"])).digest()
-        passphrase_priv_key = passphrase_hash
-        print("Passphrase ", passphrase_priv_key)
+        pp = []
+        for b in passphrase_hash:
+            pp.append(b)
+        print("passphrase_hash ", pp)
 
         check_hash = self.__rpl_hash([
             chain_id,
@@ -123,22 +132,29 @@ class DecimalAPI:
             new_data["due_block"],
         ])
 
-        print(check_hash)
+        ch = []
+        for b in check_hash:
+            ch.append(b)
+        print("check_hash ", ch)
 
-        v,r,s = crypto.ecsign(check_hash, passphrase_priv_key)
+        passphrase_hash = sha256(str.encode(new_data["passphrase"])).digest()
+
+        sk = SigningKey.from_string(passphrase_hash, curve=SECP256k1)
+        lock_obj = sk.sign_digest_deterministic(check_hash, hashfunc=sha256, sigencode=sigencode_string_canonize)
+
+        bts2 = []
+        for b in lock_obj:
+            bts2.append(b)
         lock_signature = bytearray(65)
-        lock_obj = v+r+s
-        print(v,r,s)
-        # v = safe_ord(signature[64]) + 27
-        # r = big_endian_to_int(signature[0:32])
-        # s = big_endian_to_int(signature[32:64])
 
         i = 0
         while i<64:
             lock_signature[i] = lock_obj[i]
             i += 1
 
-        lock_signature[64] = lock_obj.recid #todo
+        v, r, s = crypto.ecsign(check_hash, passphrase_hash)
+        lock_signature[64] = v-27
+        print("lock_signature ", lock_signature)
 
         check_locked_hash = self.__rpl_hash([
             chain_id,
@@ -148,29 +164,69 @@ class DecimalAPI:
             new_data["due_block"],
             lock_signature
         ])
+        clh = []
+        for b in check_locked_hash:
+            clh.append(b)
+        print("check_locked_hash ", clh)
+        pk = []
+        for b in wallet.get_private_key():
+            pk.append(b)
+        print("pk ", pk)
+        sk = SigningKey.from_string(wallet.get_private_key(), curve=SECP256k1)
+        check_obj = sk.sign_digest_deterministic(check_locked_hash, hashfunc=sha256, sigencode=sigencode_string_canonize)
+        co = []
+        for b in check_obj:
+            co.append(b)
+        print("check_obj ", co)
+        v, r, s = crypto.ecsign(check_locked_hash, wallet.get_private_key())
 
-        check_obj = crypto.ecsign(check_locked_hash, wallet.get_private_key())
-        check = self.__rpl_hash([
+        lc = []
+        for b in lock_signature:
+            lc.append(b)
+
+        print("___________")
+        print([
             chain_id,
             new_data["coin"],
             new_data["amount"],
             new_data["nonce"],
             new_data["due_block"],
             lock_signature,
-            check_obj.recid + 27,
-            # check_obj.signature.slice(0, 32),
-            # check_obj.signature.slice(32, 64),
+            v,
+            check_obj[0:32],
+            check_obj[34:64]
+            # crypto.int_to_32bytearray(r),
+            # crypto.int_to_32bytearray(s),
         ])
+        print("___________")
+
+        check = rlp.encode([
+            chain_id,
+            new_data["coin"],
+            new_data["amount"],
+            new_data["nonce"],
+            new_data["due_block"],
+            lc,
+            v,
+            crypto.int_to_32bytearray(r),
+            crypto.int_to_32bytearray(s),
+        ])
+        chk = []
+        for b in check:
+            chk.append(b)
+        print("check", chk)
         return base58.b58encode(check)
 
     def redeem_check(self, data, wallet):
         passphrase_hash = SHA256.new(str.encode(data["password"])).digest()
-        passphrase_priv_key = passphrase_hash
 
-        words = bech32.decode(wallet.get_address())
-        sender_address_hash = self.__rpl_hash(bech32.encode(words))
+        words = bech32.bech32_decode(wallet.get_address())
+        print('words ', words)
 
-        proof_obj = crypto.ecsign(sender_address_hash, passphrase_priv_key)
+        sender_address_hash = self.__rpl_hash(bech32.bech32_hrp_expand())
+        sk = SigningKey.from_string(passphrase_hash, curve=SECP256k1)
+        proof_obj = sk.sign_digest_deterministic(sender_address_hash, hashfunc=sha256, sigencode=sigencode_string_canonize)
+
         proof_signature = bytearray(65)
 
         i = 0
@@ -178,7 +234,8 @@ class DecimalAPI:
             proof_signature[i] = proof_obj[i]
             i += 1
 
-        proof_signature[64] = proof_obj.recid
+        v, r, s = crypto.ecsign(sender_address_hash, passphrase_hash)
+        proof_signature[64] = v - 27
 
         proof = proof_signature
 
@@ -202,12 +259,9 @@ class DecimalAPI:
     @staticmethod
     def __rpl_hash(data):
         khash = sha3.keccak_256()
-        print("khash", khash)
         dt = rlp.encode(data)
-        # print("dt", dt)
-        res = khash.update(data)
-        print("res", res)
-        return res.digest()
+        khash.update(dt)
+        return khash.digest()
 
     def __get_coin_price(self, name: str):
         coin = json.loads(self.get_coin(name))
