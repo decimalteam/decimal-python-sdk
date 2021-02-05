@@ -95,13 +95,10 @@ class DecimalAPI:
         payload["tx"]["msg"] = [tx_data]
         payload["tx"]["memo"] = tx.memo
         payload["tx"]["signatures"] = []
-        print("Payload: ")
-        print(json.dumps(payload))
 
         for sig in tx.signatures:
             payload["tx"]["signatures"].append(sig.get_signature())
 
-        print(json.dumps(payload))
         return self.__request(url, 'post', json.dumps(payload))
 
     def issue_check(self, wallet, data):
@@ -115,13 +112,10 @@ class DecimalAPI:
 
         chain_id = self.get_chain_id()
 
-        print('chain_id ', chain_id)
-
         passphrase_hash = SHA256.new(str.encode(new_data["passphrase"])).digest()
         pp = []
         for b in passphrase_hash:
             pp.append(b)
-        print("passphrase_hash ", pp)
 
         check_hash = self.__rpl_hash([
             chain_id,
@@ -134,7 +128,6 @@ class DecimalAPI:
         ch = []
         for b in check_hash:
             ch.append(b)
-        print("check_hash ", ch)
 
         passphrase_hash = sha256(str.encode(new_data["passphrase"])).digest()
 
@@ -153,7 +146,6 @@ class DecimalAPI:
 
         v, r, s = crypto.ecsign(check_hash, passphrase_hash)
         lock_signature[64] = v-27
-        print("lock_signature ", lock_signature)
 
         check_locked_hash = self.__rpl_hash([
             chain_id,
@@ -166,17 +158,14 @@ class DecimalAPI:
         clh = []
         for b in check_locked_hash:
             clh.append(b)
-        print("check_locked_hash ", clh)
         pk = []
         for b in wallet.get_private_key():
             pk.append(b)
-        print("pk ", pk)
         sk = SigningKey.from_string(wallet.get_private_key(), curve=SECP256k1)
         check_obj = sk.sign_digest_deterministic(check_locked_hash, hashfunc=sha256, sigencode=sigencode_string_canonize)
         co = []
         for b in check_obj:
             co.append(b)
-        print("check_obj ", co)
         v, r, s = crypto.ecsign(check_locked_hash, wallet.get_private_key())
 
         rr = bytearray(32)
@@ -192,20 +181,6 @@ class DecimalAPI:
             ss[i] = crypto.int_to_32bytearray(s)[i]
             i += 1
 
-        print("___________")
-        print([
-            chain_id,
-            new_data["coin"],
-            new_data["amount"],
-            new_data["nonce"],
-            new_data["due_block"],
-            lock_signature,
-            v,
-            rr,
-            ss,
-        ])
-        print("___________")
-
         check = rlp.encode([
             chain_id,
             new_data["coin"],
@@ -220,7 +195,6 @@ class DecimalAPI:
         chk = []
         for b in check:
             chk.append(b)
-        print("check", chk)
         return base58.b58encode(check)
 
     def redeem_check(self, data, wallet):
@@ -229,7 +203,10 @@ class DecimalAPI:
         words = bech32.bech32_decode(wallet.get_address())
         print('words ', words)
 
-        sender_address_hash = self.__rpl_hash(bech32.bech32_hrp_expand())
+        from_words = bech32.bech32_polymod(words[1])
+        print(from_words)
+
+        sender_address_hash = self.__rpl_hash(from_words)
         sk = SigningKey.from_string(passphrase_hash, curve=SECP256k1)
         proof_obj = sk.sign_digest_deterministic(sender_address_hash, hashfunc=sha256, sigencode=sigencode_string_canonize)
 
@@ -244,6 +221,12 @@ class DecimalAPI:
         proof_signature[64] = v - 27
 
         proof = proof_signature
+
+        pr = []
+        for b in proof:
+            pr.append(b)
+
+        print("proof ", pr)
 
         return {
             "sender": wallet.get_address(),
