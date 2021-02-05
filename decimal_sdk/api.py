@@ -16,7 +16,8 @@ import ethereum.transactions as crypto
 from .types import FEES
 from .wallet import Wallet
 from .transactions import Transaction
-from .utils.helpers import get_amount_uni
+from .utils.helpers import get_amount_uni, from_words
+
 """
 That's a stub
 """
@@ -201,19 +202,28 @@ class DecimalAPI:
         passphrase_hash = SHA256.new(str.encode(data["password"])).digest()
 
         words = bech32.bech32_decode(wallet.get_address())
-        print('words ', words)
+        f_words = from_words(words[1])
 
-        from_words = bech32.bech32_polymod(words[1])
-        print(from_words)
+        f_w_buffer = bytearray()
+        for b in f_words:
+            f_w_buffer.append(b)
 
-        sender_address_hash = self.__rpl_hash(from_words)
+        sender_address_hash = self.__rpl_hash([f_w_buffer])
+        sah = []
+        for b in sender_address_hash:
+            sah.append(b)
+
         sk = SigningKey.from_string(passphrase_hash, curve=SECP256k1)
         proof_obj = sk.sign_digest_deterministic(sender_address_hash, hashfunc=sha256, sigencode=sigencode_string_canonize)
+
+        po = []
+        for b in proof_obj:
+            po.append(b)
 
         proof_signature = bytearray(65)
 
         i = 0
-        while i<64:
+        while i < 64:
             proof_signature[i] = proof_obj[i]
             i += 1
 
@@ -221,17 +231,12 @@ class DecimalAPI:
         proof_signature[64] = v - 27
 
         proof = proof_signature
-
-        pr = []
-        for b in proof:
-            pr.append(b)
-
-        print("proof ", pr)
+        proof = base64.b64encode(proof)
 
         return {
             "sender": wallet.get_address(),
             "check": data["check"],
-            "proof": proof
+            "proof": proof.decode('utf-8')
         }
 
     def get_chain_id(self):

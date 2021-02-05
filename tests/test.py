@@ -242,12 +242,10 @@ api.issue_check(wallet, data)
 
 from decimal_sdk import Wallet
 from decimal_sdk import DecimalAPI
-
 api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
 wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
 data = {
-    "check": "43Svif3CiZYwHHUr2UTmdVrNG5QjT1xSoqG7DLzdCmiZnKbb9v7b1eLSBccL2R48cpXEb5HhDdgSSmHewsYZJPmBXDLUQk6tpjfCtBDnaBDSEe3sivinUop32xXw1CaaRZthQDpP6emvBM75SRqzWG4uVuVhJjDgGDUhnQxwRDVrZixj2HHrPUG5EJ9KsBYPxY7gHFUMifjLgoMxtGuWeZ3SzP7wcDA6zEs6mvMLK14UbcDdkVs23Mu1t5un",
-    "password": "123321",
+    "check": 'ERp9FR24Vz19XGXddnESNVBhTKxh8Q38CyLC7JHm5wz2pJFZpzSavzRbUJNTFmvuopkiHCFQAWhZN9V4RvPYswuTsK1JHNjESrvLSWFUSvLXM35RrMacsREBKA42DqYBC4M1J6swMqpLP12g9WBYdJS4iuM3QEyi4HkjAqcZDZJ4ox8R36D7pJvT4UtovBHDfT5YEQRdafUDJYnUJyYeXtFphQnheWapAuXi92RnxeRbRneXoopGgq671Jsxa',
+    "password": "123",
 }
-
 api.redeem_check(data, wallet)

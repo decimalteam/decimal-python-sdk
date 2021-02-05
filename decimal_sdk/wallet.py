@@ -62,3 +62,4 @@ class Wallet:
         sha256_hash = SHA256.new(self._public_key_binary).digest()
         ripemd160_hash = RIPEMD160.new(sha256_hash).digest()
         return ripemd160_hash
+
