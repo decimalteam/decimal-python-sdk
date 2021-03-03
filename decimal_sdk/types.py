@@ -32,6 +32,7 @@ FEES = {
     SWAP_HTLT: 33000,
     SWAP_REDEEM: 0,
     SWAP_REFUND: 0,
+    COIN_UPDATE: 0,
 }
 
 

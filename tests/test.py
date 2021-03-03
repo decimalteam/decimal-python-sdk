@@ -41,9 +41,29 @@ crr = "10"
 initial_reserve = "1000000000000000000000"
 initial_volume = "500000"
 limit_volume = "1000000"
+identity = 'e353b89e0de0a78974f9ecaf033721ac'
 
 tx3 = CreateCoinTransaction(wallet.get_address(), title, symbol, crr, initial_volume,
-                            initial_reserve, limit_volume)
+                            initial_reserve, identity, limit_volume)
+api.send_tx(tx3, wallet)
+
+###########################################################################################
+
+from decimal_sdk import Wallet
+from decimal_sdk import DecimalAPI
+from decimal_sdk import UpdateCoinTransaction
+wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
+api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
+
+title = "My new coin"
+symbol = "MNC"
+crr = "10"
+initial_reserve = "1000000000000000000000"
+initial_volume = "500000"
+limit_volume = "1000000"
+identity = 'e353b89e0de0a78974f9ecaf033721ac'
+
+tx3 = UpdateCoinTransaction(wallet.get_address(), symbol, identity, limit_volume)
 api.send_tx(tx3, wallet)
 
 ###########################################################################################

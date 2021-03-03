@@ -70,9 +70,17 @@ class CreateCoinMsg(BaseMsg):
     crr: int
     initial_volume: str
     initial_reserve: str
+    identity: str
     limit_volume: str
 
-    def __init__(self, sender: str, title: str, symbol: str, crr: int, initial_volume: str, initial_reserve: str,
+    def __init__(self,
+                 sender: str,
+                 title: str,
+                 symbol: str,
+                 crr: int,
+                 initial_volume: str,
+                 initial_reserve: str,
+                 identity: str,
                  limit_volume: str):
         self.sender = sender
         self.title = title
@@ -80,13 +88,52 @@ class CreateCoinMsg(BaseMsg):
         self.crr = crr
         self.initial_volume = initial_volume
         self.initial_reserve = initial_reserve
+        self.identity = identity
         self.limit_volume = limit_volume
 
     def __dict__(self):
-        return {'type': self.type, 'value': {'sender': self.sender, 'title': self.title, 'symbol': self.symbol,
-                                             'constant_reserve_ratio': self.crr, 'initial_volume': self.initial_volume,
-                                             'initial_reserve': self.initial_reserve,
-                                             'limit_volume': self.limit_volume}}
+        return {
+            'type': self.type,
+            'value': {
+                'sender': self.sender,
+                'title': self.title,
+                'symbol': self.symbol,
+                'constant_reserve_ratio': self.crr,
+                'initial_volume': self.initial_volume,
+                'initial_reserve': self.initial_reserve,
+                'identity': self.identity,
+                'limit_volume': self.limit_volume
+                }
+            }
+
+
+class UpdateCoinMsg(BaseMsg):
+    type = COIN_UPDATE
+    sender: str
+    symbol: str
+    identity: str
+    limit_volume: str
+
+    def __init__(self,
+                 sender: str,
+                 symbol: str,
+                 identity: str,
+                 limit_volume: str):
+        self.sender = sender
+        self.symbol = symbol
+        self.identity = identity
+        self.limit_volume = limit_volume
+
+    def __dict__(self):
+        return {
+            'type': self.type,
+            'value': {
+                'sender': self.sender,
+                'symbol': self.symbol,
+                'identity': self.identity,
+                'limit_volume': self.limit_volume
+                }
+            }
 
 
 class SellAllCoinsMsg(BaseMsg):

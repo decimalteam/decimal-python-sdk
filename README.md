@@ -107,6 +107,24 @@ api.send_tx(tx3, wallet)
 
 ```
 
+## Update Coin Transaction
+```python
+
+from decimal_sdk import Wallet
+from decimal_sdk import DecimalAPI
+from decimal_sdk import UpdateCoinTransaction
+wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
+api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
+
+symbol = "MNC"
+identity = 'e353b89e0de0a78974f9ecaf033721ac'
+limit_volume = "1000000"
+
+tx3 = UpdateCoinTransaction(wallet.get_address(), symbol, identity, limit_volume)
+api.send_tx(tx3, wallet)
+
+```
+
 ## Sell All Coins Transaction
 ```python
 

@@ -2,7 +2,7 @@ from .api import DecimalAPI
 from .wallet import Wallet
 from .tx_types import *
 from .transactions import (Transaction,
-                           SendCoinTransaction, BuyCoinTransaction, CreateCoinTransaction, SellAllCoinsMsgTransaction,
+                           SendCoinTransaction, BuyCoinTransaction, CreateCoinTransaction, UpdateCoinTransaction, SellAllCoinsMsgTransaction,
                            DelegateTransaction, UnbondTransaction,
                            DeclareCandidateTransaction, EditCandidateTransaction,
                            DisableEnableValidatorTransaction,

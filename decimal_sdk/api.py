@@ -96,6 +96,7 @@ class DecimalAPI:
         payload["tx"]["msg"] = [tx_data]
         payload["tx"]["memo"] = tx.memo
         payload["tx"]["signatures"] = []
+        print(payload)
 
         for sig in tx.signatures:
             payload["tx"]["signatures"].append(sig.get_signature())
@@ -253,8 +254,7 @@ class DecimalAPI:
     @staticmethod
     def __rpl_hash(data):
         khash = sha3.keccak_256()
-        dt = rlp.encode(data)
-        khash.update(dt)
+        khash.update(rlp.encode(data))
         return khash.digest()
 
     def __get_coin_price(self, name: str):

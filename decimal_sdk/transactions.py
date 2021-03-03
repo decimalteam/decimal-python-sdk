@@ -2,7 +2,7 @@ from .wallet import Wallet
 from decimal_sdk.msgs.base import BaseMsg
 from decimal_sdk.types import Signature, StdSignMsg, SignMeta, Fee, Coin, Candidate
 from decimal_sdk.utils import prepare_number
-from decimal_sdk.msgs.msgs import (SendCoinMsg, BuyCoinMsg, CreateCoinMsg, SellAllCoinsMsg,
+from decimal_sdk.msgs.msgs import (SendCoinMsg, BuyCoinMsg, CreateCoinMsg, UpdateCoinMsg, SellAllCoinsMsg,
                                    DelegateMsg, UnboundMsg,
                                    DeclareCandidateMsg, EditCandidateMsg,
                                    DisableEnableValidatorMsg,
@@ -57,8 +57,16 @@ class BuyCoinTransaction(Transaction):
 class CreateCoinTransaction(Transaction):
     message: CreateCoinMsg
 
-    def __init__(self, sender, title, symbol, crr, initial_volume, initial_reserve, limit_volume, **kwargs):
-        self.message = CreateCoinMsg(sender, title, symbol, crr, initial_volume, initial_reserve, limit_volume)
+    def __init__(self, sender, title, symbol, crr, initial_volume, initial_reserve, identity, limit_volume, **kwargs):
+        self.message = CreateCoinMsg(sender, title, symbol, crr, initial_volume, initial_reserve, identity, limit_volume)
+        super().__init__(**kwargs)
+
+
+class UpdateCoinTransaction(Transaction):
+    message: UpdateCoinMsg
+
+    def __init__(self, sender, symbol, identity, limit_volume, **kwargs):
+        self.message = UpdateCoinMsg(sender, symbol, identity, limit_volume)
         super().__init__(**kwargs)
 
 
