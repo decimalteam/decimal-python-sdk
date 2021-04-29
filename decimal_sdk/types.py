@@ -91,6 +91,7 @@ class Fee:
         self.gas = gas
 
     def __dict__(self):
+        # return {'gas': self.gas, 'amount': [coin.__dict__() for coin in self.amount]}
         return {'gas': self.gas, 'amount': [coin.__dict__() for coin in self.amount]}
 
 

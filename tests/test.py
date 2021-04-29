@@ -41,9 +41,29 @@ crr = "10"
 initial_reserve = "1000000000000000000000"
 initial_volume = "500000"
 limit_volume = "1000000"
+identity = 'e353b89e0de0a78974f9ecaf033721ac'
 
 tx3 = CreateCoinTransaction(wallet.get_address(), title, symbol, crr, initial_volume,
-                            initial_reserve, limit_volume)
+                            initial_reserve, identity, limit_volume)
+api.send_tx(tx3, wallet)
+
+###########################################################################################
+
+from decimal_sdk import Wallet
+from decimal_sdk import DecimalAPI
+from decimal_sdk import UpdateCoinTransaction
+wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
+api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
+
+title = "My new coin"
+symbol = "MNC"
+crr = "10"
+initial_reserve = "1000000000000000000000"
+initial_volume = "500000"
+limit_volume = "1000000"
+identity = 'e353b89e0de0a78974f9ecaf033721ac'
+
+tx3 = UpdateCoinTransaction(wallet.get_address(), symbol, identity, limit_volume)
 api.send_tx(tx3, wallet)
 
 ###########################################################################################
@@ -55,9 +75,9 @@ from decimal_sdk import SellAllCoinsMsgTransaction
 wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
 api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
 
-coin_to_sell_name = "finaltest"
+coin_to_sell_name = "tdel"
 coin_to_sell_amount = "1"
-min_coin_to_buy_name = "tdel"
+min_coin_to_buy_name = "finaltest"
 min_coin_to_buy_amount = "1"
 
 tx4 = SellAllCoinsMsgTransaction(wallet.get_address(), coin_to_sell_name, coin_to_sell_amount,
@@ -225,6 +245,7 @@ api.send_tx(tx13, wallet)
 
 from decimal_sdk import Wallet
 from decimal_sdk import DecimalAPI
+
 api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
 wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
 data = {
@@ -234,16 +255,37 @@ data = {
     "password": "123",
     "due_block": "999999999",
 }
+
 api.issue_check(wallet, data)
 
 ###########################################################################################
 
 from decimal_sdk import Wallet
 from decimal_sdk import DecimalAPI
+
 api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
 wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
 data = {
-    "check": "43Svif3CiZYwHHUr2UTmdVrNG5QjT1xSoqG7DLzdCmiZnKbb9v7b1eLSBccL2R48cpXEb5HhDdgSSmHewsYZJPmBXDLUQk6tpjfCtBDnaBDSEe3sivinUop32xXw1CaaRZthQDpP6emvBM75SRqzWG4uVuVhJjDgGDUhnQxwRDVrZixj2HHrPUG5EJ9KsBYPxY7gHFUMifjLgoMxtGuWeZ3SzP7wcDA6zEs6mvMLK14UbcDdkVs23Mu1t5un",
-    "password": "123321",
+    "check": 'ERp9FR24Vz19XGXddnESNVBhTKxh8Q38CyLC7JHm5wz2pJFZpzSavzRbUJNTFmvuopkiHCFQAWhZN9V4RvPYswuTsK1JHNjESrvLSWFUSvLXM35RrMacsREBKA42DqYBC4M1J6swMqpLP12g9WBYdJS4iuM3QEyi4HkjAqcZDZJ4ox8R36D7pJvT4UtovBHDfT5YEQRdafUDJYnUJyYeXtFphQnheWapAuXi92RnxeRbRneXoopGgq671Jsxa',
+    "password": "123",
 }
 api.redeem_check(data, wallet)
+
+
+###########################################################################################
+
+from decimal_sdk import Wallet
+from decimal_sdk import DecimalAPI
+from decimal_sdk import NftMintTransaction
+wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
+api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
+
+denom = 'denom'
+token_uri = 'uri'
+id = 'token1123321'
+quantity = 2
+reserve = '1'
+allow_mint = True
+
+tx3 = NftMintTransaction(denom, id, wallet.get_address(), wallet.get_address(), quantity, reserve, token_uri, allow_mint)
+api.send_tx(tx3, wallet)

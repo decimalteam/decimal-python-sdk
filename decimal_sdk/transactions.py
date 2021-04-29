@@ -2,13 +2,15 @@ from .wallet import Wallet
 from decimal_sdk.msgs.base import BaseMsg
 from decimal_sdk.types import Signature, StdSignMsg, SignMeta, Fee, Coin, Candidate
 from decimal_sdk.utils import prepare_number
-from decimal_sdk.msgs.msgs import (SendCoinMsg, BuyCoinMsg, CreateCoinMsg, SellAllCoinsMsg,
+from decimal_sdk.msgs.msgs import (SendCoinMsg, BuyCoinMsg, CreateCoinMsg, UpdateCoinMsg, SellAllCoinsMsg,
                                    DelegateMsg, UnboundMsg,
                                    DeclareCandidateMsg, EditCandidateMsg,
                                    DisableEnableValidatorMsg,
                                    MultysigCreateMsg, MultysigCreateTXMsg, MultysigSignTXMsg, MultisendSend, MultisendCoinMsg,
                                    SubmitProposalMsg, VoteProposalMsg,
-                                   SwapHtltMsg, SwapRedeemMsg, SwapRefundMsg)
+                                   SwapHtltMsg, SwapRedeemMsg, SwapRefundMsg,
+                                   NftMintMsg, NftBurnMsg, NftEditMetadataMsg, NftTransferMsg
+                                   )
 
 
 class Transaction:
@@ -57,8 +59,16 @@ class BuyCoinTransaction(Transaction):
 class CreateCoinTransaction(Transaction):
     message: CreateCoinMsg
 
-    def __init__(self, sender, title, symbol, crr, initial_volume, initial_reserve, limit_volume, **kwargs):
-        self.message = CreateCoinMsg(sender, title, symbol, crr, initial_volume, initial_reserve, limit_volume)
+    def __init__(self, sender, title, symbol, crr, initial_volume, initial_reserve, identity, limit_volume, **kwargs):
+        self.message = CreateCoinMsg(sender, title, symbol, crr, initial_volume, initial_reserve, identity, limit_volume)
+        super().__init__(**kwargs)
+
+
+class UpdateCoinTransaction(Transaction):
+    message: UpdateCoinMsg
+
+    def __init__(self, sender, symbol, identity, limit_volume, **kwargs):
+        self.message = UpdateCoinMsg(sender, symbol, identity, limit_volume)
         super().__init__(**kwargs)
 
 
@@ -194,4 +204,37 @@ class SwapRefundTransaction(Transaction):
 
     def __init__(self, sender: str, hashed_secret: str, **kwargs):
         self.message = SwapRefundMsg(sender, hashed_secret)
+        super().__init__(**kwargs)
+
+
+class NftMintTransaction(Transaction):
+    message: NftMintMsg
+
+    def __init__(self, denom: str, id: str, sender: str, recipient: str, quantity: int, reserve: str, token_uri: str,
+                 allow_mint: bool, **kwargs):
+        self.message = NftMintMsg(denom, id, sender, recipient, quantity, reserve, token_uri, allow_mint)
+        super().__init__(**kwargs)
+
+
+class NftBurnTransaction(Transaction):
+    message: NftBurnMsg
+
+    def __init__(self, denom: str, id: str, sender: str, quantity: int, **kwargs):
+        self.message = NftBurnMsg(denom, id, sender, quantity)
+        super().__init__(**kwargs)
+
+
+class NftEditMetadataTransaction(Transaction):
+    message: NftEditMetadataMsg
+
+    def __init__(self, denom: str, id: str, sender: str, quantity: int, **kwargs):
+        self.message = NftEditMetadataMsg(denom, id, sender, quantity)
+        super().__init__(**kwargs)
+
+
+class NftTransferTransaction(Transaction):
+    message: NftTransferMsg
+
+    def __init__(self, denom: str, id: str, sender: str, quantity: int, **kwargs):
+        self.message = NftTransferMsg(denom, id, sender, quantity)
         super().__init__(**kwargs)
