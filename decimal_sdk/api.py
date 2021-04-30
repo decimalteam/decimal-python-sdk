@@ -76,7 +76,7 @@ class DecimalAPI:
         self.__validate_address(address)
         return self.__request(f'validator/{address}')
 
-    def send_tx(self, tx: Transaction, wallet: Wallet):
+    def send_tx(self, tx: Transaction, wallet: Wallet, options = {}):
         """Method to sign and send prepared transaction"""
         url = "rpc/txs"
 
@@ -88,15 +88,29 @@ class DecimalAPI:
         tx.signer.account_number = str(wallet.nonce["value"]["account_number"])
         tx.signer.sequence = str(wallet.nonce["value"]["sequence"])
         tx_data = tx.message.get_message()
-        tx_data["fee"] = fee_amount
         tx.fee = fee_amount
         tx.sign(wallet)
+        denom = "del"
+        if "denom" in options:
+            denom = options["denom"]
+
+        message = tx.memo
+        if "message" in options:
+            message = options["message"]
+        fee_data = {
+            "amount": [
+                {
+                    "denom": denom,
+                    "amount": "9000000000000000000"
+                }
+            ],
+            "gas": "0"
+        }
         payload = {"tx": {}, "mode": "sync"}
         payload["tx"]["msg"] = [tx_data]
-        payload["tx"]["memo"] = tx.memo
+        payload["tx"]["fee"] = fee_data
+        payload["tx"]["memo"] = message
         payload["tx"]["signatures"] = []
-        print("Payload: ")
-        print(json.dumps(payload))
 
         for sig in tx.signatures:
             payload["tx"]["signatures"].append(sig.get_signature())

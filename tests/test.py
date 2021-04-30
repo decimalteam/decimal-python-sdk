@@ -280,9 +280,9 @@ from decimal_sdk import NftMintTransaction
 wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
 api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
 
-denom = 'denom'
+denom = 'Portwein'
 token_uri = 'uri'
-id = 'token1123321'
+id = '777'
 quantity = 2
 reserve = 1
 allow_mint = True
