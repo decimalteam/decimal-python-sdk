@@ -673,4 +673,5 @@ class DecimalAPI:
             response = requests.get(url)
         else:
             response = requests.post(url, payload)
+
         return response.text
