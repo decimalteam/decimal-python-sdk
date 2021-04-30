@@ -210,7 +210,7 @@ class SwapRefundTransaction(Transaction):
 class NftMintTransaction(Transaction):
     message: NftMintMsg
 
-    def __init__(self, denom: str, id: str, sender: str, recipient: str, quantity: int, reserve: str, token_uri: str,
+    def __init__(self, denom: str, id: str, sender: str, recipient: str, quantity: int, reserve: int, token_uri: str,
                  allow_mint: bool, **kwargs):
         self.message = NftMintMsg(denom, id, sender, recipient, quantity, reserve, token_uri, allow_mint)
         super().__init__(**kwargs)
@@ -227,8 +227,8 @@ class NftBurnTransaction(Transaction):
 class NftEditMetadataTransaction(Transaction):
     message: NftEditMetadataMsg
 
-    def __init__(self, denom: str, id: str, sender: str, quantity: int, **kwargs):
-        self.message = NftEditMetadataMsg(denom, id, sender, quantity)
+    def __init__(self, denom: str, id: str, sender: str, token_uri: str, **kwargs):
+        self.message = NftEditMetadataMsg(denom, id, sender, token_uri)
         super().__init__(**kwargs)
 
 

@@ -434,8 +434,6 @@ class DecimalAPI:
         payload["tx"]["msg"] = [tx_data]
         payload["tx"]["memo"] = tx.memo
         payload["tx"]["signatures"] = []
-        print("Payload: ")
-        print(json.dumps(payload))
 
         for sig in tx.signatures:
             payload["tx"]["signatures"].append(sig.get_signature())
@@ -530,20 +528,6 @@ class DecimalAPI:
         while i < 32:
             ss[i] = crypto.int_to_32bytearray(s)[i]
             i += 1
-
-        print("___________")
-        print([
-            chain_id,
-            new_data["coin"],
-            new_data["amount"],
-            new_data["nonce"],
-            new_data["due_block"],
-            lock_signature,
-            v,
-            rr,
-            ss,
-        ])
-        print("___________")
 
         check = rlp.encode([
             chain_id,

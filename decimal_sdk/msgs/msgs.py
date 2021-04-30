@@ -525,14 +525,14 @@ class NftMintMsg(BaseMsg):
     token_uri: str
     allow_mint: bool
 
-    def __init__(self, denom: str, id: str, sender: str, recipient: str, quantity: int, reserve: str, token_uri: str,
+    def __init__(self, denom: str, id: str, sender: str, recipient: str, quantity: int, reserve: int, token_uri: str,
                  allow_mint: bool):
         self.denom = denom
         self.id = id
         self.sender = sender
         self.recipient = recipient
-        self.quantity = str(get_amount_uni(quantity))
-        self.reserve = reserve
+        self.quantity = str(quantity)
+        self.reserve = str(get_amount_uni(reserve))
         self.token_uri = token_uri
         self.allow_mint = allow_mint
 

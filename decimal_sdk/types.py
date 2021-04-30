@@ -18,6 +18,7 @@ FEES = {
     COIN_MULTISEND: 8,
     COIN_SELL_ALL: 100,
     COIN_REDEEM_CHECK: 30,
+    COIN_UPDATE: 0,
     VALIDATOR_CANDIDATE: 10000,
     VALIDATOR_DELEGATE: 200,
     VALIDATOR_SET_ONLINE: 100,
@@ -32,6 +33,10 @@ FEES = {
     SWAP_HTLT: 33000,
     SWAP_REDEEM: 0,
     SWAP_REFUND: 0,
+    NFT_MINT: 0,
+    NFT_BURN: 0,
+    NFT_EDIT_METADATA: 0,
+    NFT_TRANSFER: 0
 }
 
 
@@ -91,7 +96,6 @@ class Fee:
         self.gas = gas
 
     def __dict__(self):
-        # return {'gas': self.gas, 'amount': [coin.__dict__() for coin in self.amount]}
         return {'gas': self.gas, 'amount': [coin.__dict__() for coin in self.amount]}
 
 
