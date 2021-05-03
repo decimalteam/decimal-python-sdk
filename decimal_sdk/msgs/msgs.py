@@ -1,6 +1,7 @@
 from decimal_sdk.msgs.base import BaseMsg
 from decimal_sdk.tx_types import *
 from decimal_sdk.types import Coin, Candidate, Signature
+from ..utils.helpers import get_amount_uni
 
 
 class SendCoinMsg(BaseMsg):
@@ -15,11 +16,14 @@ class SendCoinMsg(BaseMsg):
         self.coin = coin
 
     def __dict__(self):
-        return {'type': self.type,
-                'value': {'sender': self.sender,
-                          'receiver': self.receiver,
-                          'coin': self.coin.__dict__()}
-                }
+        return {
+            'type': self.type,
+            'value': {
+                'sender': self.sender,
+                'receiver': self.receiver,
+                'coin': self.coin.__dict__()
+            }
+        }
 
 
 class BuyCoinMsg(BaseMsg):
@@ -34,12 +38,14 @@ class BuyCoinMsg(BaseMsg):
         self.max_coin_to_sell = max_coin_to_sell
 
     def __dict__(self):
-        return {'type': self.type,
-                'value': {
-                    'sender': self.sender,
-                    'coin_to_buy': self.coin_to_buy.__dict__(),
-                    'max_coin_to_sell': self.max_coin_to_sell.__dict__()}
-                }
+        return {
+            'type': self.type,
+            'value': {
+                'sender': self.sender,
+                'coin_to_buy': self.coin_to_buy.__dict__(),
+                'max_coin_to_sell': self.max_coin_to_sell.__dict__()
+            }
+        }
 
 
 class SellCoinMsg(BaseMsg):
@@ -169,12 +175,14 @@ class DelegateMsg(BaseMsg):
         self.coin = coin
 
     def __dict__(self):
-        return {"type": self.type,
-                "value": {
-                    "delegator_address": self.delegator_address,
-                    "validator_address": self.validator_address,
-                    "coin": self.coin.__dict__()
-                }}
+        return {
+            "type": self.type,
+            "value": {
+                "delegator_address": self.delegator_address,
+                "validator_address": self.validator_address,
+                "coin": self.coin.__dict__()
+            }
+        }
 
 
 class UnboundMsg(BaseMsg):
@@ -189,12 +197,14 @@ class UnboundMsg(BaseMsg):
         self.coin = coin
 
     def __dict__(self):
-        return {"type": self.type,
-                "value": {
-                    "delegator_address": self.delegator_address,
-                    "validator_address": self.validator_address,
-                    "coin": self.coin.__dict__()
-                }}
+        return {
+            "type": self.type,
+            "value": {
+                "delegator_address": self.delegator_address,
+                "validator_address": self.validator_address,
+                "coin": self.coin.__dict__()
+            }
+        }
 
 
 class DeclareCandidateMsg(BaseMsg):
@@ -216,15 +226,17 @@ class DeclareCandidateMsg(BaseMsg):
         self.description = description
 
     def __dict__(self):
-        return {"type": self.type,
-                "value": {
-                    "commission": str(self.commission),
-                    "validator_addr": self.validator_addr,
-                    "reward_addr": self.reward_addr,
+        return {
+            "type": self.type,
+            "value": {
+                "commission": str(self.commission),
+                "validator_addr": self.validator_addr,
+                "reward_addr": self.reward_addr,
                 "pub_key": self.pub_key,
                 "stake": self.stake.__dict__(),
                 "description": self.description.__dict__()
-                }}
+            }
+        }
 
 
 class EditCandidateMsg(BaseMsg):
@@ -239,11 +251,14 @@ class EditCandidateMsg(BaseMsg):
         self.description = description
 
     def __dict__(self):
-        return {"type": self.type,
-                "value": { "validator_address": self.validator_address,
-                           "reward_address": self.reward_address,
-                           "description": self.description.__dict__()
-                }}
+        return {
+            "type": self.type,
+            "value": {
+                "validator_address": self.validator_address,
+                "reward_address": self.reward_address,
+                "description": self.description.__dict__()
+            }
+        }
 
 
 class DisableEnableValidatorMsg(BaseMsg):
@@ -260,10 +275,12 @@ class DisableEnableValidatorMsg(BaseMsg):
         self.validator_address = validator_address
 
     def __dict__(self):
-        return {"type": self.type,
-                "value": {
-                    "validator_address": self.validator_address
-                }}
+        return {
+            "type": self.type,
+            "value": {
+                "validator_address": self.validator_address
+            }
+        }
 
 
 class MultysigCreateMsg(BaseMsg):
@@ -280,13 +297,15 @@ class MultysigCreateMsg(BaseMsg):
         self.threshold = threshold
 
     def __dict__(self):
-        return {"type": self.type,
-                "value": {
-                    "sender": self.sender,
-                    "owners": self.owners,
-                    "weights": self.weights,
-                    "threshold": self.threshold
-                }}
+        return {
+            "type": self.type,
+            "value": {
+                "sender": self.sender,
+                "owners": self.owners,
+                "weights": self.weights,
+                "threshold": self.threshold
+            }
+        }
 
 
 class MultysigCreateTXMsg(BaseMsg):
@@ -303,13 +322,15 @@ class MultysigCreateTXMsg(BaseMsg):
         self.coins = coins
 
     def __dict__(self):
-        return {"type": self.type,
-                "value": {
-                    "sender": self.sender,
-                    "wallet": self.wallet,
-                    "receiver": self.receiver,
-                    "coins": self.coins.__dict__()
-                }}
+        return {
+            "type": self.type,
+            "value": {
+                "sender": self.sender,
+                "wallet": self.wallet,
+                "receiver": self.receiver,
+                "coins": self.coins.__dict__()
+            }
+        }
 
 
 class MultysigSignTXMsg(BaseMsg):
@@ -323,11 +344,13 @@ class MultysigSignTXMsg(BaseMsg):
         self.tx_id = tx_id
 
     def __dict__(self):
-        return {"type": self.type,
-                "value": {
-                    "sender": self.sender,
-                    "tx_id": self.tx_id
-                }}
+        return {
+            "type": self.type,
+            "value": {
+                "sender": self.sender,
+                "tx_id": self.tx_id
+            }
+        }
 
 
 class MultisendSend:
@@ -339,7 +362,10 @@ class MultisendSend:
         self.coin = coin
 
     def __dict__(self):
-        return {"coin": self.coin.__dict__(), "receiver": self.receiver}
+        return {
+            "coin": self.coin.__dict__(),
+            "receiver": self.receiver
+        }
 
 
 class MultisendCoinMsg(BaseMsg):
@@ -363,11 +389,13 @@ class MultisendCoinMsg(BaseMsg):
                 }
             })
 
-        return {'type': self.type,
-                'value': {
-                    'sender': self.sender,
-                    'sends': snds
-                }}
+        return {
+            'type': self.type,
+            'value': {
+                'sender': self.sender,
+                'sends': snds
+            }
+        }
 
 
 class SubmitProposalMsg(BaseMsg):
@@ -384,13 +412,15 @@ class SubmitProposalMsg(BaseMsg):
         self.voting_end_block = voting_end_block
 
     def __dict__(self):
-        return {"type": self.type,
-                "value": {
-                    "content": self.content,
-                    "proposer": self.proposer,
-                    "voting_start_block": self.voting_start_block,
-                    "voting_end_block": self.voting_end_block,
-                }}
+        return {
+            "type": self.type,
+            "value": {
+                "content": self.content,
+                "proposer": self.proposer,
+                "voting_start_block": self.voting_start_block,
+                "voting_end_block": self.voting_end_block,
+            }
+        }
 
 
 class VoteProposalMsg(BaseMsg):
@@ -405,12 +435,14 @@ class VoteProposalMsg(BaseMsg):
         self.option = option
 
     def __dict__(self):
-        return {"type": self.type,
-                "value": {
-                    "proposal_id": self.proposal_id,
-                    "voter": self.voter,
-                    "option": self.option
-                }}
+        return {
+            "type": self.type,
+            "value": {
+                "proposal_id": self.proposal_id,
+                "voter": self.voter,
+                "option": self.option
+            }
+        }
 
 
 class SwapHtltMsg(BaseMsg):
@@ -432,14 +464,16 @@ class SwapHtltMsg(BaseMsg):
             self.transfer_type = "1"
 
     def __dict__(self):
-        return {"type": self.type,
-                "value": {
-                    "transfer_type": self.transfer_type,
-                    "from": self.sender,
-                    "recipient": self.recipient,
-                    "hashed_secret": self.hashed_secret,
-                    "amount": self.amount.__dict__()
-                }}
+        return {
+            "type": self.type,
+            "value": {
+                "transfer_type": self.transfer_type,
+                "from": self.sender,
+                "recipient": self.recipient,
+                "hashed_secret": self.hashed_secret,
+                "amount": self.amount.__dict__()
+            }
+        }
 
 
 class SwapRedeemMsg(BaseMsg):
@@ -452,11 +486,13 @@ class SwapRedeemMsg(BaseMsg):
         self.sender = sender
 
     def __dict__(self):
-        return {"type": self.type,
-                "value": {
-                    "from": {self.sender},
-                    "secret": {self.secret}
-                }}
+        return {
+            "type": self.type,
+            "value": {
+                "from": {self.sender},
+                "secret": {self.secret}
+            }
+        }
 
 
 class SwapRefundMsg(BaseMsg):
@@ -469,7 +505,128 @@ class SwapRefundMsg(BaseMsg):
         self.hashed_secret = hashed_secret
 
     def __dict__(self):
-        return {"type": self.type, "value": {
-            "from": self.sender,
-            "hashed_secret": self.hashed_secret
-        }}
+        return {
+            "type": self.type,
+            "value": {
+                "from": self.sender,
+                "hashed_secret": self.hashed_secret
+            }
+        }
+
+
+class NftMintMsg(BaseMsg):
+    type = NFT_MINT
+    denom: str
+    id: str
+    sender: str
+    recipient: str
+    quantity: str
+    reserve: str
+    token_uri: str
+    allow_mint: bool
+
+    def __init__(self, denom: str, id: str, sender: str, recipient: str, quantity: int, reserve: int, token_uri: str,
+                 allow_mint: bool):
+        self.denom = denom
+        self.id = id
+        self.sender = sender
+        self.recipient = recipient
+        self.quantity = str(quantity)
+        self.reserve = str(get_amount_uni(reserve))
+        self.token_uri = token_uri
+        self.allow_mint = allow_mint
+
+    def __dict__(self):
+        return {
+            "type": self.type,
+            "value": {
+                "denom": self.denom,
+                "id": self.id,
+                "sender": self.sender,
+                "recipient": self.recipient,
+                "quantity": self.quantity,
+                "reserve": self.reserve,
+                "token_uri": self.token_uri,
+                "allow_mint": self.allow_mint,
+            }
+        }
+
+
+class NftBurnMsg(BaseMsg):
+    type = NFT_BURN
+    denom: str
+    id: str
+    sender: str
+    quantity: str
+
+    def __init__(self, denom: str, id: str, sender: str, quantity: int):
+        self.denom = denom
+        self.id = id
+        self.sender = sender
+        self.quantity = str(get_amount_uni(quantity))
+
+    def __dict__(self):
+        return {
+            "type": self.type,
+            "value": {
+                "denom": self.denom,
+                "id": self.id,
+                "sender": self.sender,
+                "quantity": self.quantity,
+            }
+        }
+
+
+class NftEditMetadataMsg(BaseMsg):
+    type = NFT_EDIT_METADATA
+    denom: str
+    id: str
+    sender: str
+    token_uri: str
+
+    def __init__(self, denom: str, id: str, sender: str, token_uri: str):
+        self.denom = denom
+        self.id = id
+        self.sender = sender
+        self.token_uri = token_uri
+
+    def __dict__(self):
+        return {
+            "type": self.type,
+            "value": {
+                "denom": self.denom,
+                "id": self.id,
+                "sender": self.sender,
+                "token_uri": self.token_uri,
+            }
+        }
+
+
+class NftTransferMsg(BaseMsg):
+    type = NFT_TRANSFER
+    denom: str
+    id: str
+    sender: str
+    recipient: str
+    quantity: str
+
+    def __init__(self, denom: str, id: str, sender: str, recipient: str, quantity: int):
+        self.denom = denom
+        self.id = id
+        self.sender = sender
+        self.recipient = recipient
+        self.quantity = str(get_amount_uni(quantity))
+
+    def __dict__(self):
+        return {
+            "type": self.type,
+            "value": {
+                "denom": self.denom,
+                "id": self.id,
+                "sender": self.sender,
+                "recipient": self.recipient,
+                "quantity": self.quantity,
+            }
+        }
+
+

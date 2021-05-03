@@ -8,7 +8,9 @@ from decimal_sdk.msgs.msgs import (SendCoinMsg, BuyCoinMsg, CreateCoinMsg, Updat
                                    DisableEnableValidatorMsg,
                                    MultysigCreateMsg, MultysigCreateTXMsg, MultysigSignTXMsg, MultisendSend, MultisendCoinMsg,
                                    SubmitProposalMsg, VoteProposalMsg,
-                                   SwapHtltMsg, SwapRedeemMsg, SwapRefundMsg)
+                                   SwapHtltMsg, SwapRedeemMsg, SwapRefundMsg,
+                                   NftMintMsg, NftBurnMsg, NftEditMetadataMsg, NftTransferMsg
+                                   )
 
 
 class Transaction:
@@ -202,4 +204,37 @@ class SwapRefundTransaction(Transaction):
 
     def __init__(self, sender: str, hashed_secret: str, **kwargs):
         self.message = SwapRefundMsg(sender, hashed_secret)
+        super().__init__(**kwargs)
+
+
+class NftMintTransaction(Transaction):
+    message: NftMintMsg
+
+    def __init__(self, denom: str, id: str, sender: str, recipient: str, quantity: int, reserve: int, token_uri: str,
+                 allow_mint: bool, **kwargs):
+        self.message = NftMintMsg(denom, id, sender, recipient, quantity, reserve, token_uri, allow_mint)
+        super().__init__(**kwargs)
+
+
+class NftBurnTransaction(Transaction):
+    message: NftBurnMsg
+
+    def __init__(self, denom: str, id: str, sender: str, quantity: int, **kwargs):
+        self.message = NftBurnMsg(denom, id, sender, quantity)
+        super().__init__(**kwargs)
+
+
+class NftEditMetadataTransaction(Transaction):
+    message: NftEditMetadataMsg
+
+    def __init__(self, denom: str, id: str, sender: str, token_uri: str, **kwargs):
+        self.message = NftEditMetadataMsg(denom, id, sender, token_uri)
+        super().__init__(**kwargs)
+
+
+class NftTransferTransaction(Transaction):
+    message: NftTransferMsg
+
+    def __init__(self, denom: str, id: str, sender: str, quantity: int, **kwargs):
+        self.message = NftTransferMsg(denom, id, sender, quantity)
         super().__init__(**kwargs)

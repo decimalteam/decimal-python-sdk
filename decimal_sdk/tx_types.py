@@ -25,3 +25,8 @@ PROPOSAL_VOTE = 'cosmos-sdk/MsgVote'
 SWAP_HTLT = 'swap/msg_htlt'
 SWAP_REDEEM = 'swap/msg_redeem'
 SWAP_REFUND = 'swap/msg_refund'
+
+NFT_MINT = 'nft/msg_mint'
+NFT_BURN = 'nft/msg_burn'
+NFT_EDIT_METADATA = 'nft/msg_edit_metadata'
+NFT_TRANSFER = 'nft/msg_transfer'
