@@ -77,12 +77,16 @@ class DecimalAPI:
         self.__validate_address(address)
         return self.__request(f'validator/{address}')
 
-    def send_tx(self, tx: Transaction, wallet: Wallet):
+    def send_tx(self, tx: Transaction, wallet: Wallet, options={}):
         """Method to sign and send prepared transaction"""
         url = "rpc/txs"
 
-        commission = self.__get_comission(tx, "del", FEES["coin/send_coin"])
-        fee_amount = {"denom": "del", "value": commission["base"]}
+        denom = "tdel"
+        if "denom" in options:
+            denom = options["denom"]
+
+        commission = self.__get_comission(tx, denom, FEES[tx.message.type])
+        fee_amount = {"denom": denom, "amount": get_amount_uni(commission["base"])}
 
         wallet.nonce = json.loads(self.get_nonce(wallet.get_address()))["result"]
         tx.signer.chain_id = self.get_chain_id()
@@ -96,11 +100,10 @@ class DecimalAPI:
         payload["tx"]["msg"] = [tx_data]
         payload["tx"]["memo"] = tx.memo
         payload["tx"]["signatures"] = []
-        print(payload)
 
         for sig in tx.signatures:
             payload["tx"]["signatures"].append(sig.get_signature())
-
+        print(payload)
         return self.__request(url, 'post', json.dumps(payload))
 
     def issue_check(self, wallet, data):

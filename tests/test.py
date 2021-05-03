@@ -2,14 +2,14 @@ from decimal_sdk import Wallet
 from decimal_sdk import DecimalAPI
 from decimal_sdk import SendCoinTransaction
 wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
-api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
+api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
 
 receiver = "dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g"
-coin_name = "tdel"
+coin_name = "del"
 coin_amount = 1
 
 tx = SendCoinTransaction(wallet.get_address(), receiver, coin_name, coin_amount)
-api.send_tx(tx, wallet)
+api.send_tx(tx, wallet, {"denom": "del"})
 
 ###########################################################################################
 
