@@ -2,14 +2,14 @@ from decimal_sdk import Wallet
 from decimal_sdk import DecimalAPI
 from decimal_sdk import SendCoinTransaction
 wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
-api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
+api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
 
 receiver = "dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g"
-coin_name = "del"
+coin_name = "tdel"
 coin_amount = 1
 
 tx = SendCoinTransaction(wallet.get_address(), receiver, coin_name, coin_amount)
-api.send_tx(tx, wallet, {"denom": "del"})
+api.send_tx(tx, wallet, {"denom": "tdel"})
 
 ###########################################################################################
 
@@ -269,3 +269,21 @@ data = {
     "password": "123",
 }
 api.redeem_check(data, wallet)
+
+###########################################################################################
+
+from decimal_sdk import Wallet
+from decimal_sdk import DecimalAPI
+from decimal_sdk import NftMintTransaction
+wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
+api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
+
+denom = 'Portwein'
+token_uri = 'uri'
+id = '777'
+quantity = 2
+reserve = 1
+allow_mint = True
+
+tx3 = NftMintTransaction(denom, id, wallet.get_address(), wallet.get_address(), quantity, reserve, token_uri, allow_mint)
+api.send_tx(tx3, wallet)

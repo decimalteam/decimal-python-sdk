@@ -33,6 +33,10 @@ FEES = {
     SWAP_REDEEM: 0,
     SWAP_REFUND: 0,
     COIN_UPDATE: 0,
+    NFT_MINT: 0,
+    NFT_BURN: 0,
+    NFT_EDIT_METADATA: 0,
+    NFT_TRANSFER: 0
 }
 
 
