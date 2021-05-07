@@ -36,7 +36,9 @@ FEES = {
     NFT_MINT: 0,
     NFT_BURN: 0,
     NFT_EDIT_METADATA: 0,
-    NFT_TRANSFER: 0
+    NFT_TRANSFER: 0,
+    NFT_DELEGATE: 0,
+    NFT_UNBOND: 0,
 }
 
 

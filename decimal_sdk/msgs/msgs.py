@@ -563,7 +563,7 @@ class NftBurnMsg(BaseMsg):
         self.denom = denom
         self.id = id
         self.sender = sender
-        self.quantity = str(get_amount_uni(quantity))
+        self.quantity = str(quantity)
 
     def __dict__(self):
         return {
@@ -615,7 +615,7 @@ class NftTransferMsg(BaseMsg):
         self.id = id
         self.sender = sender
         self.recipient = recipient
-        self.quantity = str(get_amount_uni(quantity))
+        self.quantity = str(quantity)
 
     def __dict__(self):
         return {
@@ -629,4 +629,59 @@ class NftTransferMsg(BaseMsg):
             }
         }
 
+
+class NftDelegateMsg(BaseMsg):
+    type = NFT_DELEGATE
+    denom: str
+    id: str
+    delegator_address: str
+    validator_address: str
+    quantity: str
+
+    def __init__(self, denom: str, id: str, delegator_address: str, validator_address: str, quantity: int):
+        self.denom = denom
+        self.id = id
+        self.delegator_address = delegator_address
+        self.validator_address = validator_address
+        self.quantity = str(quantity)
+
+    def __dict__(self):
+        return {
+            "type": self.type,
+            "value": {
+                "denom": self.denom,
+                "id": self.id,
+                "delegator_address": self.delegator_address,
+                "validator_address": self.validator_address,
+                "quantity": self.quantity,
+            }
+        }
+
+
+class NftUnboundMsg(BaseMsg):
+    type = NFT_UNBOND
+    denom: str
+    id: str
+    delegator_address: str
+    validator_address: str
+    quantity: str
+
+    def __init__(self, denom: str, id: str, delegator_address: str, validator_address: str, quantity: int):
+        self.denom = denom
+        self.id = id
+        self.delegator_address = delegator_address
+        self.validator_address = validator_address
+        self.quantity = str(quantity)
+
+    def __dict__(self):
+        return {
+            "type": self.type,
+            "value": {
+                "denom": self.denom,
+                "id": self.id,
+                "delegator_address": self.delegator_address,
+                "validator_address": self.validator_address,
+                "quantity": self.quantity,
+            }
+        }
 

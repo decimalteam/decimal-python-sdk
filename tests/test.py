@@ -275,15 +275,92 @@ api.redeem_check(data, wallet)
 from decimal_sdk import Wallet
 from decimal_sdk import DecimalAPI
 from decimal_sdk import NftMintTransaction
-wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
+wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
 api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
 
-denom = 'Portwein'
+denom = 'Portwein1'
 token_uri = 'uri'
-id = '777'
+id = '7777'
 quantity = 2
 reserve = 1
 allow_mint = True
 
 tx3 = NftMintTransaction(denom, id, wallet.get_address(), wallet.get_address(), quantity, reserve, token_uri, allow_mint)
+api.send_tx(tx3, wallet)
+
+###########################################################################################
+
+from decimal_sdk import Wallet
+from decimal_sdk import DecimalAPI
+from decimal_sdk import NftBurnTransaction
+wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
+api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
+
+denom = 'Portwein1'
+id = '7777'
+quantity = 1
+
+tx3 = NftBurnTransaction(denom, id, wallet.get_address(), quantity)
+api.send_tx(tx3, wallet)
+
+###########################################################################################
+
+from decimal_sdk import Wallet
+from decimal_sdk import DecimalAPI
+from decimal_sdk import NftEditMetadataTransaction
+wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
+api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
+
+denom = 'Portwein1'
+id = '7777'
+token_uri = 'uri21'
+
+tx3 = NftEditMetadataTransaction(denom, id, wallet.get_address(), token_uri)
+api.send_tx(tx3, wallet)
+
+###########################################################################################
+
+from decimal_sdk import Wallet
+from decimal_sdk import DecimalAPI
+from decimal_sdk import NftTransferTransaction
+wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
+api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
+
+denom = 'Portwein1'
+id = '7777'
+quantity = 1
+
+tx3 = NftTransferTransaction(denom, id, wallet.get_address(), wallet.get_address(), quantity)
+api.send_tx(tx3, wallet)
+
+###########################################################################################
+
+from decimal_sdk import Wallet
+from decimal_sdk import DecimalAPI
+from decimal_sdk import NftDelegateTransaction
+wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
+api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
+
+denom = 'Portwein1'
+id = '7777'
+validator_address = 'dxvaloper1mvqrrrlcd0gdt256jxg7n68e4neppu5tk872z3'
+quantity = 1
+
+tx3 = NftDelegateTransaction(denom, id, wallet.get_address(), validator_address, quantity)
+api.send_tx(tx3, wallet)
+
+###########################################################################################
+
+from decimal_sdk import Wallet
+from decimal_sdk import DecimalAPI
+from decimal_sdk import NftUnboundTransaction
+wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
+api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
+
+denom = 'Portwein1'
+id = '7777'
+validator_address = 'dxvaloper1mvqrrrlcd0gdt256jxg7n68e4neppu5tk872z3'
+quantity = 1
+
+tx3 = NftUnboundTransaction(denom, id, wallet.get_address(), validator_address, quantity)
 api.send_tx(tx3, wallet)
