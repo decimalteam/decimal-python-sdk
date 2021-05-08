@@ -1,6 +1,6 @@
 from .wallet import Wallet
 from decimal_sdk.msgs.base import BaseMsg
-from decimal_sdk.types import Signature, StdSignMsg, SignMeta, Fee, Coin, Candidate
+from decimal_sdk.types import StdSignMsg, SignMeta, Fee, Coin, Candidate
 from decimal_sdk.utils import prepare_number
 from decimal_sdk.msgs.msgs import (SendCoinMsg, BuyCoinMsg, CreateCoinMsg, UpdateCoinMsg, SellAllCoinsMsg,
                                    DelegateMsg, UnboundMsg,
@@ -9,7 +9,7 @@ from decimal_sdk.msgs.msgs import (SendCoinMsg, BuyCoinMsg, CreateCoinMsg, Updat
                                    MultysigCreateMsg, MultysigCreateTXMsg, MultysigSignTXMsg, MultisendSend, MultisendCoinMsg,
                                    SubmitProposalMsg, VoteProposalMsg,
                                    SwapHtltMsg, SwapRedeemMsg, SwapRefundMsg,
-                                   NftMintMsg, NftBurnMsg, NftEditMetadataMsg, NftTransferMsg
+                                   NftMintMsg, NftBurnMsg, NftEditMetadataMsg, NftTransferMsg, NftDelegateMsg, NftUnboundMsg
                                    )
 
 
@@ -235,6 +235,22 @@ class NftEditMetadataTransaction(Transaction):
 class NftTransferTransaction(Transaction):
     message: NftTransferMsg
 
-    def __init__(self, denom: str, id: str, sender: str, quantity: int, **kwargs):
-        self.message = NftTransferMsg(denom, id, sender, quantity)
+    def __init__(self, denom: str, id: str, sender: str, recipient: str, quantity: int, **kwargs):
+        self.message = NftTransferMsg(denom, id, sender, recipient, quantity)
+        super().__init__(**kwargs)
+
+
+class NftDelegateTransaction(Transaction):
+    message: NftDelegateMsg
+
+    def __init__(self, denom: str, id: str, delegator_address: str, validator_address: str, quantity: int, **kwargs):
+        self.message = NftDelegateMsg(denom, id, delegator_address, validator_address, quantity)
+        super().__init__(**kwargs)
+
+
+class NftUnboundTransaction(Transaction):
+    message: NftUnboundMsg
+
+    def __init__(self, denom: str, id: str, delegator_address: str, validator_address: str, quantity: int, **kwargs):
+        self.message = NftUnboundMsg(denom, id, delegator_address, validator_address, quantity)
         super().__init__(**kwargs)

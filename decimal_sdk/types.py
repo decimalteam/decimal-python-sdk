@@ -18,7 +18,6 @@ FEES = {
     COIN_MULTISEND: 8,
     COIN_SELL_ALL: 100,
     COIN_REDEEM_CHECK: 30,
-    COIN_UPDATE: 0,
     VALIDATOR_CANDIDATE: 10000,
     VALIDATOR_DELEGATE: 200,
     VALIDATOR_SET_ONLINE: 100,
@@ -33,10 +32,13 @@ FEES = {
     SWAP_HTLT: 33000,
     SWAP_REDEEM: 0,
     SWAP_REFUND: 0,
+    COIN_UPDATE: 0,
     NFT_MINT: 0,
     NFT_BURN: 0,
     NFT_EDIT_METADATA: 0,
-    NFT_TRANSFER: 0
+    NFT_TRANSFER: 0,
+    NFT_DELEGATE: 0,
+    NFT_UNBOND: 0,
 }
 
 
@@ -138,7 +140,7 @@ class StdSignMsg:
         private_key = wallet.get_private_key()
         pub_key = wallet.get_public_key()
         sig = self.__generate_signature(private_key)
-        self.signatures = [Signature(signature=sig, pub_key=pub_key)]
+        self.signatures.append(Signature(signature=sig, pub_key=pub_key))
 
     def __get_body_bytes(self):
         data = beautify_json(

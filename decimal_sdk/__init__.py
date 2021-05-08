@@ -9,5 +9,5 @@ from .transactions import (Transaction,
                            MultysigCreateTransaction, MultysigCreateTXTransaction, MultysigSignTXTransaction, MultisendCoinTransaction,
                            SubmitProposalTransaction, VoteProposalTransaction,
                            SwapHtltTransaction, SwapRedeemTransaction, SwapRefundTransaction,
-                           NftMintTransaction, NftBurnTransaction, NftEditMetadataTransaction, NftTransferTransaction
+                           NftMintTransaction, NftBurnTransaction, NftEditMetadataTransaction, NftTransferTransaction, NftDelegateTransaction, NftUnboundTransaction
                            )
