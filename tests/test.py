@@ -21,8 +21,8 @@ api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
 
 coin_to_buy = "finaltest"
 coin_to_sell = "tdel"
-coin_to_buy_amount = 1
-coin_to_sell_amount = 20
+coin_to_buy_amount = 1000
+coin_to_sell_amount = 20000
 
 tx2 = BuyCoinTransaction(wallet.get_address(), coin_to_buy, coin_to_sell, coin_to_buy_amount, coin_to_sell_amount)
 api.send_tx(tx2, wallet)
