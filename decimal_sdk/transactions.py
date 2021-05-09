@@ -1,7 +1,7 @@
 from .wallet import Wallet
 from decimal_sdk.msgs.base import BaseMsg
 from decimal_sdk.types import StdSignMsg, SignMeta, Fee, Coin, Candidate
-from decimal_sdk.utils import prepare_number
+from decimal_sdk.utils.helpers import get_amount_uni
 from decimal_sdk.msgs.msgs import (SendCoinMsg, BuyCoinMsg, CreateCoinMsg, UpdateCoinMsg, SellAllCoinsMsg,
                                    DelegateMsg, UnboundMsg,
                                    DeclareCandidateMsg, EditCandidateMsg,
@@ -25,7 +25,7 @@ class Transaction:
     def __init__(self, **kwargs):
         self.meta = SignMeta()
         self.fee = Fee([], '0')
-        self.memo = 'sdk test'
+        self.memo = ''
         self.signer = StdSignMsg(self, meta=self.meta)
         self.signer.add_msg(self.message)
 
@@ -41,7 +41,7 @@ class SendCoinTransaction(Transaction):
     message: SendCoinMsg
 
     def __init__(self, sender, receiver, denom, amount, **kwargs):
-        coin = Coin(denom, prepare_number(amount))
+        coin = Coin(denom, get_amount_uni(amount))
         self.message = SendCoinMsg(sender, receiver, coin)
         super().__init__(**kwargs)
 
@@ -50,8 +50,8 @@ class BuyCoinTransaction(Transaction):
     message: BuyCoinMsg
 
     def __init__(self, sender, coin_to_buy, coin_to_spend, amount_to_buy, limit=100000000000, **kwargs):
-        coin_to_buy = Coin(coin_to_buy, prepare_number(amount_to_buy))
-        max_coin_to_sell = Coin(coin_to_spend, prepare_number(limit))
+        coin_to_buy = Coin(coin_to_buy, get_amount_uni(amount_to_buy))
+        max_coin_to_sell = Coin(coin_to_spend, get_amount_uni(limit))
         self.message = BuyCoinMsg(sender, coin_to_buy, max_coin_to_sell)
         super().__init__(**kwargs)
 
@@ -186,7 +186,7 @@ class SwapHtltTransaction(Transaction):
     message: SwapHtltMsg
 
     def __init__(self, transfer_type: str, sender: str, recipient: str, hashed_secret: str, denom: str, amount: str, **kwargs):
-        coin = Coin(denom, prepare_number(amount))
+        coin = Coin(denom, get_amount_uni(amount))
         self.message = SwapHtltMsg(transfer_type, sender, recipient, hashed_secret, coin)
         super().__init__(**kwargs)
 

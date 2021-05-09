@@ -1,5 +1,8 @@
 import setuptools
 
+with open('requirements.txt') as f:
+    required = f.read().splitlines()
+
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
@@ -9,6 +12,7 @@ setuptools.setup(
     author="DecimalTeam",
     description="",
     long_description=long_description,
+    install_requires=required,
     long_description_content_type="text/markdown",
     url="https://bitbucket.org/decimalteam/decimal-python-sdk",
     packages=setuptools.find_packages(),

@@ -1,4 +1,4 @@
-# Decimal Python SDK (stub)
+# Decimal Python SDK
 
 Check out these links:
 - [Decimal SDK docs](https://help.decimalchain.com/api-sdk/).

@@ -18,10 +18,6 @@ from .wallet import Wallet
 from .transactions import Transaction
 from .utils.helpers import get_amount_uni, from_words
 
-"""
-That's a stub
-"""
-
 
 class DecimalAPI:
     """
@@ -85,6 +81,10 @@ class DecimalAPI:
         if "denom" in options:
             denom = options["denom"]
 
+        message = tx.memo
+        if "message" in options:
+            message = options["message"]
+
         commission = self.__get_comission(tx, denom, FEES[tx.message.type])
         fee_amount = {"denom": denom, "amount": get_amount_uni(commission["base"])}
 
@@ -98,7 +98,7 @@ class DecimalAPI:
         tx.sign(wallet)
         payload = {"tx": {}, "mode": "sync"}
         payload["tx"]["msg"] = [tx_data]
-        payload["tx"]["memo"] = tx.memo
+        payload["tx"]["memo"] = message
         payload["tx"]["signatures"] = []
 
         for sig in tx.signatures:

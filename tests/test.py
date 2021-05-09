@@ -21,8 +21,8 @@ api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
 
 coin_to_buy = "finaltest"
 coin_to_sell = "tdel"
-coin_to_buy_amount = 1000
-coin_to_sell_amount = 20000
+coin_to_buy_amount = 1.5
+coin_to_sell_amount = 30.5
 
 tx2 = BuyCoinTransaction(wallet.get_address(), coin_to_buy, coin_to_sell, coin_to_buy_amount, coin_to_sell_amount)
 api.send_tx(tx2, wallet)
@@ -35,12 +35,12 @@ from decimal_sdk import CreateCoinTransaction
 wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
 api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
 
-title = "My new coin"
-symbol = "MNC"
-crr = "10"
-initial_reserve = "1000000000000000000000"
-initial_volume = "500000"
-limit_volume = "1000000"
+title = "My new coin w"
+symbol = "MYBNWCNW"
+crr = "45"
+initial_reserve = "1000500000000000000000"
+initial_volume = "5000000"
+limit_volume = "10000000"
 identity = 'e353b89e0de0a78974f9ecaf033721ac'
 
 tx3 = CreateCoinTransaction(wallet.get_address(), title, symbol, crr, initial_volume,
@@ -76,9 +76,9 @@ wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy i
 api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
 
 coin_to_sell_name = "tdel"
-coin_to_sell_amount = "1"
+coin_to_sell_amount = "1.1"
 min_coin_to_buy_name = "finaltest"
-min_coin_to_buy_amount = "1"
+min_coin_to_buy_amount = "1.1"
 
 tx4 = SellAllCoinsMsgTransaction(wallet.get_address(), coin_to_sell_name, coin_to_sell_amount,
                                  min_coin_to_buy_name, min_coin_to_buy_amount)
@@ -90,11 +90,11 @@ from decimal_sdk import Wallet
 from decimal_sdk import DecimalAPI
 from decimal_sdk import DelegateTransaction
 
-wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
+wallet = Wallet("exotic favorite initial tank bridge tuition broken hope sniff tiny fringe ice letter joke goddess skate raw similar link knife cable today table gain")
 api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
 
 validator_addr = "dxvaloper1ajytg8jg8ypx0rj9p792x32fuxyezga4dq2uk0"
-coins_name = "finaltest"
+coins_name = "tdel"
 coin_amount = "1"
 
 tx5 = DelegateTransaction(wallet.get_address(), validator_addr, coins_name, coin_amount)
