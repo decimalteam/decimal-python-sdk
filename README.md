@@ -114,7 +114,6 @@ options = {
 tx2 = BuyCoinTransaction(wallet.get_address(), coin_to_buy, coin_to_sell, coin_to_buy_amount, coin_to_sell_limit)
 api.send_tx(tx2, wallet, options)
 
-
 ```
 
 ## Create Coin Transaction
