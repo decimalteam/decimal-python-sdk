@@ -62,18 +62,18 @@ api.send_tx(prepared_transaction, wallet, options)
 ```
 
 ### DecimalAPI methods
- - [get_address()]()
- - [get_coin()]()
- - [get_coins_list()]()
- - [get_multisig()]()
- - [get_multisigs()]()
- - [get_my_transactions()]()
- - [get_nonce()]()
- - [get_stakes()]()
- - [get_tx()]()
- - [get_txs_multisign()]()
- - [get_validator()]()
- - [send_tx()]()
+ - send_tx() - send prepared transaction
+ - get_coin() - get info about specified coin
+ - get_coins_list() - get list of available coins
+ - get_address()
+ - get_multisig()
+ - get_multisigs()
+ - get_my_transactions()
+ - get_nonce()
+ - get_stakes()
+ - get_tx()
+ - get_txs_multisign()
+ - get_validator()
 
 ## Send Coin Transaction
 ```python

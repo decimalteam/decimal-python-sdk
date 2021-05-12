@@ -19,12 +19,12 @@ from decimal_sdk import BuyCoinTransaction
 wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
 api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
 
-coin_to_buy = "finaltest"
-coin_to_sell = "tdel"
-coin_to_buy_amount = 1.5
-coin_to_sell_amount = 30.5
+coin_to_buy = "del"
+coin_to_sell = "dar"
+coin_to_buy_amount = 0.1
+coin_to_sell_limit = 0.5
 
-tx2 = BuyCoinTransaction(wallet.get_address(), coin_to_buy, coin_to_sell, coin_to_buy_amount, coin_to_sell_amount)
+tx2 = BuyCoinTransaction(wallet.get_address(), coin_to_buy, coin_to_sell, coin_to_buy_amount, coin_to_sell_limit)
 api.send_tx(tx2, wallet)
 
 ###########################################################################################
@@ -46,6 +46,7 @@ identity = 'e353b89e0de0a78974f9ecaf033721ac'
 tx3 = CreateCoinTransaction(wallet.get_address(), title, symbol, crr, initial_volume,
                             initial_reserve, identity, limit_volume)
 api.send_tx(tx3, wallet)
+api.get
 
 ###########################################################################################
 
