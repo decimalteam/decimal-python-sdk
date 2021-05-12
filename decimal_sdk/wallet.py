@@ -8,6 +8,7 @@ import bech32
 DERIVATION_PATH = "m/44'/60'/0'/0/0"
 VALIDATOR_PREFIX = 'dxvaloper'
 
+
 class Wallet:
     """
     Decimal wallet class
@@ -31,15 +32,33 @@ class Wallet:
         self.__generate_validator_address()
 
     def get_address(self) -> str:
+        '''
+        returns addres of the wallet
+        '''
         return self._address
 
+    def get_mnemonic(self) -> str:
+        '''
+        returns mnemonic of the wallet
+        '''
+        return self.__mnemonic
+
     def get_validator_address(self) -> str:
+        '''
+        returns validator of the wallet
+        '''
         return self._validator_address
 
     def get_private_key(self) -> str:
+        '''
+        generates private key
+        '''
         return self._private_key
 
     def get_public_key(self) -> str:
+        '''
+        generates public key
+        '''
         return self._public_key
 
     def __generate_address(self):

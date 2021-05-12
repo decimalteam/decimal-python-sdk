@@ -18,10 +18,6 @@ from .wallet import Wallet
 from .transactions import Transaction
 from .utils.helpers import get_amount_uni, from_words
 
-"""
-That's a stub
-"""
-
 
 class DecimalAPI:
     """
@@ -81,9 +77,13 @@ class DecimalAPI:
         """Method to sign and send prepared transaction"""
         url = "rpc/txs"
 
-        denom = "tdel"
+        denom = "del"
         if "denom" in options:
             denom = options["denom"]
+
+        memo = tx.memo
+        if "memo" in options:
+            memo = options["memo"]
 
         commission = self.__get_comission(tx, denom, FEES[tx.message.type])
         fee_amount = {"denom": denom, "amount": get_amount_uni(commission["base"])}
@@ -98,7 +98,7 @@ class DecimalAPI:
         tx.sign(wallet)
         payload = {"tx": {}, "mode": "sync"}
         payload["tx"]["msg"] = [tx_data]
-        payload["tx"]["memo"] = tx.memo
+        payload["tx"]["memo"] = memo
         payload["tx"]["signatures"] = []
 
         for sig in tx.signatures:
@@ -268,8 +268,7 @@ class DecimalAPI:
         reserve = get_amount_uni(int(coin["reserve"]), True)
         supply = get_amount_uni(int(coin["volume"]), True)
 
-
-        crr = int(coin["crr"]) / 100
+        crr = int(coin["crr"])/100
 
         if int(supply) < 1:
             amount = 1
