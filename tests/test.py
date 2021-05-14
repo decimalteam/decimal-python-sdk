@@ -22,12 +22,12 @@ api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
 coin_to_buy = "btt"
 coin_to_sell = "tdel"
 coin_to_buy_amount = 0.1
-btt_price = api.get_coin_price('btt')
+btt_price = api.get_coin_price('onegrant')
 coin_to_sell_limit = coin_to_buy_amount*btt_price
 
 print("coin_to_sell_limit ", coin_to_sell_limit)
 
-fee_coin = "tdel"
+fee_coin = "btt"
 options = {
     "denom": fee_coin,
     "memo": "message to send with transaction"

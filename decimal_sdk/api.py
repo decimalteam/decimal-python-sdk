@@ -18,6 +18,8 @@ from .wallet import Wallet
 from .transactions import Transaction
 from .utils.helpers import get_amount_uni, from_words
 
+from decimal_sdk.types import Coin, Fee
+
 
 class DecimalAPI:
     """
@@ -78,8 +80,10 @@ class DecimalAPI:
         url = "rpc/txs"
 
         denom = "del"
+        commission_type = "base"
         if "denom" in options:
             denom = options["denom"]
+            commission_type = "value"
 
         if "memo" in options:
             tx.memo = options["memo"]
@@ -89,16 +93,17 @@ class DecimalAPI:
         tx_data = tx.message.get_message()
         commission = self.__get_comission(tx, denom, FEES[tx.message.type], tx_data)
 
-        fee_amount = {"denom": denom, "amount": get_amount_uni(commission["base"])}
+        fee_amount = Coin(denom, get_amount_uni(commission[commission_type]))
 
         wallet.nonce = json.loads(self.get_nonce(wallet.get_address()))["result"]
         tx.signer.chain_id = self.get_chain_id()
         tx.signer.account_number = str(wallet.nonce["value"]["account_number"])
         tx.signer.sequence = str(wallet.nonce["value"]["sequence"])
-        # tx_data["fee"] = fee_amount
-        # tx.fee = fee_amount
+        tx.fee.amount = [fee_amount]
+        tx.signer.fee.amount = [fee_amount]
         payload = {"tx": {}, "mode": "sync"}
         payload["tx"]["msg"] = [tx_data]
+        payload["tx"]["fee"] = {"amount": [tx.signer.fee.amount[0].__dict__()], "gas": "0"}
         payload["tx"]["memo"] = message
         payload["tx"]["signatures"] = []
         tx.sign(wallet)
