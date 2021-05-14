@@ -12,7 +12,7 @@ from .tx_types import *
 
 FEES = {
     COIN_SEND: 10,
-    COIN_BUY: 100,
+    COIN_BUY: 10,
     COIN_CREATE: 100,
     COIN_SELL: 100,
     COIN_MULTISEND: 8,
@@ -153,9 +153,7 @@ class StdSignMsg:
         data = self.__get_body_bytes()
         hash_ = sha256(data).digest()
         sk = SigningKey.from_string(private_key, curve=SECP256k1)
-
         signature = sk.sign_digest_deterministic(hash_, hashfunc=sha256, sigencode=sigencode_string_canonize)
-
         base_signature = base64.b64encode(signature)
 
         return base_signature.decode('utf-8')

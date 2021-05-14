@@ -16,17 +16,20 @@ api.send_tx(tx, wallet, {"denom": "tdel"})
 from decimal_sdk import Wallet
 from decimal_sdk import DecimalAPI
 from decimal_sdk import BuyCoinTransaction
-wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
+wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
 api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
 
-coin_to_buy = "del"
-coin_to_sell = "dar"
+coin_to_buy = "btt"
+coin_to_sell = "tdel"
 coin_to_buy_amount = 0.1
-coin_to_sell_limit = 0.5
+btt_price = api.get_coin_price('btt')
+coin_to_sell_limit = coin_to_buy_amount*btt_price
 
-fee_coin = "del"
+print("coin_to_sell_limit ", coin_to_sell_limit)
+
+fee_coin = "tdel"
 options = {
-    "denom":fee_coin,
+    "denom": fee_coin,
     "memo": "message to send with transaction"
 }
 
@@ -38,15 +41,15 @@ api.send_tx(tx2, wallet, options)
 from decimal_sdk import Wallet
 from decimal_sdk import DecimalAPI
 from decimal_sdk import CreateCoinTransaction
-wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
-api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
+wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
+api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
 
-title = "My new coin"
-symbol = "MNC"
+title = "awesomeTestCoin"
+symbol = "AWSMCNN"
 crr = "10"
 initial_reserve = "1000000000000000000000"
-initial_volume = "500000"
-limit_volume = "1000000"
+initial_volume = "500000000000000000000"
+limit_volume = "1000000000000000000000"
 identity = 'e353b89e0de0a78974f9ecaf033721ac'
 
 tx3 = CreateCoinTransaction(wallet.get_address(), title, symbol, crr, initial_volume,
@@ -58,15 +61,15 @@ api.send_tx(tx3, wallet)
 from decimal_sdk import Wallet
 from decimal_sdk import DecimalAPI
 from decimal_sdk import UpdateCoinTransaction
-wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
+wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
 api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
 
-title = "My new coin"
-symbol = "MNC"
+title = "My new awesomeTestCoin"
+symbol = "AWSMCNN"
 crr = "10"
 initial_reserve = "1000000000000000000000"
-initial_volume = "500000"
-limit_volume = "1000000"
+initial_volume = "900000000000000000000"
+limit_volume = "1000000000000000000000"
 identity = 'e353b89e0de0a78974f9ecaf033721ac'
 
 tx3 = UpdateCoinTransaction(wallet.get_address(), symbol, identity, limit_volume)
@@ -284,11 +287,11 @@ from decimal_sdk import NftMintTransaction
 wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
 api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
 
-denom = 'Portwein1'
-token_uri = 'uri'
-id = '7777'
-quantity = 2
-reserve = 1
+denom = 'Portwein122'
+token_uri = 'uri12'
+id = '7777123'
+quantity = 212
+reserve = 11
 allow_mint = True
 
 tx3 = NftMintTransaction(denom, id, wallet.get_address(), wallet.get_address(), quantity, reserve, token_uri, allow_mint)
@@ -302,9 +305,9 @@ from decimal_sdk import NftBurnTransaction
 wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
 api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
 
-denom = 'Portwein1'
-id = '7777'
-quantity = 1
+denom = 'Portwein112'
+id = '777712'
+quantity = 111
 
 tx3 = NftBurnTransaction(denom, id, wallet.get_address(), quantity)
 api.send_tx(tx3, wallet)
@@ -317,9 +320,9 @@ from decimal_sdk import NftEditMetadataTransaction
 wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
 api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
 
-denom = 'Portwein1'
-id = '7777'
-token_uri = 'uri21'
+denom = 'Portwein121'
+id = '77772'
+token_uri = 'uri2121'
 
 tx3 = NftEditMetadataTransaction(denom, id, wallet.get_address(), token_uri)
 api.send_tx(tx3, wallet)

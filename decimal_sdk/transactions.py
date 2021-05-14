@@ -25,7 +25,7 @@ class Transaction:
     def __init__(self, **kwargs):
         self.meta = SignMeta()
         self.fee = Fee([], '0')
-        self.memo = 'sdk test'
+        self.memo = ''
         self.signer = StdSignMsg(self, meta=self.meta)
         self.signer.add_msg(self.message)
 

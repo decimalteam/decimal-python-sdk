@@ -81,25 +81,27 @@ class DecimalAPI:
         if "denom" in options:
             denom = options["denom"]
 
-        memo = tx.memo
         if "memo" in options:
-            memo = options["memo"]
+            tx.memo = options["memo"]
+            tx.signer.memo = options["memo"]
 
-        commission = self.__get_comission(tx, denom, FEES[tx.message.type])
+        message = tx.memo
+        tx_data = tx.message.get_message()
+        commission = self.__get_comission(tx, denom, FEES[tx.message.type], tx_data)
+
         fee_amount = {"denom": denom, "amount": get_amount_uni(commission["base"])}
 
         wallet.nonce = json.loads(self.get_nonce(wallet.get_address()))["result"]
         tx.signer.chain_id = self.get_chain_id()
         tx.signer.account_number = str(wallet.nonce["value"]["account_number"])
         tx.signer.sequence = str(wallet.nonce["value"]["sequence"])
-        tx_data = tx.message.get_message()
-        tx_data["fee"] = fee_amount
-        tx.fee = fee_amount
-        tx.sign(wallet)
+        # tx_data["fee"] = fee_amount
+        # tx.fee = fee_amount
         payload = {"tx": {}, "mode": "sync"}
         payload["tx"]["msg"] = [tx_data]
-        payload["tx"]["memo"] = memo
+        payload["tx"]["memo"] = message
         payload["tx"]["signatures"] = []
+        tx.sign(wallet)
 
         for sig in tx.signatures:
             payload["tx"]["signatures"].append(sig.get_signature())
@@ -260,27 +262,26 @@ class DecimalAPI:
         khash.update(rlp.encode(data))
         return khash.digest()
 
-    def __get_coin_price(self, name: str):
+    def get_coin_price(self, name: str):
         coin = json.loads(self.get_coin(name))
         if not coin["ok"]:
             raise Exception('Coin not found')
         coin = coin["result"]
-        reserve = get_amount_uni(int(coin["reserve"]), True)
-        supply = get_amount_uni(int(coin["volume"]), True)
+        reserve = int(get_amount_uni(int(coin["reserve"]), True))
+        supply = int(get_amount_uni(int(coin["volume"]), True))
+        print(reserve)
+        print(supply)
+        crr = int(coin["crr"]) / 100
 
-        crr = int(coin["crr"])/100
+        amount = min(supply, 1)
 
-        if int(supply) < 1:
-            amount = 1
-        else:
-            amount = int(supply)
-
-        if int(supply) == 0:
+        if supply == 0:
             return 0
 
-        result = amount / int(supply)
+        result = amount / supply
         result = 1 - result
         result = pow(result, 1 / crr)
+        print(result)
         result = (1 - result) * reserve
 
         return result
@@ -298,7 +299,20 @@ class DecimalAPI:
         size = encoded_tx + signatureSize
         return size
 
-    def __get_comission(self, tx: Transaction, fee_coin, operation_fee):
+    def __get_comission(self, tx: Transaction, fee_coin, operation_fee, tx_data):
+        if tx.message.get_type() == 'coin/create_coin':
+            ticker_length = len(tx_data['value']['symbol'])
+            if ticker_length == 3:
+                operation_fee = 1000000
+            elif ticker_length == 4:
+                operation_fee = 100000
+            elif ticker_length == 5:
+                operation_fee = 10000
+            elif ticker_length == 6:
+                operation_fee = 1000
+            else:
+                operation_fee = 100
+
         ticker = fee_coin
         text_size = self.__get_tx_size(tx)
         print("text size: ", text_size)
@@ -314,7 +328,8 @@ class DecimalAPI:
         if fee_coin in ['del', 'tdel']:
             return {"coinPrice": "1", "value": fee_in_base, "base": fee_in_base}
 
-        coin_price = self.__get_coin_price(ticker)
+        print("ticker ", ticker)
+        coin_price = self.get_coin_price(ticker)
         fee_in_custom = fee_in_base / (coin_price / self.unit)
         return {"coinPrice": str(coin_price), 'value': fee_in_custom, 'base': fee_in_base}
 
