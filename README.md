@@ -62,8 +62,9 @@ api.send_tx(prepared_transaction, wallet, options)
 ```
 
 ### DecimalAPI methods
- - send_tx() - send prepared transaction
- - get_coin() - get info about specified coin
+ - send_tx(transaction, wallet, options) - send prepared transaction
+ - get_coin("coin_ticker") - get info about specified coin
+ - get_coin_price("coin_ticker") - get price of specified coin
  - get_coins_list() - get list of available coins
  - get_address()
  - get_multisig()
@@ -86,9 +87,13 @@ api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
 receiver = "dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g"
 coin_name = "tdel"
 coin_amount = 1
-
+fee_coin = "tdel"
+options = {
+    "denom":fee_coin,
+    "memo": "message to send with transaction"
+}
 tx = SendCoinTransaction(wallet.get_address(), receiver, coin_name, coin_amount)
-api.send_tx(tx, wallet)
+api.send_tx(tx, wallet, options)
 ```
 
 ## Buy Coin Transaction

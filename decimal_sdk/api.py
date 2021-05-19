@@ -18,6 +18,8 @@ from .wallet import Wallet
 from .transactions import Transaction
 from .utils.helpers import get_amount_uni, from_words
 
+from decimal_sdk.types import Coin, Fee
+
 
 class DecimalAPI:
     """
@@ -77,29 +79,37 @@ class DecimalAPI:
         """Method to sign and send prepared transaction"""
         url = "rpc/txs"
 
-        denom = "tdel"
+        denom = "del"
+        commission_type = "base"
         if "denom" in options:
             denom = options["denom"]
+            commission_type = "value"
+
+        if "memo" in options:
+            tx.memo = options["memo"]
+            tx.signer.memo = options["memo"]
 
         message = tx.memo
-        if "message" in options:
-            message = options["message"]
+        tx_data = tx.message.get_message()
+        commission = self.__get_comission(tx, denom, FEES[tx.message.type], tx_data)
 
-        commission = self.__get_comission(tx, denom, FEES[tx.message.type])
-        fee_amount = {"denom": denom, "amount": get_amount_uni(commission["base"])}
+        fee_amount = Coin(denom, get_amount_uni(commission[commission_type]))
 
         wallet.nonce = json.loads(self.get_nonce(wallet.get_address()))["result"]
         tx.signer.chain_id = self.get_chain_id()
         tx.signer.account_number = str(wallet.nonce["value"]["account_number"])
         tx.signer.sequence = str(wallet.nonce["value"]["sequence"])
-        tx_data = tx.message.get_message()
-        tx_data["fee"] = fee_amount
-        tx.fee = fee_amount
-        tx.sign(wallet)
+        fee_amount = Coin('del', '0')
+        tx.fee.amount = [fee_amount]
+        tx.signer.fee.amount = [fee_amount]
         payload = {"tx": {}, "mode": "sync"}
         payload["tx"]["msg"] = [tx_data]
+        # payload["tx"]["fee"] = {"amount": [{'denom': 'del', 'amount': '0'}], "gas": "0"}
+        payload["tx"]["fee"] = {"amount": [tx.signer.fee.amount[0].__dict__()], "gas": "0"}
         payload["tx"]["memo"] = message
         payload["tx"]["signatures"] = []
+        tx.sign(wallet)
+        print("tx.signatures ", tx.signatures)
 
         for sig in tx.signatures:
             payload["tx"]["signatures"].append(sig.get_signature())
@@ -260,28 +270,24 @@ class DecimalAPI:
         khash.update(rlp.encode(data))
         return khash.digest()
 
-    def __get_coin_price(self, name: str):
+    def get_coin_price(self, name: str):
         coin = json.loads(self.get_coin(name))
         if not coin["ok"]:
             raise Exception('Coin not found')
         coin = coin["result"]
-        reserve = get_amount_uni(int(coin["reserve"]), True)
-        supply = get_amount_uni(int(coin["volume"]), True)
-
-
+        reserve = int(get_amount_uni(int(coin["reserve"]), True))
+        supply = int(get_amount_uni(int(coin["volume"]), True))
         crr = int(coin["crr"]) / 100
 
-        if int(supply) < 1:
-            amount = 1
-        else:
-            amount = int(supply)
+        amount = min(supply, 1)
 
-        if int(supply) == 0:
+        if supply == 0:
             return 0
 
-        result = amount / int(supply)
+        result = amount / supply
         result = 1 - result
         result = pow(result, 1 / crr)
+        print(result)
         result = (1 - result) * reserve
 
         return result
@@ -299,13 +305,24 @@ class DecimalAPI:
         size = encoded_tx + signatureSize
         return size
 
-    def __get_comission(self, tx: Transaction, fee_coin, operation_fee):
+    def __get_comission(self, tx: Transaction, fee_coin, operation_fee, tx_data):
+        if tx.message.get_type() == 'coin/create_coin':
+            ticker_length = len(tx_data['value']['symbol'])
+            if ticker_length == 3:
+                operation_fee = 1000000
+            elif ticker_length == 4:
+                operation_fee = 100000
+            elif ticker_length == 5:
+                operation_fee = 10000
+            elif ticker_length == 6:
+                operation_fee = 1000
+            else:
+                operation_fee = 100
+
         ticker = fee_coin
         text_size = self.__get_tx_size(tx)
-        print("text size: ", text_size)
-        print("operation fee", operation_fee)
         fee_for_text = text_size * 2
-        fee_in_base = operation_fee + fee_for_text + 10
+        fee_in_base = (operation_fee + fee_for_text + 10)/1000
 
         if tx.message.get_type() == 'coin/multi_send_coin':
             number_of_participants = len(tx.message.get_message()["value"]["sends"])
@@ -314,8 +331,7 @@ class DecimalAPI:
 
         if fee_coin in ['del', 'tdel']:
             return {"coinPrice": "1", "value": fee_in_base, "base": fee_in_base}
-
-        coin_price = self.__get_coin_price(ticker)
+        coin_price = self.get_coin_price(ticker)
         fee_in_custom = fee_in_base / (coin_price / self.unit)
         return {"coinPrice": str(coin_price), 'value': fee_in_custom, 'base': fee_in_base}
 
