@@ -87,9 +87,13 @@ api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
 receiver = "dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g"
 coin_name = "tdel"
 coin_amount = 1
-
+fee_coin = "tdel"
+options = {
+    "denom":fee_coin,
+    "memo": "message to send with transaction"
+}
 tx = SendCoinTransaction(wallet.get_address(), receiver, coin_name, coin_amount)
-api.send_tx(tx, wallet)
+api.send_tx(tx, wallet, options)
 ```
 
 ## Buy Coin Transaction

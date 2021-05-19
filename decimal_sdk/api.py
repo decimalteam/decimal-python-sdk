@@ -105,6 +105,7 @@ class DecimalAPI:
         payload["tx"]["msg"] = [tx_data]
         payload["tx"]["fee"] = {"amount": [tx.signer.fee.amount[0].__dict__()], "gas": "0"}
         payload["tx"]["memo"] = message
+
         payload["tx"]["signatures"] = []
         tx.sign(wallet)
 
@@ -302,8 +303,11 @@ class DecimalAPI:
         signatureSize = 109
         resp = json.loads(self.__request('rpc/txs/encode', 'post', json.dumps(preparedTx)))
         encoded_tx_base64 = resp["tx"]
+        print("encoded_tx_base64 ", encoded_tx_base64)
         encoded_tx = len(base64.b64decode(encoded_tx_base64))
+        print("encoded_tx ", encoded_tx)
         size = encoded_tx + signatureSize
+        print("size ", size)
         return size
 
     def __get_comission(self, tx: Transaction, fee_coin, operation_fee, tx_data):
@@ -325,7 +329,7 @@ class DecimalAPI:
         print("text size: ", text_size)
         print("operation fee", operation_fee)
         fee_for_text = text_size * 2
-        fee_in_base = operation_fee + fee_for_text + 10
+        fee_in_base = (operation_fee + fee_for_text + 10)/1000
 
         if tx.message.get_type() == 'coin/multi_send_coin':
             number_of_participants = len(tx.message.get_message()["value"]["sends"])
