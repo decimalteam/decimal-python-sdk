@@ -13,7 +13,6 @@ options = {
 }
 tx = SendCoinTransaction(wallet.get_address(), receiver, coin_name, coin_amount)
 api.send_tx(tx, wallet, options)
-
 ###########################################################################################
 
 # from decimal_sdk import Wallet
