@@ -110,6 +110,8 @@ class DecimalAPI:
 
         for sig in tx.signatures:
             payload["tx"]["signatures"].append(sig.get_signature())
+        tx.signatures = []
+        tx.signer.signatures = []
         print(payload)
         return self.__request(url, 'post', json.dumps(payload))
 
