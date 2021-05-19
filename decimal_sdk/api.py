@@ -105,14 +105,12 @@ class DecimalAPI:
         payload["tx"]["msg"] = [tx_data]
         payload["tx"]["fee"] = {"amount": [tx.signer.fee.amount[0].__dict__()], "gas": "0"}
         payload["tx"]["memo"] = message
-
         payload["tx"]["signatures"] = []
         tx.sign(wallet)
+        print("tx.signatures ", tx.signatures)
 
         for sig in tx.signatures:
             payload["tx"]["signatures"].append(sig.get_signature())
-        tx.signatures = []
-        tx.signer.signatures = []
         print(payload)
         return self.__request(url, 'post', json.dumps(payload))
 
@@ -325,9 +323,8 @@ class DecimalAPI:
                 operation_fee = 100
 
         ticker = fee_coin
+        print("tx ", tx)
         text_size = self.__get_tx_size(tx)
-        print("text size: ", text_size)
-        print("operation fee", operation_fee)
         fee_for_text = text_size * 2
         fee_in_base = (operation_fee + fee_for_text + 10)/1000
 

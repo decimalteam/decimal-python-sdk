@@ -77,9 +77,6 @@ class Signature:
     pub_key: str
     signature: str
 
-    def get_signature(self):
-        return self.__dict__()
-
     def __init__(self, signature: str, pub_key: str):
         self.pub_key = pub_key
         self.signature = signature
@@ -87,6 +84,9 @@ class Signature:
     def __dict__(self):
         return {'pub_key': {'type': 'tendermint/PubKeySecp256k1', 'value': self.pub_key},
                 'signature': self.signature}
+
+    def get_signature(self):
+        return self.__dict__()
 
 
 class Fee:
@@ -140,6 +140,13 @@ class StdSignMsg:
         private_key = wallet.get_private_key()
         pub_key = wallet.get_public_key()
         sig = self.__generate_signature(private_key)
+        self.signatures = [Signature(signature=sig, pub_key=pub_key)]
+
+    def multysign(self, wallet: Wallet):
+        private_key = wallet.get_private_key()
+        pub_key = wallet.get_public_key()
+        sig = self.__generate_signature(private_key)
+        self.signatures = []
         self.signatures.append(Signature(signature=sig, pub_key=pub_key))
 
     def __get_body_bytes(self):
