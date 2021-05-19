@@ -99,10 +99,12 @@ class DecimalAPI:
         tx.signer.chain_id = self.get_chain_id()
         tx.signer.account_number = str(wallet.nonce["value"]["account_number"])
         tx.signer.sequence = str(wallet.nonce["value"]["sequence"])
+        fee_amount = Coin('del', '0')
         tx.fee.amount = [fee_amount]
         tx.signer.fee.amount = [fee_amount]
         payload = {"tx": {}, "mode": "sync"}
         payload["tx"]["msg"] = [tx_data]
+        # payload["tx"]["fee"] = {"amount": [{'denom': 'del', 'amount': '0'}], "gas": "0"}
         payload["tx"]["fee"] = {"amount": [tx.signer.fee.amount[0].__dict__()], "gas": "0"}
         payload["tx"]["memo"] = message
         payload["tx"]["signatures"] = []
@@ -275,8 +277,6 @@ class DecimalAPI:
         coin = coin["result"]
         reserve = int(get_amount_uni(int(coin["reserve"]), True))
         supply = int(get_amount_uni(int(coin["volume"]), True))
-        print(reserve)
-        print(supply)
         crr = int(coin["crr"]) / 100
 
         amount = min(supply, 1)
@@ -301,11 +301,8 @@ class DecimalAPI:
         signatureSize = 109
         resp = json.loads(self.__request('rpc/txs/encode', 'post', json.dumps(preparedTx)))
         encoded_tx_base64 = resp["tx"]
-        print("encoded_tx_base64 ", encoded_tx_base64)
         encoded_tx = len(base64.b64decode(encoded_tx_base64))
-        print("encoded_tx ", encoded_tx)
         size = encoded_tx + signatureSize
-        print("size ", size)
         return size
 
     def __get_comission(self, tx: Transaction, fee_coin, operation_fee, tx_data):
@@ -323,7 +320,6 @@ class DecimalAPI:
                 operation_fee = 100
 
         ticker = fee_coin
-        print("tx ", tx)
         text_size = self.__get_tx_size(tx)
         fee_for_text = text_size * 2
         fee_in_base = (operation_fee + fee_for_text + 10)/1000
@@ -335,8 +331,6 @@ class DecimalAPI:
 
         if fee_coin in ['del', 'tdel']:
             return {"coinPrice": "1", "value": fee_in_base, "base": fee_in_base}
-
-        print("ticker ", ticker)
         coin_price = self.get_coin_price(ticker)
         fee_in_custom = fee_in_base / (coin_price / self.unit)
         return {"coinPrice": str(coin_price), 'value': fee_in_custom, 'base': fee_in_base}
