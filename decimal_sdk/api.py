@@ -116,11 +116,9 @@ class DecimalAPI:
         tx.sign(wallet)
         tx.msgs.clear()
         tx.signer.msgs.clear()
-        print("tx.signatures ", tx.signatures)
 
         for sig in tx.signatures:
             payload["tx"]["signatures"].append(sig.get_signature())
-        print(payload)
         return self.__request(url, 'post', json.dumps(payload))
 
     def issue_check(self, wallet, data):
@@ -294,7 +292,6 @@ class DecimalAPI:
         result = amount / supply
         result = 1 - result
         result = pow(result, 1 / crr)
-        print(result)
         result = (1 - result) * reserve * 1.03
 
         return result

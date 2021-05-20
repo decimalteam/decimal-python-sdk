@@ -151,9 +151,6 @@ class StdSignMsg:
 
     def __generate_signature(self, private_key):
         data = self.__get_body_bytes()
-        print(" ======================= ")
-        print("data ", data)
-        print(" ======================= ")
         hash_ = sha256(data).digest()
         sk = SigningKey.from_string(private_key, curve=SECP256k1)
         signature = sk.sign_digest_deterministic(hash_, hashfunc=sha256, sigencode=sigencode_string_canonize)
