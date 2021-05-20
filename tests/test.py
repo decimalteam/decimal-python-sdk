@@ -15,28 +15,26 @@ tx = SendCoinTransaction(wallet.get_address(), receiver, coin_name, coin_amount)
 api.send_tx(tx, wallet, options)
 ###########################################################################################
 
-# from decimal_sdk import Wallet
-# from decimal_sdk import DecimalAPI
-# from decimal_sdk import BuyCoinTransaction
-# wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
-# api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
-#
-# coin_to_buy = "btt"
-# coin_to_sell = "tdel"
-# coin_to_buy_amount = 0.1
-# btt_price = api.get_coin_price('onegrant')
-# coin_to_sell_limit = coin_to_buy_amount*btt_price
-#
-# print("coin_to_sell_limit ", coin_to_sell_limit)
-#
-# fee_coin = "btt"
-# options = {
-#     "denom": fee_coin,
-#     "memo": "message to send with transaction"
-# }
-#
-# tx2 = BuyCoinTransaction(wallet.get_address(), coin_to_buy, coin_to_sell, coin_to_buy_amount, coin_to_sell_limit)
-# api.send_tx(tx2, wallet, options)
+from decimal_sdk import Wallet
+from decimal_sdk import DecimalAPI
+from decimal_sdk import BuyCoinTransaction
+# wallet = Wallet("exotic favorite initial tank bridge tuition broken hope sniff tiny fringe ice letter joke goddess skate raw similar link knife cable today table gain")
+# api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
+
+coin_to_buy = "awsmcnn"
+coin_to_sell = "del"
+coin_to_buy_amount = 0.1
+btt_price = api.get_coin_price('awsmcnn')
+coin_to_sell_limit = coin_to_buy_amount*btt_price
+
+fee_coin = "btt"
+options = {
+    # "denom": fee_coin,
+    "memo": "message to send with transaction"
+}
+
+tx2 = BuyCoinTransaction(wallet.get_address(), coin_to_buy, coin_to_sell, coin_to_buy_amount, coin_to_sell_limit)
+api.send_tx(tx2, wallet, options)
 
 ###########################################################################################
 
