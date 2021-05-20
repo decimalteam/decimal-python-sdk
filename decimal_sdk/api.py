@@ -102,6 +102,11 @@ class DecimalAPI:
         fee_amount = Coin('del', '0')
         tx.fee.amount = [fee_amount]
         tx.signer.fee.amount = [fee_amount]
+
+        tx.signer.fee = tx.fee
+        tx.signer.msgs = tx.msgs
+        tx.signer.memo = tx.memo
+
         payload = {"tx": {}, "mode": "sync"}
         payload["tx"]["msg"] = [tx_data]
         # payload["tx"]["fee"] = {"amount": [{'denom': 'del', 'amount': '0'}], "gas": "0"}
@@ -109,6 +114,8 @@ class DecimalAPI:
         payload["tx"]["memo"] = message
         payload["tx"]["signatures"] = []
         tx.sign(wallet)
+        tx.msgs.clear()
+        tx.signer.msgs.clear()
         print("tx.signatures ", tx.signatures)
 
         for sig in tx.signatures:
@@ -288,7 +295,7 @@ class DecimalAPI:
         result = 1 - result
         result = pow(result, 1 / crr)
         print(result)
-        result = (1 - result) * reserve
+        result = (1 - result) * reserve * 1.03
 
         return result
 

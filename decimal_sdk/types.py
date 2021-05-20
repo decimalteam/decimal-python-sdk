@@ -142,13 +142,6 @@ class StdSignMsg:
         sig = self.__generate_signature(private_key)
         self.signatures = [Signature(signature=sig, pub_key=pub_key)]
 
-    def multysign(self, wallet: Wallet):
-        private_key = wallet.get_private_key()
-        pub_key = wallet.get_public_key()
-        sig = self.__generate_signature(private_key)
-        self.signatures = []
-        self.signatures.append(Signature(signature=sig, pub_key=pub_key))
-
     def __get_body_bytes(self):
         data = beautify_json(
             {'fee': self.fee.__dict__(), 'memo': self.memo, 'msgs': [msg.__dict__() for msg in self.msgs],
@@ -158,6 +151,9 @@ class StdSignMsg:
 
     def __generate_signature(self, private_key):
         data = self.__get_body_bytes()
+        print(" ======================= ")
+        print("data ", data)
+        print(" ======================= ")
         hash_ = sha256(data).digest()
         sk = SigningKey.from_string(private_key, curve=SECP256k1)
         signature = sk.sign_digest_deterministic(hash_, hashfunc=sha256, sigencode=sigencode_string_canonize)
