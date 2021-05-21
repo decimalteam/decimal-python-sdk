@@ -40,19 +40,22 @@ class DecimalAPI:
     def get_coin(self, name: str):
         return self.__request(f'coin/{name}')
 
-    def get_coins_list(self):
-        return self.__request('coin')
+    def get_coins_list(self, limit: int = 10, offset: int = 0):
+        options = { "limit": limit, "offset": offset }
+        return self.__request('coin', 'get', None, options)
 
     def get_multisig(self, address: str):
         self.__validate_address(address)
         return self.__request(f'multisig/{address}')
 
-    def get_multisigs(self, address: str):
+    def get_multisigs(self, address: str, limit: int = 10, offset: int = 0):
         self.__validate_address(address)
-        return self.__request(f'address/{address}/multisigs')
+        options = {"limit": limit, "offset": offset}
+        return self.__request(f'address/{address}/multisigs', 'get', None, options)
 
-    def get_my_transactions(self, wallet: Wallet):
-        return self.__request(f'address/${wallet.get_address()}/txs')
+    def get_my_transactions(self, wallet: Wallet, limit: int = 10, offset: int = 0):
+        options = {"limit": limit, "offset": offset}
+        return self.__request(f'address/${wallet.get_address()}/txs', 'get', None, options)
 
     def get_nonce(self, address: str):
         self.__validate_address(address)
@@ -67,9 +70,10 @@ class DecimalAPI:
             raise Exception('Hash is empty')
         return self.__request("rpc/tx", "get", '{ "params": { "hash": "0x$' + tx_hash + '"}}')
 
-    def get_txs_multisign(self, address: str, limit: int = 1, offset: int = 0):
+    def get_txs_multisign(self, address: str, limit: int = 10, offset: int = 0):
+        options = {"limit": limit, "offset": offset}
         self.__validate_address(address)
-        return self.__request(f"multisig/${address}/txs")
+        return self.__request(f"multisig/${address}/txs", 'get', None, options)
 
     def get_validator(self, address: str):
         self.__validate_address(address)
@@ -339,10 +343,13 @@ class DecimalAPI:
         fee_in_custom = fee_in_base / (coin_price / self.unit)
         return {"coinPrice": str(coin_price), 'value': fee_in_custom, 'base': fee_in_base}
 
-    def __request(self, path: str, method: str = 'get', payload=None):
+    def __request(self, path: str, method: str = 'get', payload=None, options={}):
         url = (self.base_url + path).lower()
         if method == 'get':
-            response = requests.get(url)
+            if len(options) > 0:
+                response = requests.get(url, params=options)
+            else:
+                response = requests.get(url)
         else:
             response = requests.post(url, payload)
         return response.text

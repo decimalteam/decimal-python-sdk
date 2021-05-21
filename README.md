@@ -65,11 +65,11 @@ api.send_tx(prepared_transaction, wallet, options)
  - send_tx(transaction, wallet, options) - send prepared transaction
  - get_coin("coin_ticker") - get info about specified coin
  - get_coin_price("coin_ticker") - get price of specified coin
- - get_coins_list() - get list of available coins
+ - get_coins_list(limit, offset) - get list of available coins, default limit of coins to show is 10 
+ - get_my_transactions(wallet, limit, offset)
  - get_address()
  - get_multisig()
  - get_multisigs()
- - get_my_transactions()
  - get_nonce()
  - get_stakes()
  - get_tx()

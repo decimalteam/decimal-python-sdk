@@ -314,11 +314,11 @@ api.send_tx(tx2, wallet, options)
 #
 # ###########################################################################################
 #
-# from decimal_sdk import Wallet
-# from decimal_sdk import DecimalAPI
-# from decimal_sdk import NftEditMetadataTransaction
-# wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
-# api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
+from decimal_sdk import Wallet
+from decimal_sdk import DecimalAPI
+from decimal_sdk import NftEditMetadataTransaction
+wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
+api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
 #
 # denom = 'Portwein121'
 # id = '77772'
