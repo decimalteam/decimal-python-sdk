@@ -219,8 +219,8 @@ class NftMintTransaction(Transaction):
 class NftBurnTransaction(Transaction):
     message: NftBurnMsg
 
-    def __init__(self, denom: str, id: str, sender: str, quantity: int, **kwargs):
-        self.message = NftBurnMsg(denom, id, sender, quantity)
+    def __init__(self, denom: str, id: str, sender: str, sub_token_ids: [], **kwargs):
+        self.message = NftBurnMsg(denom, id, sender, sub_token_ids)
         super().__init__(**kwargs)
 
 
@@ -235,22 +235,22 @@ class NftEditMetadataTransaction(Transaction):
 class NftTransferTransaction(Transaction):
     message: NftTransferMsg
 
-    def __init__(self, denom: str, id: str, sender: str, recipient: str, quantity: int, **kwargs):
-        self.message = NftTransferMsg(denom, id, sender, recipient, quantity)
+    def __init__(self, denom: str, id: str, sender: str, recipient: str, sub_token_ids: [], **kwargs):
+        self.message = NftTransferMsg(denom, id, sender, recipient, sub_token_ids)
         super().__init__(**kwargs)
 
 
 class NftDelegateTransaction(Transaction):
     message: NftDelegateMsg
 
-    def __init__(self, denom: str, id: str, delegator_address: str, validator_address: str, quantity: int, **kwargs):
-        self.message = NftDelegateMsg(denom, id, delegator_address, validator_address, quantity)
+    def __init__(self, denom: str, id: str, delegator_address: str, validator_address: str, sub_token_ids: [], **kwargs):
+        self.message = NftDelegateMsg(denom, id, delegator_address, validator_address, sub_token_ids)
         super().__init__(**kwargs)
 
 
 class NftUnboundTransaction(Transaction):
     message: NftUnboundMsg
 
-    def __init__(self, denom: str, id: str, delegator_address: str, validator_address: str, quantity: int, **kwargs):
-        self.message = NftUnboundMsg(denom, id, delegator_address, validator_address, quantity)
+    def __init__(self, denom: str, id: str, delegator_address: str, validator_address: str, sub_token_ids: [], **kwargs):
+        self.message = NftUnboundMsg(denom, id, delegator_address, validator_address, sub_token_ids)
         super().__init__(**kwargs)

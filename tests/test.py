@@ -2,7 +2,7 @@ from decimal_sdk import Wallet
 from decimal_sdk import DecimalAPI
 from decimal_sdk import SendCoinTransaction
 wallet = Wallet("exotic favorite initial tank bridge tuition broken hope sniff tiny fringe ice letter joke goddess skate raw similar link knife cable today table gain")
-api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
+api = DecimalAPI("https://mainnet-gate.decimalchain.com/api")
 
 receiver = "dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g"
 coin_name = "del"

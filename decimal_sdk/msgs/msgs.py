@@ -557,13 +557,13 @@ class NftBurnMsg(BaseMsg):
     denom: str
     id: str
     sender: str
-    quantity: str
+    sub_token_ids: []
 
-    def __init__(self, denom: str, id: str, sender: str, quantity: int):
+    def __init__(self, denom: str, id: str, sender: str, sub_token_ids: []):
         self.denom = denom
         self.id = id
         self.sender = sender
-        self.quantity = str(quantity)
+        self.sub_token_ids = sub_token_ids
 
     def __dict__(self):
         return {
@@ -572,7 +572,7 @@ class NftBurnMsg(BaseMsg):
                 "denom": self.denom,
                 "id": self.id,
                 "sender": self.sender,
-                "quantity": self.quantity,
+                "sub_token_ids": self.sub_token_ids,
             }
         }
 
@@ -608,14 +608,14 @@ class NftTransferMsg(BaseMsg):
     id: str
     sender: str
     recipient: str
-    quantity: str
+    sub_token_ids: []
 
-    def __init__(self, denom: str, id: str, sender: str, recipient: str, quantity: int):
+    def __init__(self, denom: str, id: str, sender: str, recipient: str, sub_token_ids: []):
         self.denom = denom
         self.id = id
         self.sender = sender
         self.recipient = recipient
-        self.quantity = str(quantity)
+        self.sub_token_ids = sub_token_ids
 
     def __dict__(self):
         return {
@@ -625,7 +625,7 @@ class NftTransferMsg(BaseMsg):
                 "id": self.id,
                 "sender": self.sender,
                 "recipient": self.recipient,
-                "quantity": self.quantity,
+                "sub_token_ids": self.sub_token_ids,
             }
         }
 
@@ -636,14 +636,14 @@ class NftDelegateMsg(BaseMsg):
     id: str
     delegator_address: str
     validator_address: str
-    quantity: str
+    sub_token_ids: []
 
-    def __init__(self, denom: str, id: str, delegator_address: str, validator_address: str, quantity: int):
+    def __init__(self, denom: str, id: str, delegator_address: str, validator_address: str, sub_token_ids: []):
         self.denom = denom
         self.id = id
         self.delegator_address = delegator_address
         self.validator_address = validator_address
-        self.quantity = str(quantity)
+        self.sub_token_ids = sub_token_ids
 
     def __dict__(self):
         return {
@@ -653,7 +653,7 @@ class NftDelegateMsg(BaseMsg):
                 "id": self.id,
                 "delegator_address": self.delegator_address,
                 "validator_address": self.validator_address,
-                "quantity": self.quantity,
+                "sub_token_ids": self.sub_token_ids,
             }
         }
 
@@ -664,14 +664,14 @@ class NftUnboundMsg(BaseMsg):
     id: str
     delegator_address: str
     validator_address: str
-    quantity: str
+    sub_token_ids: []
 
-    def __init__(self, denom: str, id: str, delegator_address: str, validator_address: str, quantity: int):
+    def __init__(self, denom: str, id: str, delegator_address: str, validator_address: str, sub_token_ids: []):
         self.denom = denom
         self.id = id
         self.delegator_address = delegator_address
         self.validator_address = validator_address
-        self.quantity = str(quantity)
+        self.sub_token_ids = sub_token_ids
 
     def __dict__(self):
         return {
@@ -681,7 +681,7 @@ class NftUnboundMsg(BaseMsg):
                 "id": self.id,
                 "delegator_address": self.delegator_address,
                 "validator_address": self.validator_address,
-                "quantity": self.quantity,
+                "sub_token_ids": self.sub_token_ids,
             }
         }
 
