@@ -55,7 +55,7 @@ class DecimalAPI:
 
     def get_my_transactions(self, wallet: Wallet, limit: int = 10, offset: int = 0):
         options = {"limit": limit, "offset": offset}
-        return self.__request(f'address/${wallet.get_address()}/txs', 'get', None, options)
+        return self.__request(f'address/{wallet.get_address()}/txs', 'get', None, options)
 
     def get_nonce(self, address: str):
         self.__validate_address(address)
@@ -73,7 +73,7 @@ class DecimalAPI:
     def get_txs_multisign(self, address: str, limit: int = 10, offset: int = 0):
         options = {"limit": limit, "offset": offset}
         self.__validate_address(address)
-        return self.__request(f"multisig/${address}/txs", 'get', None, options)
+        return self.__request(f"multisig/{address}/txs", 'get', None, options)
 
     def get_validator(self, address: str):
         self.__validate_address(address)
