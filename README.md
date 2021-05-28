@@ -62,19 +62,26 @@ api.send_tx(prepared_transaction, wallet, options)
 ```
 
 ### DecimalAPI methods
+methods called like
+```python
+from decimal_sdk import DecimalAPI
+api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
+wallet = Wallet('erase august mask elevator sand picture north there apple equal anchor target')
+api.method_name(args)
+```
  - send_tx(transaction, wallet, options) - send prepared transaction
  - get_coin("coin_ticker") - get info about specified coin
  - get_coin_price("coin_ticker") - get price of specified coin
  - get_coins_list(limit, offset) - get list of available coins, default limit of coins to show is 10 
- - get_my_transactions(wallet, limit, offset)
- - get_address()
+ - get_my_transactions(wallet.get_address(), limit, offset) - get list of transactions
+ - get_address(wallet.get_address()) - get data about address state including info about owned NFT
+ - get_nonce(wallet.get_address()) - get data about nonce for address
+ - get_stakes(wallet.get_address()) - get data about stakes for address
+ - get_validator("validator_address") - get data about validator 
+ - get_tx("tx_hash") - get data about transaction by hash
  - get_multisig()
  - get_multisigs()
- - get_nonce()
- - get_stakes()
- - get_tx()
  - get_txs_multisign()
- - get_validator()
 
 ## Send Coin Transaction
 ```python
@@ -406,11 +413,11 @@ from decimal_sdk import NftMintTransaction
 wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
 api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
 
-denom = 'MyBrandNewNFT'
-id = '7777'
-token_uri = 'uri'
-quantity = 2
-reserve = 1
+denom = 'eightbal'
+token_uri = 'uri22212'
+id = '886688'
+quantity = 212
+reserve = 11
 allow_mint = True
 
 tx3 = NftMintTransaction(denom, id, wallet.get_address(), wallet.get_address(), quantity, reserve, token_uri, allow_mint)
@@ -425,11 +432,11 @@ from decimal_sdk import NftBurnTransaction
 wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
 api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
 
-denom = 'MyBrandNewNFT'
-id = '7777'
-quantity = 1
+denom = 'eightbal'
+id = '886688'
+sub_token_ids = ["1", "3", "8"]
 
-tx3 = NftBurnTransaction(denom, id, wallet.get_address(), quantity)
+tx3 = NftBurnTransaction(denom, id, wallet.get_address(), sub_token_ids)
 api.send_tx(tx3, wallet)
 ```
 
@@ -457,11 +464,11 @@ from decimal_sdk import NftTransferTransaction
 wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
 api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
 
-denom = 'MyBrandNewNFT'
-id = '7777'
-quantity = 1
+denom = 'eightbal'
+id = '886688'
+sub_token_ids = ["2", "4", "9", "200", "150"]
 
-tx3 = NftTransferTransaction(denom, id, wallet.get_address(), wallet.get_address(), quantity)
+tx3 = NftTransferTransaction(denom, id, wallet.get_address(), "dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g", sub_token_ids)
 api.send_tx(tx3, wallet)
 ```
 
@@ -473,12 +480,12 @@ from decimal_sdk import NftDelegateTransaction
 wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
 api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
 
-denom = 'Portwein1'
-id = '7777'
+denom = 'eightbal'
+id = '886688'
+sub_token_ids = ["189", "201", "22", "30", "151", "23"]
 validator_address = 'dxvaloper1mvqrrrlcd0gdt256jxg7n68e4neppu5tk872z3'
-quantity = 1
 
-tx3 = NftDelegateTransaction(denom, id, wallet.get_address(), validator_address, quantity)
+tx3 = NftDelegateTransaction(denom, id, wallet.get_address(), validator_address, sub_token_ids)
 api.send_tx(tx3, wallet)
 ```
 
@@ -490,11 +497,11 @@ from decimal_sdk import NftUnboundTransaction
 wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
 api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
 
-denom = 'MyBrandNewNFT'
-id = '7777'
+denom = 'eightbal'
+id = '886688'
+sub_token_ids = ["201"]
 validator_address = 'dxvaloper1mvqrrrlcd0gdt256jxg7n68e4neppu5tk872z3'
-quantity = 1
 
-tx3 = NftUnboundTransaction(denom, id, wallet.get_address(), validator_address, quantity)
+tx3 = NftUnboundTransaction(denom, id, wallet.get_address(), validator_address, sub_token_ids)
 api.send_tx(tx3, wallet)
 ```

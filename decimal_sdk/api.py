@@ -66,9 +66,7 @@ class DecimalAPI:
         return self.__request(f'address/{address}/stakes')
 
     def get_tx(self, tx_hash: str):
-        if len(tx_hash) < 1:
-            raise Exception('Hash is empty')
-        return self.__request("rpc/tx", "get", '{ "params": { "hash": "0x$' + tx_hash + '"}}')
+        return self.__request("rpc/tx", "get", options={"hash": f"0x{tx_hash}"})
 
     def get_txs_multisign(self, address: str, limit: int = 10, offset: int = 0):
         options = {"limit": limit, "offset": offset}
