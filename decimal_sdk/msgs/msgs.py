@@ -527,6 +527,8 @@ class NftMintMsg(BaseMsg):
 
     def __init__(self, denom: str, id: str, sender: str, recipient: str, quantity: int, reserve: int, token_uri: str,
                  allow_mint: bool):
+        if not isinstance(quantity, int):
+            raise ValueError('Quantity must be of type int')
         self.denom = denom
         self.id = id
         self.sender = sender

@@ -290,7 +290,7 @@ api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
 denom = 'eightbal'
 token_uri = 'uri22212'
 id = '886688'
-quantity = 212
+quantity = 212.5
 reserve = 11
 allow_mint = True
 
