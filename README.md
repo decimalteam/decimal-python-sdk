@@ -69,6 +69,10 @@ api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
 wallet = Wallet('erase august mask elevator sand picture north there apple equal anchor target')
 api.method_name(args)
 ```
+
+```python
+
+```
  - send_tx(transaction, wallet, options) - send prepared transaction
  - get_coin("coin_ticker") - get info about specified coin
  - get_coin_price("coin_ticker") - get price of specified coin
@@ -79,6 +83,7 @@ api.method_name(args)
  - get_stakes(wallet.get_address()) - get data about stakes for address
  - get_validator("validator_address") - get data about validator 
  - get_tx("tx_hash") - get data about transaction by hash
+ - get_nft("nft_id") - get json with subtokens of token (owner, reserve, subId, delegated, validator)
  - get_multisig()
  - get_multisigs()
  - get_txs_multisign()
