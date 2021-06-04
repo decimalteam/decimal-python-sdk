@@ -67,7 +67,7 @@ methods called like
 from decimal_sdk import DecimalAPI
 api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
 wallet = Wallet('erase august mask elevator sand picture north there apple equal anchor target')
-api.method_name(args)
+api.method_name(args) 
 ```
  - send_tx(transaction, wallet, options) - send prepared transaction
  - get_coin("coin_ticker") - get info about specified coin
