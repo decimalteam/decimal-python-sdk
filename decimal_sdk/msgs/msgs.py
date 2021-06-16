@@ -152,7 +152,7 @@ class SellAllCoinsMsg(BaseMsg):
         self.sender = sender
         self.coin_to_sell = coin_to_sell
         self.min_coin_to_buy = min_coin_to_buy
-        self.min_coin_to_buy.amount = '0'
+        self.min_coin_to_buy.amount = min_coin_to_buy.amount
 
     def __dict__(self):
         return {'type': self.type,

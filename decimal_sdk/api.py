@@ -77,6 +77,9 @@ class DecimalAPI:
         self.__validate_address(address)
         return self.__request(f'validator/{address}')
 
+    def get_nft(self, id: str):
+        return self.__request(f'nfts/{id}')
+
     def send_tx(self, tx: Transaction, wallet: Wallet, options={}):
         """Method to sign and send prepared transaction"""
         url = "rpc/txs"
