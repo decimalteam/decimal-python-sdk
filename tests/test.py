@@ -57,7 +57,8 @@ api.send_tx(tx2, wallet, options)
 # api.send_tx(tx3, wallet)
 #
 # ###########################################################################################
-#
+
+
 from decimal_sdk import Wallet
 from decimal_sdk import DecimalAPI
 from decimal_sdk import UpdateCoinTransaction
