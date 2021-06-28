@@ -8,7 +8,7 @@ from decimal_sdk.msgs.msgs import (SendCoinMsg, BuyCoinMsg, CreateCoinMsg, Updat
                                    DisableEnableValidatorMsg,
                                    MultysigCreateMsg, MultysigCreateTXMsg, MultysigSignTXMsg, MultisendSend, MultisendCoinMsg,
                                    SubmitProposalMsg, VoteProposalMsg,
-                                   SwapHtltMsg, SwapRedeemMsg, SwapRefundMsg,
+                                   SwapHtltMsg, SwapRedeemMsg, SwapInitMsg,
                                    NftMintMsg, NftBurnMsg, NftEditMetadataMsg, NftTransferMsg, NftDelegateMsg, NftUnboundMsg
                                    )
 
@@ -182,31 +182,6 @@ class VoteProposalTransaction(Transaction):
         super().__init__(**kwargs)
 
 
-class SwapHtltTransaction(Transaction):
-    message: SwapHtltMsg
-
-    def __init__(self, transfer_type: str, sender: str, recipient: str, hashed_secret: str, denom: str, amount: str, **kwargs):
-        coin = Coin(denom, get_amount_uni(amount))
-        self.message = SwapHtltMsg(transfer_type, sender, recipient, hashed_secret, coin)
-        super().__init__(**kwargs)
-
-
-class SwapRedeemTransaction(Transaction):
-    message: SwapRedeemMsg
-
-    def __init__(self, secret: str, sender: str, **kwargs):
-        self.message = SwapRedeemMsg(secret, sender)
-        super().__init__(**kwargs)
-
-
-class SwapRefundTransaction(Transaction):
-    message: SwapRefundMsg
-
-    def __init__(self, sender: str, hashed_secret: str, **kwargs):
-        self.message = SwapRefundMsg(sender, hashed_secret)
-        super().__init__(**kwargs)
-
-
 class NftMintTransaction(Transaction):
     message: NftMintMsg
 
@@ -253,4 +228,20 @@ class NftUnboundTransaction(Transaction):
 
     def __init__(self, denom: str, id: str, delegator_address: str, validator_address: str, sub_token_ids: [], **kwargs):
         self.message = NftUnboundMsg(denom, id, delegator_address, validator_address, sub_token_ids)
+        super().__init__(**kwargs)
+
+
+class SwapRedeemTransaction(Transaction):
+    message: SwapRedeemMsg
+
+    def __init__(self, sender: str, recipient: str, amount: str, token_name: str, token_symbol: str, transaction_number: str, from_chain: str, v: str, r: str, s: str, **kwargs):
+        self.message = SwapRedeemMsg(sender, recipient, amount, token_name, token_symbol, transaction_number, from_chain, v, r, s)
+        super().__init__(**kwargs)
+
+
+class SwapInitTransaction(Transaction):
+    message: SwapInitMsg
+
+    def __init__(self, recipient: str, amount: str, token_name: str, token_symbol: str, dest_chain: str, **kwargs):
+        self.message = SwapInitMsg(recipient, amount, token_name, token_symbol, dest_chain)
         super().__init__(**kwargs)

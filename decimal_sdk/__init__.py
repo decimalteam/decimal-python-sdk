@@ -8,6 +8,6 @@ from .transactions import (Transaction,
                            DisableEnableValidatorTransaction,
                            MultysigCreateTransaction, MultysigCreateTXTransaction, MultysigSignTXTransaction, MultisendCoinTransaction,
                            SubmitProposalTransaction, VoteProposalTransaction,
-                           SwapHtltTransaction, SwapRedeemTransaction, SwapRefundTransaction,
+                           SwapRedeemTransaction, SwapInitTransaction,
                            NftMintTransaction, NftBurnTransaction, NftEditMetadataTransaction, NftTransferTransaction, NftDelegateTransaction, NftUnboundTransaction
                            )

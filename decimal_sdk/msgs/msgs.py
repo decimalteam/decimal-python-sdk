@@ -445,71 +445,73 @@ class VoteProposalMsg(BaseMsg):
         }
 
 
-class SwapHtltMsg(BaseMsg):
-    type = SWAP_HTLT
-    transfer_type: str
-    sender: str
-    recipient: str
-    hashed_secret: str
-    amount: Coin
-
-    def __init__(self, transfer_type: str, sender: str, recipient: str, hashed_secret: str, amount: Coin):
-        self.sender = sender
-        self.recipient = recipient
-        self.hashed_secret = hashed_secret
-        self.amount = amount
-        if transfer_type == "in":
-            self.transfer_type = "2"
-        else:
-            self.transfer_type = "1"
-
-    def __dict__(self):
-        return {
-            "type": self.type,
-            "value": {
-                "transfer_type": self.transfer_type,
-                "from": self.sender,
-                "recipient": self.recipient,
-                "hashed_secret": self.hashed_secret,
-                "amount": self.amount.__dict__()
-            }
-        }
-
-
 class SwapRedeemMsg(BaseMsg):
     type = SWAP_REDEEM
-    secret: str
     sender: str
+    recipient: str
+    amount: str
+    token_name: str
+    token_symbol: str
+    transaction_number: str
+    from_chain: str
+    v: str
+    r: str
+    s: str
 
-    def __init__(self, secret: str, sender: str):
-        self.secret = secret
+    def __init__(self, sender: str, recipient: str, amount: str, token_name: str, token_symbol: str, transaction_number: str, from_chain: str, v: str, r: str, s: str):
         self.sender = sender
-
-    def __dict__(self):
-        return {
-            "type": self.type,
-            "value": {
-                "from": {self.sender},
-                "secret": {self.secret}
-            }
-        }
-
-
-class SwapRefundMsg(BaseMsg):
-    type = SWAP_REFUND
-    sender: str
-    hashed_secret: str
-
-    def __init__(self, sender: str, hashed_secret: str):
-        self.sender = sender
-        self.hashed_secret = hashed_secret
+        self.recipient = recipient
+        self.amount = amount
+        self.token_name = token_name
+        self.token_symbol = token_symbol
+        self.transaction_number = transaction_number
+        self.from_chain = from_chain
+        self.v = v
+        self.r = r
+        self.s = s
 
     def __dict__(self):
         return {
             "type": self.type,
             "value": {
                 "from": self.sender,
-                "hashed_secret": self.hashed_secret
+                'recipient': self.recipient,
+                'amount': self.amount,
+                'tokenName': self.token_name,
+                'tokenSymbol': self.token_symbol,
+                'transactionNumber': self.transaction_number,
+                'fromChain': self.from_chain,
+                'v': self.v,
+                'r': self.r,
+                's': self.s,
+            }
+        }
+
+
+class SwapInitMsg(BaseMsg):
+    type = SWAP_INIT
+    recipient: str
+    amount: str
+    token_name: str
+    token_symbol: str
+    dest_chain: str
+
+    def __init__(self, recipient: str, amount: str, token_name: str, token_symbol: str, dest_chain: str):
+        self.recipient = recipient
+        self.amount = amount
+        self.token_name = token_name
+        self.token_symbol = token_symbol
+        self.dest_chain = dest_chain
+
+    def __dict__(self):
+        return {
+            "type": self.type,
+            "value": {
+                'recipient': self.recipient,
+                'amount': self.amount,
+                'tokenName': self.token_name,
+                'tokenSymbol': self.token_symbol,
+                'destChain': self.dest_chain,
             }
         }
 
