@@ -69,7 +69,7 @@ class Coin:
         self.amount = amount
 
     def __dict__(self):
-        return {'denom': self.denom, 'amount': self.amount}
+        return {'denom': self.denom, 'amount': str(self.amount)}
 
 
 class Signature:

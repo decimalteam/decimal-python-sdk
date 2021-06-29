@@ -8,7 +8,7 @@ from decimal_sdk.msgs.msgs import (SendCoinMsg, BuyCoinMsg, CreateCoinMsg, Updat
                                    DisableEnableValidatorMsg,
                                    MultysigCreateMsg, MultysigCreateTXMsg, MultysigSignTXMsg, MultisendSend, MultisendCoinMsg,
                                    SubmitProposalMsg, VoteProposalMsg,
-                                   SwapHtltMsg, SwapRedeemMsg, SwapInitMsg,
+                                   SwapRedeemMsg, SwapInitMsg,
                                    NftMintMsg, NftBurnMsg, NftEditMetadataMsg, NftTransferMsg, NftDelegateMsg, NftUnboundMsg
                                    )
 
@@ -75,9 +75,14 @@ class UpdateCoinTransaction(Transaction):
 class SellAllCoinsMsgTransaction(Transaction):
     message: SellAllCoinsMsg
 
-    def __init__(self, sender: str, coin_to_sell_denom: str, coin_to_sell_amount: str, min_coin_to_buy_denom: str,
-                 min_coin_to_buy_amount: str, **kwargs):
+    def __init__(self, sender: str, coin_to_sell_denom: str, coin_to_sell_amount: int, min_coin_to_buy_denom: str,
+                 min_coin_to_buy_amount=0, **kwargs):
+        coin_to_sell_amount = str(get_amount_uni(coin_to_sell_amount))
         coin_to_sell = Coin(coin_to_sell_denom, coin_to_sell_amount)
+        if min_coin_to_buy_amount == 0:
+            min_coin_to_buy_amount = 1 #str(get_amount_uni(1))
+        else:
+            min_coin_to_buy_amount = str(get_amount_uni(min_coin_to_buy_amount))
         min_coin_to_buy = Coin(min_coin_to_buy_denom, min_coin_to_buy_amount)
         self.message = SellAllCoinsMsg(sender, coin_to_sell, min_coin_to_buy)
         super().__init__(**kwargs)
@@ -234,14 +239,30 @@ class NftUnboundTransaction(Transaction):
 class SwapRedeemTransaction(Transaction):
     message: SwapRedeemMsg
 
-    def __init__(self, sender: str, recipient: str, amount: str, token_name: str, token_symbol: str, transaction_number: str, from_chain: str, v: str, r: str, s: str, **kwargs):
-        self.message = SwapRedeemMsg(sender, recipient, amount, token_name, token_symbol, transaction_number, from_chain, v, r, s)
+    def __init__(self, sender: str,
+                 sent_from: str,
+                 recipient: str,
+                 amount: str,
+                 token_name: str,
+                 token_symbol: str,
+                 from_chain: str,
+                 dest_chain: str,
+                 v: str, r: str, s: str, **kwargs):
+        self.message = SwapRedeemMsg(sender,
+                 sent_from,
+                 recipient,
+                 amount,
+                 token_name,
+                 token_symbol,
+                 from_chain,
+                 dest_chain,
+                 v, r, s)
         super().__init__(**kwargs)
 
 
 class SwapInitTransaction(Transaction):
     message: SwapInitMsg
 
-    def __init__(self, recipient: str, amount: str, token_name: str, token_symbol: str, dest_chain: str, **kwargs):
-        self.message = SwapInitMsg(recipient, amount, token_name, token_symbol, dest_chain)
+    def __init__(self, sender: str, recipient: str, amount: str, token_symbol: str, from_chain: str, dest_chain, **kwargs):
+        self.message = SwapInitMsg(sender, recipient, amount, token_symbol, from_chain, dest_chain)
         super().__init__(**kwargs)

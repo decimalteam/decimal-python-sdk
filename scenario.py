@@ -4,11 +4,15 @@ from decimal_sdk import CreateCoinTransaction, SellAllCoinsMsgTransaction, SendC
 
 # mnemo = "hollow luggage slice soup leg vague icon walnut session candy improve struggle"
 # mnemo = "doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum"
-mnemo = "exotic favorite initial tank bridge tuition broken hope sniff tiny fringe ice letter joke goddess skate raw similar link knife cable today table gain"
+# mnemo = "exotic favorite initial tank bridge tuition broken hope sniff tiny fringe ice letter joke goddess skate raw similar link knife cable today table gain"
+# mnemo = "assume claim blind pony crane total glance hockey reform sentence brand tide decide solid party afford year oak fortune educate else remove vapor extend"
+# mnemo = "horror hope bird tray kiss write intact lady hammer mix foil mimic cupboard turtle reason volcano paddle goat tennis faculty valid swift blouse learn"
+# api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
+#
 # mnemo = "eight night small joke salon catalog walk text left maze allow loyal fork talk mad tortoise dumb record broccoli bachelor genre little ordinary message"
-wallet = Wallet(mnemo)
-print(wallet.get_address())
-api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
+# api = DecimalAPI("https://mainnet-gate.decimalchain.com/api")
+# wallet = Wallet(mnemo)
+# print(wallet.get_address())
 
 # title = "totally awesome coin"
 # symbol = "ttlwsmcn"
@@ -36,13 +40,20 @@ api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
 
 ############################################################################################################
 
-coin_to_sell_name = "ttlwsmcn"
-coin_to_sell_amount = "99000000000000000000000"
+# coin_to_sell_name = "ttlwsmcn"
+# coin_to_sell_amount = 0
+# min_coin_to_buy_name = "del"
+# min_coin_to_buy_amount = 0
+# price = api.get_coin_price('ttlwsmcn')
+
+coin_to_sell_name = "btt"
+coin_to_sell_amount = 0
 min_coin_to_buy_name = "del"
-min_coin_to_buy_amount = "8814367330407679512285"
-price = api.get_coin_price('ttlwsmcn')
-print(price)
-# min_coin_to_buy_amount = str(float(coin_to_sell_amount) * price * pow(10,18))
+min_coin_to_buy_amount = 0
+price = api.get_coin_price('btt')
+
+# print(price)
+# min_coin_to_buy_amount = int(float(coin_to_sell_amount) * price)
 # print(min_coin_to_buy_amount)
 tx4 = SellAllCoinsMsgTransaction(wallet.get_address(), coin_to_sell_name, coin_to_sell_amount,
                                  min_coin_to_buy_name, min_coin_to_buy_amount)

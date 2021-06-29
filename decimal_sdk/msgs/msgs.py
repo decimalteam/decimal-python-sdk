@@ -1,3 +1,4 @@
+import time
 from decimal_sdk.msgs.base import BaseMsg
 from decimal_sdk.tx_types import *
 from decimal_sdk.types import Coin, Candidate, Signature
@@ -152,7 +153,6 @@ class SellAllCoinsMsg(BaseMsg):
         self.sender = sender
         self.coin_to_sell = coin_to_sell
         self.min_coin_to_buy = min_coin_to_buy
-        self.min_coin_to_buy.amount = min_coin_to_buy.amount
 
     def __dict__(self):
         return {'type': self.type,
@@ -448,24 +448,34 @@ class VoteProposalMsg(BaseMsg):
 class SwapRedeemMsg(BaseMsg):
     type = SWAP_REDEEM
     sender: str
+    sent_from: str
     recipient: str
     amount: str
     token_name: str
     token_symbol: str
-    transaction_number: str
     from_chain: str
+    dest_chain: str
     v: str
     r: str
     s: str
 
-    def __init__(self, sender: str, recipient: str, amount: str, token_name: str, token_symbol: str, transaction_number: str, from_chain: str, v: str, r: str, s: str):
+    def __init__(self, sender: str,
+                 sent_from: str,
+                 recipient: str,
+                 amount: str,
+                 token_name: str,
+                 token_symbol: str,
+                 from_chain: str,
+                 dest_chain: str,
+                 v: str, r: str, s: str):
         self.sender = sender
+        self.sent_from = sent_from
         self.recipient = recipient
         self.amount = amount
         self.token_name = token_name
         self.token_symbol = token_symbol
-        self.transaction_number = transaction_number
         self.from_chain = from_chain
+        self.dest_chain = dest_chain
         self.v = v
         self.r = r
         self.s = s
@@ -474,13 +484,15 @@ class SwapRedeemMsg(BaseMsg):
         return {
             "type": self.type,
             "value": {
-                "from": self.sender,
+                'sender': self.sender,
+                'from': self.sender,
                 'recipient': self.recipient,
                 'amount': self.amount,
                 'tokenName': self.token_name,
                 'tokenSymbol': self.token_symbol,
-                'transactionNumber': self.transaction_number,
+                'transactionNumber': str(round(time.time() * 1000)),
                 'fromChain': self.from_chain,
+                'destChain': self.dest_chain,
                 'v': self.v,
                 'r': self.r,
                 's': self.s,
@@ -490,27 +502,33 @@ class SwapRedeemMsg(BaseMsg):
 
 class SwapInitMsg(BaseMsg):
     type = SWAP_INIT
+    sender: str
     recipient: str
     amount: str
     token_name: str
     token_symbol: str
+    from_chain: str
     dest_chain: str
 
-    def __init__(self, recipient: str, amount: str, token_name: str, token_symbol: str, dest_chain: str):
+    def __init__(self, sender: str, recipient: str, amount: str, token_symbol: str, from_chain: str, dest_chain: str):
+        self.sender = sender
         self.recipient = recipient
         self.amount = amount
-        self.token_name = token_name
         self.token_symbol = token_symbol
+        self.from_chain = from_chain
         self.dest_chain = dest_chain
 
     def __dict__(self):
         return {
             "type": self.type,
             "value": {
+                'from': self.sender,
                 'recipient': self.recipient,
                 'amount': self.amount,
                 'tokenName': self.token_name,
                 'tokenSymbol': self.token_symbol,
+                'transactionNumber': str(round(time.time() * 1000)),
+                'fromChain': self.dest_chain,
                 'destChain': self.dest_chain,
             }
         }

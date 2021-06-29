@@ -59,11 +59,11 @@ api.send_tx(tx2, wallet, options)
 # ###########################################################################################
 
 
-from decimal_sdk import Wallet
-from decimal_sdk import DecimalAPI
-from decimal_sdk import UpdateCoinTransaction
-wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
-api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
+# from decimal_sdk import Wallet
+# from decimal_sdk import DecimalAPI
+# from decimal_sdk import UpdateCoinTransaction
+# wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
+# api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
 #
 # title = "My new awesomeTestCoin"
 # symbol = "AWSMCNN"
@@ -78,21 +78,22 @@ api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
 #
 # ###########################################################################################
 #
-# from decimal_sdk import Wallet
-# from decimal_sdk import DecimalAPI
-# from decimal_sdk import SellAllCoinsMsgTransaction
-#
+from decimal_sdk import Wallet
+from decimal_sdk import DecimalAPI
+from decimal_sdk import SellAllCoinsMsgTransaction
+
 # wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
-# api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
-#
-# coin_to_sell_name = "tdel"
-# coin_to_sell_amount = "1"
-# min_coin_to_buy_name = "finaltest"
-# min_coin_to_buy_amount = "1"
-#
-# tx4 = SellAllCoinsMsgTransaction(wallet.get_address(), coin_to_sell_name, coin_to_sell_amount,
-#                                  min_coin_to_buy_name, min_coin_to_buy_amount)
-# api.send_tx(tx4, wallet)
+wallet = Wallet("assume claim blind pony crane total glance hockey reform sentence brand tide decide solid party afford year oak fortune educate else remove vapor extend")
+api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
+
+coin_to_sell_name = "finaltest"
+coin_to_sell_amount = 1000
+min_coin_to_buy_name = "del"
+min_coin_to_buy_amount = 1
+
+tx4 = SellAllCoinsMsgTransaction(wallet.get_address(), coin_to_sell_name, coin_to_sell_amount,
+                                 min_coin_to_buy_name, min_coin_to_buy_amount)
+api.send_tx(tx4, wallet)
 #
 # ###########################################################################################
 #
@@ -364,6 +365,22 @@ api.send_tx(tx3, wallet)
 from decimal_sdk import Wallet
 from decimal_sdk import DecimalAPI
 from decimal_sdk import NftUnboundTransaction
+wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
+api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
+
+denom = 'eightbal'
+id = '886688'
+sub_token_ids = ["113", "111"]
+validator_address = 'dxvaloper1mvqrrrlcd0gdt256jxg7n68e4neppu5tk872z3'
+
+tx3 = NftUnboundTransaction(denom, id, wallet.get_address(), validator_address, sub_token_ids)
+api.send_tx(tx3, wallet)
+
+############################################################################################
+
+from decimal_sdk import Wallet
+from decimal_sdk import DecimalAPI
+from decimal_sdk import SwapRedeemTransaction
 wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
 api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
 

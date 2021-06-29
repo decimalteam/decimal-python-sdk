@@ -105,8 +105,12 @@ class DecimalAPI:
         tx.signer.account_number = str(wallet.nonce["value"]["account_number"])
         tx.signer.sequence = str(wallet.nonce["value"]["sequence"])
         fee_amount = Coin('del', '0')
-        tx.fee.amount = [fee_amount]
-        tx.signer.fee.amount = [fee_amount]
+        if denom == "del" or denom == "tdel":
+            tx.fee.amount = []
+            tx.signer.fee.amount = []
+        else:
+            tx.fee.amount = [fee_amount]
+            tx.signer.fee.amount = [fee_amount]
 
         tx.signer.fee = tx.fee
         tx.signer.msgs = tx.msgs
@@ -115,7 +119,10 @@ class DecimalAPI:
         payload = {"tx": {}, "mode": "sync"}
         payload["tx"]["msg"] = [tx_data]
         # payload["tx"]["fee"] = {"amount": [{'denom': 'del', 'amount': '0'}], "gas": "0"}
-        payload["tx"]["fee"] = {"amount": [tx.signer.fee.amount[0].__dict__()], "gas": "0"}
+        if denom == "del" or denom == "tdel":
+            payload["tx"]["fee"] = {"amount": [], "gas": "0"}
+        else:
+            payload["tx"]["fee"] = {"amount": [tx.signer.fee.amount[0].__dict__()], "gas": "0"}
         payload["tx"]["memo"] = message
         payload["tx"]["signatures"] = []
         tx.sign(wallet)
@@ -124,6 +131,7 @@ class DecimalAPI:
 
         for sig in tx.signatures:
             payload["tx"]["signatures"].append(sig.get_signature())
+        print(payload)
         return self.__request(url, 'post', json.dumps(payload))
 
     def issue_check(self, wallet, data):
