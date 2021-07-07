@@ -184,10 +184,10 @@ from decimal_sdk import SellAllCoinsMsgTransaction
 wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
 api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
 
-coin_to_sell_name = "tdel"
-coin_to_sell_amount = "1"
-min_coin_to_buy_name = "finaltest"
-min_coin_to_buy_amount = "1"
+coin_to_sell_name = "btt"
+coin_to_sell_amount = 0 # must be zero 
+min_coin_to_buy_name = "del"
+min_coin_to_buy_amount = 0 # must be zero 
 
 tx4 = SellAllCoinsMsgTransaction(wallet.get_address(), coin_to_sell_name, coin_to_sell_amount,
                                  min_coin_to_buy_name, min_coin_to_buy_amount)

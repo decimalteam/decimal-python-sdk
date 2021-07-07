@@ -2,7 +2,7 @@ from decimal_sdk import Wallet
 from decimal_sdk import DecimalAPI
 from decimal_sdk import SendCoinTransaction
 wallet = Wallet("exotic favorite initial tank bridge tuition broken hope sniff tiny fringe ice letter joke goddess skate raw similar link knife cable today table gain")
-api = DecimalAPI("https://mainnet-gate.decimalchain.com/api")
+api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
 
 receiver = "dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g"
 coin_name = "del"
@@ -381,13 +381,40 @@ api.send_tx(tx3, wallet)
 from decimal_sdk import Wallet
 from decimal_sdk import DecimalAPI
 from decimal_sdk import SwapRedeemTransaction
-wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
+wallet = Wallet("exotic favorite initial tank bridge tuition broken hope sniff tiny fringe ice letter joke goddess skate raw similar link knife cable today table gain")
+
+# wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
 api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
 
-denom = 'eightbal'
-id = '886688'
-sub_token_ids = ["113", "111"]
-validator_address = 'dxvaloper1mvqrrrlcd0gdt256jxg7n68e4neppu5tk872z3'
+sender = wallet.get_address()
+sent_from = '0x856F08B12cB844fa05CDF1eBfFd303B091D34d09'
+amount = 2
+recipient = 'dx1twj64nphm8zl98uxv7gnt6xg4tpkk4gyr3tux9'
+token_name = 'muh coin'
+token_symbol = 'coin'
+from_chain = '2'
+dest_chain = '1'
+v = '0x1c',
+r = '0xb8b3eb4980e649a65b7e136fbcafda4d12e3b11a40d8aaa7d951e13fbe483579'
+s = '0x74de77f4a9f4045992cf6f220cff9be67a2c0332124e60af0a6791c9b0a64c36'
 
-tx3 = NftUnboundTransaction(denom, id, wallet.get_address(), validator_address, sub_token_ids)
+tx3 = SwapRedeemTransaction(sender, sent_from, recipient, amount, token_name, token_symbol, from_chain, dest_chain, v, r, s)
 api.send_tx(tx3, wallet)
+
+############################################################################################
+
+from decimal_sdk import Wallet
+from decimal_sdk import DecimalAPI
+from decimal_sdk import SwapInitTransaction
+wallet = Wallet("exotic favorite initial tank bridge tuition broken hope sniff tiny fringe ice letter joke goddess skate raw similar link knife cable today table gain")
+api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
+
+sender = wallet.get_address()
+recipient = 'dx1twj64nphm8zl98uxv7gnt6xg4tpkk4gyr3tux9'
+amount = 2
+token_symbol = 'coin'
+from_chain = '1'
+dest_chain = '2'
+
+tx7 = SwapInitTransaction(sender, recipient, amount, token_symbol, from_chain, dest_chain)
+api.send_tx(tx7, wallet)

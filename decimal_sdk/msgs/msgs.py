@@ -488,11 +488,11 @@ class SwapRedeemMsg(BaseMsg):
                 'from': self.sender,
                 'recipient': self.recipient,
                 'amount': self.amount,
-                'tokenName': self.token_name,
-                'tokenSymbol': self.token_symbol,
-                'transactionNumber': str(round(time.time() * 1000)),
-                'fromChain': self.from_chain,
-                'destChain': self.dest_chain,
+                'token_name': self.token_name,
+                'token_symbol': self.token_symbol,
+                'transaction_number': str(round(time.time() * 1000)),
+                'from_chain': self.from_chain,
+                'dest_chain': self.dest_chain,
                 'v': self.v,
                 'r': self.r,
                 's': self.s,
@@ -505,7 +505,6 @@ class SwapInitMsg(BaseMsg):
     sender: str
     recipient: str
     amount: str
-    token_name: str
     token_symbol: str
     from_chain: str
     dest_chain: str
@@ -525,11 +524,10 @@ class SwapInitMsg(BaseMsg):
                 'from': self.sender,
                 'recipient': self.recipient,
                 'amount': self.amount,
-                'tokenName': self.token_name,
-                'tokenSymbol': self.token_symbol,
-                'transactionNumber': str(round(time.time() * 1000)),
-                'fromChain': self.dest_chain,
-                'destChain': self.dest_chain,
+                'token_symbol': self.token_symbol,
+                'transaction_number': str(round(time.time() * 1000)),
+                'from_chain': self.dest_chain,
+                'dest_chain': self.dest_chain,
             }
         }
 

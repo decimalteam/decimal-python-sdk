@@ -239,30 +239,15 @@ class NftUnboundTransaction(Transaction):
 class SwapRedeemTransaction(Transaction):
     message: SwapRedeemMsg
 
-    def __init__(self, sender: str,
-                 sent_from: str,
-                 recipient: str,
-                 amount: str,
-                 token_name: str,
-                 token_symbol: str,
-                 from_chain: str,
-                 dest_chain: str,
-                 v: str, r: str, s: str, **kwargs):
-        self.message = SwapRedeemMsg(sender,
-                 sent_from,
-                 recipient,
-                 amount,
-                 token_name,
-                 token_symbol,
-                 from_chain,
-                 dest_chain,
-                 v, r, s)
+    def __init__(self, sender: str, sent_from: str, recipient: str, amount: int, token_name: str, token_symbol: str,
+                 from_chain: str, dest_chain: str, v: str, r: str, s: str, **kwargs):
+        self.message = SwapRedeemMsg(sender, sent_from, recipient, str(amount), token_name, token_symbol, from_chain, dest_chain, v, r, s)
         super().__init__(**kwargs)
 
 
 class SwapInitTransaction(Transaction):
     message: SwapInitMsg
 
-    def __init__(self, sender: str, recipient: str, amount: str, token_symbol: str, from_chain: str, dest_chain, **kwargs):
-        self.message = SwapInitMsg(sender, recipient, amount, token_symbol, from_chain, dest_chain)
+    def __init__(self, sender: str, recipient: str, amount: int, token_symbol: str, from_chain: str, dest_chain, **kwargs):
+        self.message = SwapInitMsg(sender, recipient, str(amount), token_symbol, from_chain, dest_chain)
         super().__init__(**kwargs)

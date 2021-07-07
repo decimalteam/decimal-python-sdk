@@ -9,10 +9,10 @@ from decimal_sdk import CreateCoinTransaction, SellAllCoinsMsgTransaction, SendC
 # mnemo = "horror hope bird tray kiss write intact lady hammer mix foil mimic cupboard turtle reason volcano paddle goat tennis faculty valid swift blouse learn"
 # api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
 #
-# mnemo = "eight night small joke salon catalog walk text left maze allow loyal fork talk mad tortoise dumb record broccoli bachelor genre little ordinary message"
-# api = DecimalAPI("https://mainnet-gate.decimalchain.com/api")
-# wallet = Wallet(mnemo)
-# print(wallet.get_address())
+mnemo = "eight night small joke salon catalog walk text left maze allow loyal fork talk mad tortoise dumb record broccoli bachelor genre little ordinary message"
+api = DecimalAPI("https://mainnet-gate.decimalchain.com/api")
+wallet = Wallet(mnemo)
+print(wallet.get_address())
 
 # title = "totally awesome coin"
 # symbol = "ttlwsmcn"
