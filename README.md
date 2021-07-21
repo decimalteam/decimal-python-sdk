@@ -246,7 +246,7 @@ validator_addr = wallet.get_validator_address()
 coin_name = 'tdel'
 coin_amount = "100000000000000000000"
 pub_key = 'JRlv38BXuD1TvWQJ9ic1KHr8PzuOITZH3rD8Zm0Vj3Y='
-commission = "0.100000000000000000"
+commission = "0.1" # 1 is 100%, here commission set to 10% 
 moniker = 'my-node-123'
 identity = "123"
 website = "hello.ru"

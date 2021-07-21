@@ -127,29 +127,28 @@ api.send_tx(tx4, wallet)
 #
 # ###########################################################################################
 #
-# from decimal_sdk import Wallet
-# from decimal_sdk import DecimalAPI
-# from decimal_sdk import DeclareCandidateTransaction
-# wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
-# api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
+from decimal_sdk import Wallet
+from decimal_sdk import DecimalAPI
+from decimal_sdk import DeclareCandidateTransaction
+wallet = Wallet("bulk simple nephew below neutral robot swamp spoil hospital area choice narrow miss battle general mercy element test indoor salad captain fringe liar electric")
+api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
 #
-# reward_addr = 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g'
-# # validator_addr = "dxvaloper1ajytg8jg8ypx0rj9p792x32fuxyezga4dq2uk0"
-# validator_addr = wallet.get_validator_address()
-# coin_name = 'tdel'
-# coin_amount = "100000000000000000000"
-# pub_key = 'JRlv38BXuD1TvWQJ9ic1KHr8PzuOITZH3rD8Zm0Vj3Y='
-# commission = "0.100000000000000000"
-# moniker = 'my-node-123'
-# identity = ""
-# website = "hello.ru"
-# security_contact = "test@test.com"
-# details = "details node"
-#
-# tx7 = DeclareCandidateTransaction(commission, validator_addr, reward_addr,
-#                  coin_name, coin_amount, moniker, identity, website, security_contact, details,
-#                  pub_key)
-# api.send_tx(tx7, wallet)
+reward_addr = wallet.get_address()
+validator_addr = wallet.get_validator_address()
+coin_name = 'tdel'
+coin_amount = "10000000000000000000"
+pub_key = 'KuFmdTdrHqDivlNxdjK7XpMml8PNkRvW3/oveYSN/xE='
+commission = "0"
+moniker = 'my-node-123'
+identity = ""
+website = "hello.ru"
+security_contact = "test@test.com"
+details = "details node"
+
+tx7 = DeclareCandidateTransaction(commission, validator_addr, reward_addr,
+                 coin_name, coin_amount, moniker, identity, website, security_contact, details,
+                 pub_key)
+api.send_tx(tx7, wallet)
 #
 # ###########################################################################################
 #

@@ -115,6 +115,7 @@ class DeclareCandidateTransaction(Transaction):
                  key_value: str, key_type: str = 'tendermint/PubKeyEd25519', **kwargs):
         stake = Coin(denom, str(amount))
         pub_key = {"type": key_type, "value": key_value}
+        commission = '%.18f' % int(commission)
         description = Candidate(moniker, identity, website, security_contact, details)
         self.message = DeclareCandidateMsg(commission, validator_addr, reward_addr, pub_key, stake, description)
         super().__init__(**kwargs)
