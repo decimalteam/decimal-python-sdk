@@ -66,7 +66,7 @@ class DecimalAPI:
         return self.__request(f'address/{address}/stakes')
 
     def get_tx(self, tx_hash: str):
-        return self.__request("rpc/tx", "get", options={"hash": f"0x{tx_hash}"})
+        return json.loads(self.__request("rpc/tx", "get", options = {"hash": f"{tx_hash}"}))["result"]
 
     def get_txs_multisign(self, address: str, limit: int = 10, offset: int = 0):
         options = {"limit": limit, "offset": offset}
@@ -355,6 +355,7 @@ class DecimalAPI:
     def __request(self, path: str, method: str = 'get', payload=None, options={}):
         url = (self.base_url + path).lower()
         if method == 'get':
+            print("options ", options)
             if len(options) > 0:
                 response = requests.get(url, params=options)
             else:

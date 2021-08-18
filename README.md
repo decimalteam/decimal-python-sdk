@@ -70,23 +70,20 @@ wallet = Wallet('erase august mask elevator sand picture north there apple equal
 api.method_name(args) 
 ```
 
-```python
-
-```
- - send_tx(transaction, wallet, options) - send prepared transaction
- - get_coin("coin_ticker") - get info about specified coin
- - get_coin_price("coin_ticker") - get price of specified coin
- - get_coins_list(limit, offset) - get list of available coins, default limit of coins to show is 10 
- - get_my_transactions(wallet.get_address(), limit, offset) - get list of transactions
- - get_address(wallet.get_address()) - get data about address state including info about owned NFT
- - get_nonce(wallet.get_address()) - get data about nonce for address
- - get_stakes(wallet.get_address()) - get data about stakes for address
- - get_validator("validator_address") - get data about validator 
- - get_tx("tx_hash") - get data about transaction by hash
- - get_nft("nft_id") - get json with subtokens of token (owner, reserve, subId, delegated, validator)
- - get_multisig()
- - get_multisigs()
- - get_txs_multisign()
+* send_tx(transaction, wallet, options) - send prepared transaction 
+* get_coin("coin_ticker") - get info about specified coin 
+* get_coin_price("coin_ticker") - get price of specified coin 
+* get_coins_list(limit, offset) - get list of available coins, default limit of coins to show is 10 
+* get_my_transactions(wallet.get_address(), limit, offset) - get list of transactions 
+* get_address(wallet.get_address()) - get data about address state including info about owned NFT 
+* get_nonce(wallet.get_address()) - get data about nonce for address 
+* get_stakes(wallet.get_address()) - get data about stakes for address 
+* get_validator("validator_address") - get data about validator 
+* get_tx("tx_hash") - get data about transaction by hash 
+* get_nft("nft_id") - get json with subtokens of token (owner, reserve, subId, delegated, validator)
+* get_multisig()
+* get_multisigs()
+* get_txs_multisign()
 
 ## Send Coin Transaction
 ```python
