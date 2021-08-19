@@ -6,13 +6,15 @@ api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
 
 receiver = "dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g"
 coin_name = "del"
-coin_amount = 1
+coin_amount = 160
 options = {
     "denom": coin_name,
-    "memo": "message to send with transaction"
+    "memo": "sdk test"
 }
 tx = SendCoinTransaction(wallet.get_address(), receiver, coin_name, coin_amount)
+api.estimate_tx_fee(tx, wallet, options)
 api.send_tx(tx, wallet, options)
+
 ###########################################################################################
 
 from decimal_sdk import Wallet

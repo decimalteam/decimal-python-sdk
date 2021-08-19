@@ -71,6 +71,7 @@ api.method_name(args)
 ```
 
 * send_tx(transaction, wallet, options) - send prepared transaction 
+* estimate_tx_fee(transaction, wallet, options) - used the same way as api.send_tx(), returns transaction fee
 * get_coin("coin_ticker") - get info about specified coin 
 * get_coin_price("coin_ticker") - get price of specified coin 
 * get_coins_list(limit, offset) - get list of available coins, default limit of coins to show is 10 

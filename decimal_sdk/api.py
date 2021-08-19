@@ -61,6 +61,10 @@ class DecimalAPI:
         self.__validate_address(address)
         return self.__request(f'rpc/auth/accounts/{address}')
 
+    def get_nonce_not_increasing(self, address: str):
+        self.__validate_address(address)
+        return self.__request(f'rpc/accounts/{address}')
+
     def get_stakes(self, address: str):
         self.__validate_address(address)
         return self.__request(f'address/{address}/stakes')
@@ -79,6 +83,26 @@ class DecimalAPI:
 
     def get_nft(self, id: str):
         return self.__request(f'nfts/{id}')
+
+
+    def estimate_tx_fee(self, tx: Transaction, wallet: Wallet, options={}):
+        """Method to sign and send prepared transaction"""
+        url = "rpc/txs"
+
+        denom = "del"
+        commission_type = "base"
+        if "denom" in options:
+            denom = options["denom"]
+            commission_type = "value"
+
+        if "memo" in options:
+            tx.memo = options["memo"]
+            tx.signer.memo = options["memo"]
+
+        message = tx.memo
+        tx_data = tx.message.get_message()
+        return self.__get_comission(tx, denom, FEES[tx.message.type], tx_data)["value"]
+
 
     def send_tx(self, tx: Transaction, wallet: Wallet, options={}):
         """Method to sign and send prepared transaction"""
@@ -99,8 +123,7 @@ class DecimalAPI:
         commission = self.__get_comission(tx, denom, FEES[tx.message.type], tx_data)
 
         fee_amount = Coin(denom, get_amount_uni(commission[commission_type]))
-
-        wallet.nonce = json.loads(self.get_nonce(wallet.get_address()))["result"]
+        wallet.nonce = json.loads(self.get_nonce_not_increasing(wallet.get_address()))["result"]
         tx.signer.chain_id = self.get_chain_id()
         tx.signer.account_number = str(wallet.nonce["value"]["account_number"])
         tx.signer.sequence = str(wallet.nonce["value"]["sequence"])
@@ -131,7 +154,6 @@ class DecimalAPI:
 
         for sig in tx.signatures:
             payload["tx"]["signatures"].append(sig.get_signature())
-        print(payload)
         return self.__request(url, 'post', json.dumps(payload))
 
     def issue_check(self, wallet, data):
@@ -310,13 +332,17 @@ class DecimalAPI:
         return result
 
     def __get_tx_size(self, tx: Transaction):
+        value = {"msg": [tx.message.get_message()]}
+        value["fee"] = {"amount": [], "gas": "0"}
+        value["memo"] = tx.memo
         preparedTx = {
             "type": 'cosmos-sdk/StdTx',
-            "value":
-                tx.message.get_message()
+            "value": value
         }
+
         signatureSize = 109
         resp = json.loads(self.__request('rpc/txs/encode', 'post', json.dumps(preparedTx)))
+
         encoded_tx_base64 = resp["tx"]
         encoded_tx = len(base64.b64decode(encoded_tx_base64))
         size = encoded_tx + signatureSize
@@ -339,7 +365,7 @@ class DecimalAPI:
         ticker = fee_coin
         text_size = self.__get_tx_size(tx)
         fee_for_text = text_size * 2
-        fee_in_base = (operation_fee + fee_for_text + 10)/1000
+        fee_in_base = (operation_fee + fee_for_text + 20)/1000
 
         if tx.message.get_type() == 'coin/multi_send_coin':
             number_of_participants = len(tx.message.get_message()["value"]["sends"])
@@ -355,7 +381,6 @@ class DecimalAPI:
     def __request(self, path: str, method: str = 'get', payload=None, options={}):
         url = (self.base_url + path).lower()
         if method == 'get':
-            print("options ", options)
             if len(options) > 0:
                 response = requests.get(url, params=options)
             else:
