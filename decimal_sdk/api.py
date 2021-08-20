@@ -156,7 +156,6 @@ class DecimalAPI:
         for sig in tx.signatures:
             payload["tx"]["signatures"].append(sig.get_signature())
 
-        print(json.dumps(payload))
         return self.__request(url, 'post', json.dumps(payload))
 
     def issue_check(self, wallet, data):
@@ -253,7 +252,7 @@ class DecimalAPI:
         chk = []
         for b in check:
             chk.append(b)
-        return base58.b58encode(check)
+        return base58.b58encode(check).decode('utf-8')
 
     def redeem_check(self, data, wallet):
         passphrase_hash = SHA256.new(str.encode(data["password"])).digest()

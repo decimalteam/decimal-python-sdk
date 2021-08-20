@@ -6,7 +6,7 @@ api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
 
 receiver = "dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g"
 coin_name = "del"
-coin_amount = 160
+coin_amount = 160.1
 options = {
     "denom": coin_name,
     "memo": "sdk test"
@@ -230,28 +230,28 @@ api.send_tx(tx7, wallet)
 #
 # ###########################################################################################
 #
-# from decimal_sdk import Wallet
-# from decimal_sdk import DecimalAPI
-# from decimal_sdk import MultisendCoinTransaction
-# wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
-# api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
-#
-# tx_id = 'dxmstx1tqmjch2x5uk9wgnu8zl88rj6h4hy8rm8mtqfft'
-# multisend = [
-#     {
-#         "receiver": 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
-#         "coin": 'tdel',
-#         "amount": '100'
-#     },
-#     {
-#         "receiver": 'dx13m9gxeru45wxlcqk9dxf4vlewslauwr8try0tl',
-#         "coin": 'tdel',
-#         "amount": '50'
-#     }
-# ]
-#
-# tx13 = MultisendCoinTransaction(wallet.get_address(), multisend)
-# api.send_tx(tx13, wallet)
+from decimal_sdk import Wallet
+from decimal_sdk import DecimalAPI
+from decimal_sdk import MultisendCoinTransaction
+wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
+api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
+
+tx_id = 'dxmstx1tqmjch2x5uk9wgnu8zl88rj6h4hy8rm8mtqfft'
+multisend = [
+    {
+        "receiver": 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
+        "coin": 'tdel',
+        "amount": 100.1
+    },
+    {
+        "receiver": 'dx13m9gxeru45wxlcqk9dxf4vlewslauwr8try0tl',
+        "coin": 'tdel',
+        "amount": 100.2
+    }
+]
+
+tx13 = MultisendCoinTransaction(wallet.get_address(), multisend)
+api.send_tx(tx13, wallet)
 #
 # ###########################################################################################
 #
@@ -261,14 +261,14 @@ from decimal_sdk import DecimalAPI
 api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
 wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
 data = {
-    "nonce": "88",
+    "nonce": "100",
     "coin": "tdel",
-    "amount": "101",
+    "amount": "102",
     "password": "123",
     "due_block": "999999999",
 }
 
-api.issue_check(wallet, data)
+check = api.issue_check(wallet, data)
 #
 # ###########################################################################################
 #
@@ -277,7 +277,7 @@ from decimal_sdk import DecimalAPI
 api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
 wallet = Wallet("ill expose excess top special proof force damage vicious crime carry people ill together shrug enact weekend uncle minimum ginger congress clinic wasp snake")
 data = {
-    "check": '5WbyPgtbd3C7Ja3uQTW3SgBZz94c6oqAF2RfqXejyU4Bewbg7aofnoQ5n6iEPx8Et856NJSy8aKoJxzLqMFkkwAyVzPUrbVPEQn7MPwovmSc253tFqKgozKtsc9YQwgnTVaNGAUtcB6yaWKJNQyU4oGpWRDkeCCgHeNyNLsmYXhtWD4FAhKDyopvc5TnH1uK5c1GyJ2JFzwKSK28gZf5Gf4c2qhHoEyEhxMeReQztqPDg9kabgRMX11DQyk6dWwQ',
+    "check": check,
     "password": "123",
 }
 api.redeem_check(data, wallet)

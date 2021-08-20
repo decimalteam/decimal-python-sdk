@@ -384,7 +384,7 @@ class MultisendCoinMsg(BaseMsg):
             snds.append({
                 "receiver": send["receiver"],
                 "coin": {
-                    "amount": send["amount"],
+                    "amount": get_amount_uni(send["amount"]),
                     "denom": send["coin"]
                 }
             })
