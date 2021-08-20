@@ -361,12 +361,12 @@ multisend = [
     {
         "receiver": 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g',
         "coin": 'tdel',
-        "amount": '100'
+        "amount": 100.1
     },
     {
         "receiver": 'dx13m9gxeru45wxlcqk9dxf4vlewslauwr8try0tl',
         "coin": 'tdel',
-        "amount": '50'
+        "amount": 50
     }
 ]
 
