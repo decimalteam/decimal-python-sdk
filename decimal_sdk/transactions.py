@@ -3,7 +3,7 @@ from decimal_sdk.msgs.base import BaseMsg
 from decimal_sdk.types import StdSignMsg, SignMeta, Fee, Coin, Candidate
 from decimal_sdk.utils.helpers import get_amount_uni
 from decimal_sdk.msgs.msgs import (SendCoinMsg, BuyCoinMsg, CreateCoinMsg, UpdateCoinMsg, SellAllCoinsMsg,
-                                   DelegateMsg, UnboundMsg,
+                                   DelegateMsg, UnboundMsg, RedeemCheckMsg,
                                    DeclareCandidateMsg, EditCandidateMsg,
                                    DisableEnableValidatorMsg,
                                    MultysigCreateMsg, MultysigCreateTXMsg, MultysigSignTXMsg, MultisendSend, MultisendCoinMsg,
@@ -103,6 +103,14 @@ class UnbondTransaction(Transaction):
     def __init__(self, delegator_address: str, validator_address: str, denom: str, amount: str, **kwargs):
         coin = Coin(denom, amount)
         self.message = UnboundMsg(delegator_address, validator_address, coin)
+        super().__init__(**kwargs)
+
+
+class RedeemCheckTransaction(Transaction):
+    message: RedeemCheckMsg
+
+    def __init__(self, sender, check, proof, **kwargs):
+        self.message = RedeemCheckMsg(sender, check, proof)
         super().__init__(**kwargs)
 
 

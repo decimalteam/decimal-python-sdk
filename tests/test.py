@@ -255,32 +255,32 @@ api.send_tx(tx7, wallet)
 #
 # ###########################################################################################
 #
-# from decimal_sdk import Wallet
-# from decimal_sdk import DecimalAPI
-#
-# api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
-# wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
-# data = {
-#     "nonce": "34",
-#     "coin": "tdel",
-#     "amount": "100",
-#     "password": "123",
-#     "due_block": "999999999",
-# }
-#
-# api.issue_check(wallet, data)
+from decimal_sdk import Wallet
+from decimal_sdk import DecimalAPI
+
+api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
+wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
+data = {
+    "nonce": "88",
+    "coin": "tdel",
+    "amount": "101",
+    "password": "123",
+    "due_block": "999999999",
+}
+
+api.issue_check(wallet, data)
 #
 # ###########################################################################################
 #
-# from decimal_sdk import Wallet
-# from decimal_sdk import DecimalAPI
-# api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
-# wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
-# data = {
-#     "check": 'ERp9FR24Vz19XGXddnESNVBhTKxh8Q38CyLC7JHm5wz2pJFZpzSavzRbUJNTFmvuopkiHCFQAWhZN9V4RvPYswuTsK1JHNjESrvLSWFUSvLXM35RrMacsREBKA42DqYBC4M1J6swMqpLP12g9WBYdJS4iuM3QEyi4HkjAqcZDZJ4ox8R36D7pJvT4UtovBHDfT5YEQRdafUDJYnUJyYeXtFphQnheWapAuXi92RnxeRbRneXoopGgq671Jsxa',
-#     "password": "123",
-# }
-# api.redeem_check(data, wallet)
+from decimal_sdk import Wallet
+from decimal_sdk import DecimalAPI
+api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
+wallet = Wallet("ill expose excess top special proof force damage vicious crime carry people ill together shrug enact weekend uncle minimum ginger congress clinic wasp snake")
+data = {
+    "check": '5WbyPgtbd3C7Ja3uQTW3SgBZz94c6oqAF2RfqXejyU4Bewbg7aofnoQ5n6iEPx8Et856NJSy8aKoJxzLqMFkkwAyVzPUrbVPEQn7MPwovmSc253tFqKgozKtsc9YQwgnTVaNGAUtcB6yaWKJNQyU4oGpWRDkeCCgHeNyNLsmYXhtWD4FAhKDyopvc5TnH1uK5c1GyJ2JFzwKSK28gZf5Gf4c2qhHoEyEhxMeReQztqPDg9kabgRMX11DQyk6dWwQ',
+    "password": "123",
+}
+api.redeem_check(data, wallet)
 #
 # ###########################################################################################
 #

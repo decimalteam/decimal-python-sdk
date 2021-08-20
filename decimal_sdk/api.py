@@ -19,6 +19,7 @@ from .transactions import Transaction
 from .utils.helpers import get_amount_uni, from_words
 
 from decimal_sdk.types import Coin, Fee
+from decimal_sdk.transactions import RedeemCheckTransaction
 
 
 class DecimalAPI:
@@ -154,6 +155,8 @@ class DecimalAPI:
 
         for sig in tx.signatures:
             payload["tx"]["signatures"].append(sig.get_signature())
+
+        print(json.dumps(payload))
         return self.__request(url, 'post', json.dumps(payload))
 
     def issue_check(self, wallet, data):
@@ -287,11 +290,9 @@ class DecimalAPI:
         proof = proof_signature
         proof = base64.b64encode(proof)
 
-        return {
-            "sender": wallet.get_address(),
-            "check": data["check"],
-            "proof": proof.decode('utf-8')
-        }
+        transaction = RedeemCheckTransaction(wallet.get_address(), data["check"], proof.decode('utf-8'))
+
+        return self.send_tx(transaction, wallet)
 
     def get_chain_id(self):
         url = "rpc/node_info"

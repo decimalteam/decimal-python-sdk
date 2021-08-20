@@ -445,6 +445,28 @@ class VoteProposalMsg(BaseMsg):
         }
 
 
+class RedeemCheckMsg(BaseMsg):
+    type = COIN_REDEEM_CHECK
+    sender: str
+    check: str
+    proof: str
+
+    def __init__(self, sender: str, check: str, proof: Coin):
+        self.sender = sender
+        self.check = check
+        self.proof = proof
+
+    def __dict__(self):
+        return {
+            'type': self.type,
+            'value': {
+                'sender': self.sender,
+                'check': self.check,
+                'proof': self.proof
+            }
+        }
+
+
 class SwapRedeemMsg(BaseMsg):
     type = SWAP_REDEEM
     sender: str
