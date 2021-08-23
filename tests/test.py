@@ -249,9 +249,9 @@ multisend = [
         "amount": 100.2
     }
 ]
-
+options = {"memo": "для графини травили волка"}
 tx13 = MultisendCoinTransaction(wallet.get_address(), multisend)
-api.send_tx(tx13, wallet)
+api.send_tx(tx13, wallet, options)
 #
 # ###########################################################################################
 #

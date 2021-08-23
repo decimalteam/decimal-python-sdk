@@ -116,6 +116,7 @@ class DecimalAPI:
             commission_type = "value"
 
         if "memo" in options:
+            options["memo"] = options["memo"]
             tx.memo = options["memo"]
             tx.signer.memo = options["memo"]
 
@@ -155,7 +156,6 @@ class DecimalAPI:
 
         for sig in tx.signatures:
             payload["tx"]["signatures"].append(sig.get_signature())
-
         return self.__request(url, 'post', json.dumps(payload))
 
     def issue_check(self, wallet, data):

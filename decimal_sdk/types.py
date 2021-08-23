@@ -146,7 +146,7 @@ class StdSignMsg:
             {'fee': self.fee.__dict__(), 'memo': self.memo, 'msgs': [msg.__dict__() for msg in self.msgs],
              'account_number': self.account_number, 'chain_id': self.chain_id, 'sequence': self.sequence})
 
-        return json.dumps(data, separators=(',', ':'), ).encode('utf-8')
+        return json.dumps(data, separators=(',', ':'), ensure_ascii = False).encode('utf-8')
 
     def __generate_signature(self, private_key):
         data = self.__get_body_bytes()
