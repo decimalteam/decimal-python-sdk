@@ -367,11 +367,15 @@ class DecimalAPI:
         fee_for_text = text_size * 2
         fee_in_base = (operation_fee + fee_for_text + 20)/1000
 
+        print('fee_in_base ', fee_in_base)
+
         if tx.message.get_type() == 'coin/multi_send_coin':
             number_of_participants = len(tx.message.get_message()["value"]["sends"])
-            fee_for_participants = 5 * (number_of_participants - 1)
+            fee_for_participants = 5 * (number_of_participants - 1) /1000
+            print('fee_in_base for multysig ', fee_for_participants)
             fee_in_base = fee_in_base + fee_for_participants
 
+        print('fee_in_base for multysig final', fee_in_base)
         if fee_coin in ['del', 'tdel']:
             return {"coinPrice": "1", "value": fee_in_base, "base": fee_in_base}
         coin_price = self.get_coin_price(ticker)

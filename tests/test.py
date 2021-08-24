@@ -247,10 +247,15 @@ multisend = [
         "receiver": 'dx13m9gxeru45wxlcqk9dxf4vlewslauwr8try0tl',
         "coin": 'tdel',
         "amount": 100.2
-    }
+    },
+    {'receiver': 'dx1p74ps3mhggehkqj42r0sc2y4ntakhwrs5a93rf', 'coin': 'tdel', 'amount': 0.3333333333333333},
+    {'receiver': 'dx18rnas4cjq78n48g2pud2neq77027trvr2e6vzz', 'coin': 'tdel', 'amount': 0.3333333333333333},
+    {'receiver': 'dx1g2ms3ff2mtg25y8wppt082mq03hyeltmunuk4x', 'coin': 'tdel', 'amount': 0.3333333333333333},
+    {'receiver': 'dx1e4d0e27tf0uyhpu7mxww5qtk3ej92myzf2dz24', 'coin': 'tdel', 'amount': 0.01}
 ]
 options = {"memo": "для графини травили волка"}
 tx13 = MultisendCoinTransaction(wallet.get_address(), multisend)
+api.estimate_tx_fee(tx13, wallet, options)
 api.send_tx(tx13, wallet, options)
 #
 # ###########################################################################################
