@@ -124,12 +124,12 @@ class DecimalAPI:
         tx_data = tx.message.get_message()
         commission = self.__get_comission(tx, denom, FEES[tx.message.type], tx_data)
 
-        fee_amount = Coin(denom, get_amount_uni(commission[commission_type]))
+        fee_amount = Coin(denom.lower(), get_amount_uni(commission[commission_type]))
         wallet.nonce = json.loads(self.get_nonce_not_increasing(wallet.get_address()))["result"]
         tx.signer.chain_id = self.get_chain_id()
         tx.signer.account_number = str(wallet.nonce["value"]["account_number"])
         tx.signer.sequence = str(wallet.nonce["value"]["sequence"])
-        fee_amount = Coin('del', '0')
+
         if denom == "del" or denom == "tdel":
             tx.fee.amount = []
             tx.signer.fee.amount = []
@@ -367,19 +367,15 @@ class DecimalAPI:
         fee_for_text = text_size * 2
         fee_in_base = (operation_fee + fee_for_text + 20)/1000
 
-        print('fee_in_base ', fee_in_base)
-
         if tx.message.get_type() == 'coin/multi_send_coin':
             number_of_participants = len(tx.message.get_message()["value"]["sends"])
             fee_for_participants = 5 * (number_of_participants - 1) /1000
-            print('fee_in_base for multysig ', fee_for_participants)
             fee_in_base = fee_in_base + fee_for_participants
 
-        print('fee_in_base for multysig final', fee_in_base)
         if fee_coin in ['del', 'tdel']:
             return {"coinPrice": "1", "value": fee_in_base, "base": fee_in_base}
         coin_price = self.get_coin_price(ticker)
-        fee_in_custom = fee_in_base / (coin_price / self.unit)
+        fee_in_custom = fee_in_base / (coin_price)
         return {"coinPrice": str(coin_price), 'value': fee_in_custom, 'base': fee_in_base}
 
     def __request(self, path: str, method: str = 'get', payload=None, options={}):

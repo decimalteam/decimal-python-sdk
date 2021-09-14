@@ -2,17 +2,16 @@ from decimal_sdk import Wallet
 from decimal_sdk import DecimalAPI
 from decimal_sdk import SendCoinTransaction
 wallet = Wallet("exotic favorite initial tank bridge tuition broken hope sniff tiny fringe ice letter joke goddess skate raw similar link knife cable today table gain")
-api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
+api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
 
 receiver = "dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g"
-coin_name = "del"
-coin_amount = 160.1
+coin_name = "tdel"
+coin_amount = 161
 options = {
-    "denom": coin_name,
-    "memo": "sdk test"
+    "memo": "sdk test",
+    # "denom": "AWSMCNN"
 }
 tx = SendCoinTransaction(wallet.get_address(), receiver, coin_name, coin_amount)
-api.estimate_tx_fee(tx, wallet, options)
 api.send_tx(tx, wallet, options)
 
 ###########################################################################################
