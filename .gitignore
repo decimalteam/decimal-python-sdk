@@ -2,3 +2,5 @@
 .idea
 
 /**/*.pyc
+/build
+/decimal_python_sdk.egg-info
