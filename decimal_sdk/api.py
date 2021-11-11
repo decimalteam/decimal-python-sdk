@@ -1,25 +1,24 @@
-import json
-import rlp
-import requests
 import base64
+import json
+from hashlib import sha256
+
 import base58
 import bech32
+import ethereum.transactions as crypto
+import requests
+import rlp
 import sha3
-
-from hashlib import sha256
+from Cryptodome.Hash import SHA256
 from ecdsa import SigningKey, SECP256k1
 from ecdsa.util import sigencode_string_canonize
 
-from Cryptodome.Hash import SHA256
-import ethereum.transactions as crypto
-
-from .types import FEES
-from .wallet import Wallet
-from .transactions import Transaction
-from .utils.helpers import get_amount_uni, from_words
-
-from decimal_sdk.types import Coin, Fee
 from decimal_sdk.transactions import RedeemCheckTransaction
+from decimal_sdk.types import Coin
+from .transactions import Transaction
+from .types import FEES
+from .utils.helpers import get_amount_uni, from_words
+from .utils.fields_validator import validate_data
+from .wallet import Wallet
 
 
 class DecimalAPI:
@@ -42,7 +41,7 @@ class DecimalAPI:
         return self.__request(f'coin/{name}')
 
     def get_coins_list(self, limit: int = 10, offset: int = 0):
-        options = { "limit": limit, "offset": offset }
+        options = {"limit": limit, "offset": offset}
         return self.__request('coin', 'get', None, options)
 
     def get_multisig(self, address: str):
@@ -71,7 +70,7 @@ class DecimalAPI:
         return self.__request(f'address/{address}/stakes')
 
     def get_tx(self, tx_hash: str):
-        return json.loads(self.__request("rpc/tx", "get", options = {"hash": f"{tx_hash}"}))["result"]
+        return json.loads(self.__request("rpc/tx", "get", options={"hash": f"{tx_hash}"}))["result"]
 
     def get_txs_multisign(self, address: str, limit: int = 10, offset: int = 0):
         options = {"limit": limit, "offset": offset}
@@ -84,7 +83,6 @@ class DecimalAPI:
 
     def get_nft(self, id: str):
         return self.__request(f'nfts/{id}')
-
 
     def estimate_tx_fee(self, tx: Transaction, wallet: Wallet, options={}):
         """Method to sign and send prepared transaction"""
@@ -104,7 +102,6 @@ class DecimalAPI:
         tx_data = tx.message.get_message()
         return self.__get_comission(tx, denom, FEES[tx.message.type], tx_data)["value"]
 
-
     def send_tx(self, tx: Transaction, wallet: Wallet, options={}):
         """Method to sign and send prepared transaction"""
         url = "rpc/txs"
@@ -122,6 +119,9 @@ class DecimalAPI:
 
         message = tx.memo
         tx_data = tx.message.get_message()
+        print("tx data")
+        print(tx_data)
+        validate_data(tx_data["value"])
         commission = self.__get_comission(tx, denom, FEES[tx.message.type], tx_data)
 
         fee_amount = Coin(denom.lower(), get_amount_uni(commission[commission_type]))
@@ -156,6 +156,8 @@ class DecimalAPI:
 
         for sig in tx.signatures:
             payload["tx"]["signatures"].append(sig.get_signature())
+
+        print(payload)
         return self.__request(url, 'post', json.dumps(payload))
 
     def issue_check(self, wallet, data):
@@ -197,12 +199,12 @@ class DecimalAPI:
         lock_signature = bytearray(65)
 
         i = 0
-        while i<64:
+        while i < 64:
             lock_signature[i] = lock_obj[i]
             i += 1
 
         v, r, s = crypto.ecsign(check_hash, passphrase_hash)
-        lock_signature[64] = v-27
+        lock_signature[64] = v - 27
 
         check_locked_hash = self.__rpl_hash([
             chain_id,
@@ -219,7 +221,8 @@ class DecimalAPI:
         for b in wallet.get_private_key():
             pk.append(b)
         sk = SigningKey.from_string(wallet.get_private_key(), curve=SECP256k1)
-        check_obj = sk.sign_digest_deterministic(check_locked_hash, hashfunc=sha256, sigencode=sigencode_string_canonize)
+        check_obj = sk.sign_digest_deterministic(check_locked_hash, hashfunc=sha256,
+                                                 sigencode=sigencode_string_canonize)
         co = []
         for b in check_obj:
             co.append(b)
@@ -270,7 +273,8 @@ class DecimalAPI:
             sah.append(b)
 
         sk = SigningKey.from_string(passphrase_hash, curve=SECP256k1)
-        proof_obj = sk.sign_digest_deterministic(sender_address_hash, hashfunc=sha256, sigencode=sigencode_string_canonize)
+        proof_obj = sk.sign_digest_deterministic(sender_address_hash, hashfunc=sha256,
+                                                 sigencode=sigencode_string_canonize)
 
         po = []
         for b in proof_obj:
@@ -365,11 +369,11 @@ class DecimalAPI:
         ticker = fee_coin
         text_size = self.__get_tx_size(tx)
         fee_for_text = text_size * 2
-        fee_in_base = (operation_fee + fee_for_text + 20)/1000
+        fee_in_base = (operation_fee + fee_for_text + 20) / 1000
 
         if tx.message.get_type() == 'coin/multi_send_coin':
             number_of_participants = len(tx.message.get_message()["value"]["sends"])
-            fee_for_participants = 5 * (number_of_participants - 1) /1000
+            fee_for_participants = 5 * (number_of_participants - 1) / 1000
             fee_in_base = fee_in_base + fee_for_participants
 
         if fee_coin in ['del', 'tdel']:

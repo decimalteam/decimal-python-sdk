@@ -295,7 +295,7 @@ tx9 = DisableEnableValidatorTransaction(set_state, validator_address)
 api.send_tx(tx9, wallet)
 
 ```
-## Multysig Create Transaction
+## Multisig Create Transaction
 ```python
 
 from decimal_sdk import Wallet
@@ -304,7 +304,7 @@ from decimal_sdk import MultysigCreateTransaction
 wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
 api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
 
-owners = ['dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g', 'dx1v9macmluxh7rk3zsd69v7dwv9fsjhctn2jfhz9']
+owners = ['dxaasd13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g', 'dx1v9macmluxh7rk3zsd69v7dwv9fsjhctn2jfhz9']
 weights = ['1', '1']
 threshold = "2"
 tx10 = MultysigCreateTransaction(wallet.get_address(), owners, weights, threshold)
@@ -312,7 +312,7 @@ api.send_tx(tx10, wallet)
 
 ```
 
-## Multysig Create TX Transaction
+## Multisig Create TX Transaction
 ```python
 
 from decimal_sdk import Wallet
@@ -331,7 +331,7 @@ api.send_tx(tx11, wallet)
 
 ```
 
-## Multysig Sign TX Transaction
+## Multisig Sign TX Transaction
 ```python
 
 from decimal_sdk import Wallet
@@ -364,7 +364,7 @@ multisend = [
         "amount": 100.1
     },
     {
-        "receiver": 'dx13m9gxeru45wxlcqk9dxf4vlewslauwr8try0tl',
+        "receiver": 'dxaa13m9gxeru45wxlcqk9dxf4vlewslauwr8try0tl',
         "coin": 'tdel',
         "amount": 50
     }
@@ -505,6 +505,23 @@ id = '886688'
 sub_token_ids = ["201"]
 validator_address = 'dxvaloper1mvqrrrlcd0gdt256jxg7n68e4neppu5tk872z3'
 
-tx3 = NftUnboundTransaction(denom, id, wallet.get_address(), validator_address, sub_token_ids)
-api.send_tx(tx3, wallet)
+tx = NftUnboundTransaction(denom, id, wallet.get_address(), validator_address, sub_token_ids)
+api.send_tx(tx, wallet)
+```
+
+## Update NFT reserve
+```python
+from decimal_sdk import Wallet
+from decimal_sdk import DecimalAPI
+from decimal_sdk import NftUpdateReserveTransaction
+wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
+api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
+
+denom = 'eightbal'
+id = '886688'
+sub_token_ids = ["201"]
+reserve = 15
+
+tx = NftUpdateReserveTransaction(denom, id, wallet.get_address(), reserve, sub_token_ids)
+api.send_tx(tx, wallet)
 ```

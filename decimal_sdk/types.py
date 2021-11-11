@@ -38,6 +38,7 @@ FEES = {
     NFT_TRANSFER: 0,
     NFT_DELEGATE: 0,
     NFT_UNBOND: 0,
+    NFT_UPDATE_RESERVE: 0,
 }
 
 

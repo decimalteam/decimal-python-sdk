@@ -28,6 +28,7 @@ NFT_EDIT_METADATA = 'nft/msg_edit_metadata'
 NFT_TRANSFER = 'nft/msg_transfer'
 NFT_DELEGATE = 'validator/delegate_nft'
 NFT_UNBOND = 'validator/unbond_nft'
+NFT_UPDATE_RESERVE = 'nft/update_reserve'
 
 SWAP_INIT = 'swap/msg_initialize'
 SWAP_REDEEM = 'swap/msg_redeem_v2'

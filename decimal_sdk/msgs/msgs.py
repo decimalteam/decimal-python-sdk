@@ -727,3 +727,30 @@ class NftUnboundMsg(BaseMsg):
             }
         }
 
+
+class NftUpdateReserveMsg(BaseMsg):
+    type = NFT_UPDATE_RESERVE
+    sender: str
+    id: str
+    denom: str
+    sub_token_ids: []
+    reserve: str
+
+    def __init__(self, denom: str, id: str, sender: str, reserve: str, sub_token_ids: []):
+        self.denom = denom
+        self.id = id
+        self.sender = sender
+        self.sub_token_ids = sub_token_ids
+        self.reserve = str(get_amount_uni(reserve))
+
+    def __dict__(self):
+        return {
+            "type": self.type,
+            "value": {
+                "denom": self.denom,
+                "id": self.id,
+                "sender": self.sender,
+                "reserve": self.reserve,
+                "sub_token_ids": self.sub_token_ids,
+            }
+        }

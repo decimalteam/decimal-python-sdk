@@ -9,7 +9,7 @@ from decimal_sdk.msgs.msgs import (SendCoinMsg, BuyCoinMsg, CreateCoinMsg, Updat
                                    MultysigCreateMsg, MultysigCreateTXMsg, MultysigSignTXMsg, MultisendSend, MultisendCoinMsg,
                                    SubmitProposalMsg, VoteProposalMsg,
                                    SwapRedeemMsg, SwapInitMsg,
-                                   NftMintMsg, NftBurnMsg, NftEditMetadataMsg, NftTransferMsg, NftDelegateMsg, NftUnboundMsg
+                                   NftMintMsg, NftBurnMsg, NftEditMetadataMsg, NftTransferMsg, NftDelegateMsg, NftUnboundMsg, NftUpdateReserveMsg,
                                    )
 
 
@@ -242,6 +242,14 @@ class NftUnboundTransaction(Transaction):
 
     def __init__(self, denom: str, id: str, delegator_address: str, validator_address: str, sub_token_ids: [], **kwargs):
         self.message = NftUnboundMsg(denom, id, delegator_address, validator_address, sub_token_ids)
+        super().__init__(**kwargs)
+
+
+class NftUpdateReserveTransaction(Transaction):
+    message: NftUpdateReserveMsg
+
+    def __init__(self, denom: str, id: str, sender: str, reserve: str, sub_token_ids: [], **kwargs):
+        self.message = NftUpdateReserveMsg(denom, id, sender, reserve, sub_token_ids)
         super().__init__(**kwargs)
 
 
