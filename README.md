@@ -82,6 +82,7 @@ api.method_name(args)
 * get_validator("validator_address") - get data about validator 
 * get_tx("tx_hash") - get data about transaction by hash 
 * get_nft("nft_id") - get json with subtokens of token (owner, reserve, subId, delegated, validator)
+* get_nft_stakes(wallet.get_address()) - get data about nft stakes for address
 * get_multisig()
 * get_multisigs()
 * get_txs_multisign()

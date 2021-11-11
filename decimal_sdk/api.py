@@ -84,6 +84,10 @@ class DecimalAPI:
     def get_nft(self, id: str):
         return self.__request(f'nfts/{id}')
 
+    def get_nft_stakes(self, address: str):
+        self.__validate_address(address)
+        return self.__request(f'address/{address}/nfts/stakes')
+
     def estimate_tx_fee(self, tx: Transaction, wallet: Wallet, options={}):
         """Method to sign and send prepared transaction"""
         url = "rpc/txs"
