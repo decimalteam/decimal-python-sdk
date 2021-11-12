@@ -423,3 +423,12 @@ dest_chain = '2'
 
 tx7 = SwapInitTransaction(sender, recipient, amount, token_symbol, from_chain, dest_chain)
 api.send_tx(tx7, wallet)
+
+############################################################################################
+
+from decimal_sdk import Wallet
+from decimal_sdk import DecimalAPI
+wallet = Wallet("doctor transfer mystery electric any satisfy crop pill wet music legend hero success lock item dune shiver mesh badge orbit correct february rifle museum")
+
+api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
+api.get_nft("e39e716244a7d8a808b5a13d99332b5420615945", wallet)

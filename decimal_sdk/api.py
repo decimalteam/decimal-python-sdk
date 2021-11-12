@@ -4,6 +4,8 @@ from hashlib import sha256
 
 import base58
 import bech32
+
+import datetime
 import ethereum.transactions as crypto
 import requests
 import rlp
@@ -81,8 +83,29 @@ class DecimalAPI:
         self.__validate_address(address)
         return self.__request(f'validator/{address}')
 
-    def get_nft(self, id: str):
-        return self.__request(f'nfts/{id}')
+    def get_nft(self, id: str, wallet: Wallet):
+        timestamp = int(str(datetime.datetime.now().timestamp()).split(".")[0])
+        data = {
+            "nftId": id,
+            "timestamp": timestamp
+        }
+
+        encoded = json.dumps(data).replace(" ", "").encode()
+        msg_hash = sha3.keccak_256(encoded)
+        v, r, s = crypto.ecsign(msg_hash.digest(), wallet.get_private_key())
+
+        rr = int_to_big_endian(r).hex()
+        ss = int_to_big_endian(s).hex()
+        vv = v-27
+
+        options={
+            "timestamp": timestamp,
+            "signature": json.dumps({
+                "r":rr,
+                "s":ss,
+                "recoveryParam":vv})
+        }
+        return self.__request(f'nfts/{id}', 'get', None, options)
 
     def get_nft_stakes(self, address: str):
         self.__validate_address(address)
@@ -123,8 +146,6 @@ class DecimalAPI:
 
         message = tx.memo
         tx_data = tx.message.get_message()
-        print("tx data")
-        print(tx_data)
         validate_data(tx_data["value"])
         commission = self.__get_comission(tx, denom, FEES[tx.message.type], tx_data)
 
@@ -161,7 +182,6 @@ class DecimalAPI:
         for sig in tx.signatures:
             payload["tx"]["signatures"].append(sig.get_signature())
 
-        print(payload)
         return self.__request(url, 'post', json.dumps(payload))
 
     def issue_check(self, wallet, data):
@@ -396,3 +416,6 @@ class DecimalAPI:
         else:
             response = requests.post(url, payload)
         return response.text
+
+def int_to_big_endian(value: int) -> bytes:
+    return value.to_bytes((value.bit_length() + 7) // 8 or 1, "big")
