@@ -148,8 +148,6 @@ class DecimalAPI:
         tx_data = tx.message.get_message()
         validate_data(tx_data["value"])
         commission = self.__get_comission(tx, denom, FEES[tx.message.type], tx_data)
-        if commission["fee_in_custom"] == 0:
-            raise Exception("Coin for custom fee not found")
 
         fee_amount = Coin(denom.lower(), get_amount_uni(commission[commission_type]))
         wallet.nonce = json.loads(self.get_nonce_not_increasing(wallet.get_address()))["result"]
