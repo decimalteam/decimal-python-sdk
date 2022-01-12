@@ -11,3 +11,5 @@ from .transactions import (Transaction,
                            SwapRedeemTransaction, SwapInitTransaction,
                            NftMintTransaction, NftBurnTransaction, NftEditMetadataTransaction, NftTransferTransaction, NftDelegateTransaction, NftUnboundTransaction, NftUpdateReserveTransaction,
                            )
+
+from .methods import (SendAllCoin)
