@@ -1,4 +1,5 @@
 from .wallet import Wallet
+
 from decimal_sdk.msgs.base import BaseMsg
 from decimal_sdk.types import StdSignMsg, SignMeta, Fee, Coin, Candidate
 from decimal_sdk.utils.helpers import get_amount_uni
@@ -92,7 +93,7 @@ class DelegateTransaction(Transaction):
     message: DelegateMsg
 
     def __init__(self, delegator_address: str, validator_address: str, denom: str, amount: str, **kwargs):
-        coin = Coin(denom, amount)
+        coin = Coin(denom, get_amount_uni(amount))
         self.message = DelegateMsg(delegator_address, validator_address, coin)
         super().__init__(**kwargs)
 
@@ -100,8 +101,8 @@ class DelegateTransaction(Transaction):
 class UnbondTransaction(Transaction):
     message: UnboundMsg
 
-    def __init__(self, delegator_address: str, validator_address: str, denom: str, amount: str, **kwargs):
-        coin = Coin(denom, amount)
+    def __init__(self, delegator_address: str, validator_address: str, denom: str, amount: int, **kwargs):
+        coin = Coin(denom, get_amount_uni(amount))
         self.message = UnboundMsg(delegator_address, validator_address, coin)
         super().__init__(**kwargs)
 
@@ -121,7 +122,7 @@ class DeclareCandidateTransaction(Transaction):
                  denom: str, amount: int,
                  moniker: str, identity: str, website: str, security_contact: str, details: str,
                  key_value: str, key_type: str = 'tendermint/PubKeyEd25519', **kwargs):
-        stake = Coin(denom, str(amount))
+        stake = Coin(denom, get_amount_uni(amount))
         pub_key = {"type": key_type, "value": key_value}
         commission = '%.18f' % int(commission)
         description = Candidate(moniker, identity, website, security_contact, details)
@@ -158,8 +159,8 @@ class MultysigCreateTransaction(Transaction):
 class MultysigCreateTXTransaction(Transaction):
     message: MultysigCreateTXMsg
 
-    def __init__(self, sender: str, wallet: str, receiver: str, denom: str, amount: str, **kwargs):
-        coin = Coin(denom, amount)
+    def __init__(self, sender: str, wallet: str, receiver: str, denom: str, amount: int, **kwargs):
+        coin = Coin(denom, get_amount_uni(amount))
         self.message = MultysigCreateTXMsg(sender, wallet, receiver, coin)
         super().__init__(**kwargs)
 
@@ -268,3 +269,4 @@ class SwapInitTransaction(Transaction):
     def __init__(self, sender: str, recipient: str, amount: int, token_symbol: str, from_chain: str, dest_chain, **kwargs):
         self.message = SwapInitMsg(sender, recipient, str(amount), token_symbol, from_chain, dest_chain)
         super().__init__(**kwargs)
+

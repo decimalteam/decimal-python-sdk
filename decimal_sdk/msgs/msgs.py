@@ -328,7 +328,7 @@ class MultysigCreateTXMsg(BaseMsg):
                 "sender": self.sender,
                 "wallet": self.wallet,
                 "receiver": self.receiver,
-                "coins": self.coins.__dict__()
+                "coins": [self.coins.__dict__()]
             }
         }
 
