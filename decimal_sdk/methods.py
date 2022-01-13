@@ -3,7 +3,6 @@ import json
 from .wallet import Wallet
 from .api import DecimalAPI
 from .transactions import SendCoinTransaction
-from decimal_sdk.utils.helpers import get_amount_uni
 
 
 def SendAllCoin(api: DecimalAPI, wallet: Wallet, receiver: str, coin_name: str, options = {}):
@@ -13,14 +12,14 @@ def SendAllCoin(api: DecimalAPI, wallet: Wallet, receiver: str, coin_name: str, 
         wallet_data = json.loads(api.get_address(wallet.get_address()))
         balance = '0'
         if wallet_data["ok"]:
-            balance = int(wallet_data["result"]["address"]["balance"][coin_name])
+            balance = wallet_data["result"]["address"]["balance"][coin_name]
+        balance = int(balance) * pow(10, -18)
 
-        balance = int(get_amount_uni(balance, True))
-        tx = SendCoinTransaction(wallet.get_address(), receiver, coin_name, balance)
+        tx = SendCoinTransaction(wallet.get_address(), receiver, coin_name, balance) #transaction for calculation commission
         commission = api.estimate_tx_fee(tx, wallet, options)
-        tx = SendCoinTransaction(wallet.get_address(), receiver, coin_name, balance - commission)
-        print(tx.signer.__dict__())
-        return api.send_tx(tx, wallet, options)
+        tx1 = SendCoinTransaction(wallet.get_address(), receiver, coin_name, balance - commission)
+
+        return api.send_tx(tx1, wallet, options)
 
     except Exception as e:
         return str(e)
