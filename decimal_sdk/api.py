@@ -163,7 +163,7 @@ class DecimalAPI:
             tx.signer.fee.amount = [fee_amount]
 
         tx.signer.fee = tx.fee
-        tx.signer.msgs = tx.msgs
+        tx.signer.msgs = [tx.msgs[-1]]
         tx.signer.memo = tx.memo
 
         payload = {"tx": {}, "mode": "sync"}
@@ -173,6 +173,7 @@ class DecimalAPI:
             payload["tx"]["fee"] = {"amount": [], "gas": "0"}
         else:
             payload["tx"]["fee"] = {"amount": [tx.signer.fee.amount[0].__dict__()], "gas": "0"}
+
         payload["tx"]["memo"] = message
         payload["tx"]["signatures"] = []
         tx.sign(wallet)

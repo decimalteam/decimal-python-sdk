@@ -107,6 +107,27 @@ tx = SendCoinTransaction(wallet.get_address(), receiver, coin_name, coin_amount)
 api.send_tx(tx, wallet, options)
 ```
 
+## Send All Coin Transaction
+```python
+from decimal_sdk.methods import SendAllCoin
+from decimal_sdk import Wallet
+from decimal_sdk import DecimalAPI
+
+
+api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
+wallet = Wallet("YOUR MNEMO")
+receiver = 'dx1wvh0h4nfkvzkxzun35wh6pyrl88xn5rhsrgns9'
+coin_name = 'tdel'
+options = {
+    "denom": coin_name,
+    "memo": "SEND ALL MY MONEY"
+}
+
+SendAllCoin(api, wallet, receiver, coin_name, options)
+
+```
+
+
 ## Buy Coin Transaction
 ```python
 
@@ -206,7 +227,7 @@ api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
 
 validator_addr = "dxvaloper1ajytg8jg8ypx0rj9p792x32fuxyezga4dq2uk0"
 coins_name = "finaltest"
-coin_amount = "1"
+coin_amount = 1
 
 tx5 = DelegateTransaction(wallet.get_address(), validator_addr, coins_name, coin_amount)
 api.send_tx(tx5, wallet)
@@ -243,7 +264,7 @@ reward_addr = 'dx13ykakvugqwzqqmqdj2j2hgqauxmftdn3kqy69g'
 # validator_addr = "dxvaloper1ajytg8jg8ypx0rj9p792x32fuxyezga4dq2uk0"
 validator_addr = wallet.get_validator_address()
 coin_name = 'tdel'
-coin_amount = "100000000000000000000"
+coin_amount = 10
 pub_key = 'JRlv38BXuD1TvWQJ9ic1KHr8PzuOITZH3rD8Zm0Vj3Y='
 commission = "0.1" # 1 is 100%, here commission set to 10% 
 moniker = 'my-node-123'
@@ -325,9 +346,9 @@ api = DecimalAPI("https://testnet-gate.decimalchain.com/api")
 sender = 'dx1am6ke3l79kjzdqhwgx37em04mzg686ekf9p3pq'
 receiver = 'dx13m9gxeru45wxlcqk9dxf4vlewslauwr8try0tl'
 coin_name = 'tdel'
-coin_amount = '10'
+coin_amount = 10
 
-tx11 = MultysigCreateTXTransaction(sender, wallet.get_address(), receiver, coin_name, coin_amount)
+tx11 = MultysigCreateTXTransaction(wallet.get_address(), sender, receiver, coin_name, coin_amount)
 api.send_tx(tx11, wallet)
 
 ```

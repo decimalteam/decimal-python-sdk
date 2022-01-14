@@ -1,4 +1,7 @@
 from .wallet import Wallet
+
+from typing import Union
+
 from decimal_sdk.msgs.base import BaseMsg
 from decimal_sdk.types import StdSignMsg, SignMeta, Fee, Coin, Candidate
 from decimal_sdk.utils.helpers import get_amount_uni
@@ -40,7 +43,7 @@ class Transaction:
 class SendCoinTransaction(Transaction):
     message: SendCoinMsg
 
-    def __init__(self, sender, receiver, denom, amount, **kwargs):
+    def __init__(self, sender: str, receiver: str, denom: str, amount: Union[int, float], **kwargs):
         coin = Coin(denom, get_amount_uni(amount))
         self.message = SendCoinMsg(sender, receiver, coin)
         super().__init__(**kwargs)
@@ -49,7 +52,7 @@ class SendCoinTransaction(Transaction):
 class BuyCoinTransaction(Transaction):
     message: BuyCoinMsg
 
-    def __init__(self, sender, coin_to_buy, coin_to_spend, amount_to_buy, limit=100000000000, **kwargs):
+    def __init__(self, sender: str, coin_to_buy: str, coin_to_spend: str, amount_to_buy: Union[int, float], limit=100000000000, **kwargs):
         coin_to_buy = Coin(coin_to_buy, get_amount_uni(amount_to_buy))
         max_coin_to_sell = Coin(coin_to_spend, get_amount_uni(limit))
         self.message = BuyCoinMsg(sender, coin_to_buy, max_coin_to_sell)
@@ -59,7 +62,7 @@ class BuyCoinTransaction(Transaction):
 class CreateCoinTransaction(Transaction):
     message: CreateCoinMsg
 
-    def __init__(self, sender, title, symbol, crr, initial_volume, initial_reserve, identity, limit_volume, **kwargs):
+    def __init__(self, sender: str, title: str, symbol: str, crr: int, initial_volume: str, initial_reserve: str, identity: str, limit_volume: str, **kwargs):
         self.message = CreateCoinMsg(sender, title, symbol, crr, initial_volume, initial_reserve, identity, limit_volume)
         super().__init__(**kwargs)
 
@@ -67,7 +70,7 @@ class CreateCoinTransaction(Transaction):
 class UpdateCoinTransaction(Transaction):
     message: UpdateCoinMsg
 
-    def __init__(self, sender, symbol, identity, limit_volume, **kwargs):
+    def __init__(self, sender: str, symbol: str, identity: str, limit_volume: str, **kwargs):
         self.message = UpdateCoinMsg(sender, symbol, identity, limit_volume)
         super().__init__(**kwargs)
 
@@ -75,14 +78,14 @@ class UpdateCoinTransaction(Transaction):
 class SellAllCoinsMsgTransaction(Transaction):
     message: SellAllCoinsMsg
 
-    def __init__(self, sender: str, coin_to_sell_denom: str, coin_to_sell_amount: int, min_coin_to_buy_denom: str,
+    def __init__(self, sender: str, coin_to_sell_denom: str, coin_to_sell_amount: Union[int, float], min_coin_to_buy_denom: str,
                  min_coin_to_buy_amount=0, **kwargs):
-        coin_to_sell_amount = str(get_amount_uni(coin_to_sell_amount))
+        coin_to_sell_amount = get_amount_uni(coin_to_sell_amount)
         coin_to_sell = Coin(coin_to_sell_denom, coin_to_sell_amount)
         if min_coin_to_buy_amount == 0:
-            min_coin_to_buy_amount = 1 #str(get_amount_uni(1))
+            min_coin_to_buy_amount = '1' #str(get_amount_uni(1))
         else:
-            min_coin_to_buy_amount = str(get_amount_uni(min_coin_to_buy_amount))
+            min_coin_to_buy_amount = get_amount_uni(min_coin_to_buy_amount)
         min_coin_to_buy = Coin(min_coin_to_buy_denom, min_coin_to_buy_amount)
         self.message = SellAllCoinsMsg(sender, coin_to_sell, min_coin_to_buy)
         super().__init__(**kwargs)
@@ -91,8 +94,8 @@ class SellAllCoinsMsgTransaction(Transaction):
 class DelegateTransaction(Transaction):
     message: DelegateMsg
 
-    def __init__(self, delegator_address: str, validator_address: str, denom: str, amount: str, **kwargs):
-        coin = Coin(denom, amount)
+    def __init__(self, delegator_address: str, validator_address: str, denom: str, amount: Union[int, float], **kwargs):
+        coin = Coin(denom, get_amount_uni(amount))
         self.message = DelegateMsg(delegator_address, validator_address, coin)
         super().__init__(**kwargs)
 
@@ -100,8 +103,8 @@ class DelegateTransaction(Transaction):
 class UnbondTransaction(Transaction):
     message: UnboundMsg
 
-    def __init__(self, delegator_address: str, validator_address: str, denom: str, amount: str, **kwargs):
-        coin = Coin(denom, amount)
+    def __init__(self, delegator_address: str, validator_address: str, denom: str, amount: Union[int, float], **kwargs):
+        coin = Coin(denom, get_amount_uni(amount))
         self.message = UnboundMsg(delegator_address, validator_address, coin)
         super().__init__(**kwargs)
 
@@ -118,10 +121,10 @@ class DeclareCandidateTransaction(Transaction):
     message: DeclareCandidateMsg
 
     def __init__(self, commission: int, validator_addr: str, reward_addr: str,
-                 denom: str, amount: int,
+                 denom: str, amount: Union[int, float],
                  moniker: str, identity: str, website: str, security_contact: str, details: str,
                  key_value: str, key_type: str = 'tendermint/PubKeyEd25519', **kwargs):
-        stake = Coin(denom, str(amount))
+        stake = Coin(denom, get_amount_uni(amount))
         pub_key = {"type": key_type, "value": key_value}
         commission = '%.18f' % int(commission)
         description = Candidate(moniker, identity, website, security_contact, details)
@@ -158,8 +161,8 @@ class MultysigCreateTransaction(Transaction):
 class MultysigCreateTXTransaction(Transaction):
     message: MultysigCreateTXMsg
 
-    def __init__(self, sender: str, wallet: str, receiver: str, denom: str, amount: str, **kwargs):
-        coin = Coin(denom, amount)
+    def __init__(self, sender: str, wallet: str, receiver: str, denom: str, amount: Union[int, float], **kwargs):
+        coin = Coin(denom, get_amount_uni(amount))
         self.message = MultysigCreateTXMsg(sender, wallet, receiver, coin)
         super().__init__(**kwargs)
 
@@ -256,7 +259,7 @@ class NftUpdateReserveTransaction(Transaction):
 class SwapRedeemTransaction(Transaction):
     message: SwapRedeemMsg
 
-    def __init__(self, sender: str, sent_from: str, recipient: str, amount: int, token_name: str, token_symbol: str,
+    def __init__(self, sender: str, sent_from: str, recipient: str, amount: Union[int, float], token_name: str, token_symbol: str,
                  from_chain: str, dest_chain: str, v: str, r: str, s: str, **kwargs):
         self.message = SwapRedeemMsg(sender, sent_from, recipient, str(amount), token_name, token_symbol, from_chain, dest_chain, v, r, s)
         super().__init__(**kwargs)
@@ -265,6 +268,7 @@ class SwapRedeemTransaction(Transaction):
 class SwapInitTransaction(Transaction):
     message: SwapInitMsg
 
-    def __init__(self, sender: str, recipient: str, amount: int, token_symbol: str, from_chain: str, dest_chain, **kwargs):
+    def __init__(self, sender: str, recipient: str, amount: Union[int, float], token_symbol: str, from_chain: str, dest_chain, **kwargs):
         self.message = SwapInitMsg(sender, recipient, str(amount), token_symbol, from_chain, dest_chain)
         super().__init__(**kwargs)
+
