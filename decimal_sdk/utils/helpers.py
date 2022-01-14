@@ -1,11 +1,12 @@
 import locale
+from typing import Union
 
 
-def number_format(num, places=0):
+def number_format(num: Union[int, float], places=0) -> str:
     return locale.format_string("%.*f", (places, num), True)
 
 
-def get_amount_uni(amount, reverse=False):
+def get_amount_uni(amount: Union[int, float], reverse=False) -> str:
     exp = 18
     if reverse:
         exp = -18
