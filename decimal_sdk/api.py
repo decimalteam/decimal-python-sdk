@@ -419,7 +419,6 @@ class DecimalAPI:
 
     def __request(self, path: str, method: str = 'get', payload=None, options={}):
         url = (self.base_url + path)
-        print(url)
         if method == 'get':
             if len(options) > 0:
                 response = requests.get(url, params=options)
