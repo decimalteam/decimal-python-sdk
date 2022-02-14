@@ -109,6 +109,7 @@ api.send_tx(tx, wallet, options)
 ```
 
 ## Send All Coin Transaction
+###### Commission is paid by coin
 ```python
 from decimal_sdk.methods import SendAllCoin
 from decimal_sdk import Wallet
@@ -120,7 +121,6 @@ wallet = Wallet("YOUR MNEMO")
 receiver = 'dx1wvh0h4nfkvzkxzun35wh6pyrl88xn5rhsrgns9'
 coin_name = 'tdel'
 options = {
-    "denom": coin_name,
     "memo": "SEND ALL MY MONEY"
 }
 

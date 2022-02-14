@@ -138,9 +138,9 @@ class DecimalAPI:
 
         denom = "del"
         commission_type = "base"
-        if "denom" in options:
-            denom = options["denom"]
-            commission_type = "value"
+        # if "denom" in options:
+        #     denom = options["denom"]
+        #     commission_type = "value"
 
         if "memo" in options:
             options["memo"] = options["memo"]
