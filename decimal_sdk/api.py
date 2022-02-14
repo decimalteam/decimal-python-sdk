@@ -112,7 +112,7 @@ class DecimalAPI:
         return self.__request(f'address/{address}/nfts/stakes')
 
     def check_tx(self, hash: str):
-        return self.__request(f'tx/{hash}', 'get')
+        return self.__request(f'tx/{hash}')
 
     def estimate_tx_fee(self, tx: Transaction, wallet: Wallet, options={}):
         """Method to sign and send prepared transaction"""
