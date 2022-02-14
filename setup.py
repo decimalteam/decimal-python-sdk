@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="decimal-python-sdk",
-    version="0.1.4",
+    version="0.1.5",
     author="DecimalTeam",
     description="",
     long_description=long_description,
