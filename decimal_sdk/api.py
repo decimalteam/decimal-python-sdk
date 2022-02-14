@@ -111,7 +111,7 @@ class DecimalAPI:
         self.__validate_address(address)
         return self.__request(f'address/{address}/nfts/stakes')
 
-    def check_tx(self, hash: str):
+    def get_tx_by_hash(self, hash: str):
         return self.__request(f'tx/{hash}')
 
     def estimate_tx_fee(self, tx: Transaction, wallet: Wallet, options={}):
