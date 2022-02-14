@@ -71,6 +71,7 @@ api.method_name(args)
 ```
 
 * send_tx(transaction, wallet, options) - send prepared transaction 
+* get_tx_by_hash(hash) - check transaction by Hash
 * estimate_tx_fee(transaction, wallet, options) - used the same way as api.send_tx(), returns transaction fee
 * get_coin("coin_ticker") - get info about specified coin 
 * get_coin_price("coin_ticker") - get price of specified coin 
@@ -108,6 +109,7 @@ api.send_tx(tx, wallet, options)
 ```
 
 ## Send All Coin Transaction
+###### Commission is paid by coin
 ```python
 from decimal_sdk.methods import SendAllCoin
 from decimal_sdk import Wallet
@@ -119,7 +121,6 @@ wallet = Wallet("YOUR MNEMO")
 receiver = 'dx1wvh0h4nfkvzkxzun35wh6pyrl88xn5rhsrgns9'
 coin_name = 'tdel'
 options = {
-    "denom": coin_name,
     "memo": "SEND ALL MY MONEY"
 }
 

@@ -111,6 +111,9 @@ class DecimalAPI:
         self.__validate_address(address)
         return self.__request(f'address/{address}/nfts/stakes')
 
+    def get_tx_by_hash(self, hash: str):
+        return self.__request(f'tx/{hash}')
+
     def estimate_tx_fee(self, tx: Transaction, wallet: Wallet, options={}):
         """Method to sign and send prepared transaction"""
         url = "rpc/txs"
@@ -135,9 +138,9 @@ class DecimalAPI:
 
         denom = "del"
         commission_type = "base"
-        if "denom" in options:
-            denom = options["denom"]
-            commission_type = "value"
+        # if "denom" in options:
+        #     denom = options["denom"]
+        #     commission_type = "value"
 
         if "memo" in options:
             options["memo"] = options["memo"]
@@ -415,7 +418,7 @@ class DecimalAPI:
         return {"coinPrice": str(coin_price), 'value': fee_in_custom, 'base': fee_in_base}
 
     def __request(self, path: str, method: str = 'get', payload=None, options={}):
-        url = (self.base_url + path).lower()
+        url = (self.base_url + path)
         if method == 'get':
             if len(options) > 0:
                 response = requests.get(url, params=options)
