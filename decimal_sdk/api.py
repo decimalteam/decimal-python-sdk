@@ -1,11 +1,10 @@
 import base64
+import datetime
 import json
 from hashlib import sha256
 
 import base58
 import bech32
-
-import datetime
 import ethereum.transactions as crypto
 import requests
 import rlp
@@ -18,9 +17,11 @@ from decimal_sdk.transactions import RedeemCheckTransaction
 from decimal_sdk.types import Coin
 from .transactions import Transaction
 from .types import FEES
-from .utils.helpers import get_amount_uni, from_words
 from .utils.fields_validator import validate_data
+from .utils.helpers import get_amount_uni, from_words
 from .wallet import Wallet
+
+from pprint import pprint
 
 
 class DecimalAPI:
@@ -116,7 +117,7 @@ class DecimalAPI:
 
     def estimate_tx_fee(self, tx: Transaction, wallet: Wallet, options={}):
         """Method to sign and send prepared transaction"""
-        url = "rpc/txs"
+        url = "rpc/txs-directly"
 
         denom = "del"
         commission_type = "base"
@@ -134,7 +135,7 @@ class DecimalAPI:
 
     def send_tx(self, tx: Transaction, wallet: Wallet, options={}):
         """Method to sign and send prepared transaction"""
-        url = "rpc/txs"
+        url = "rpc/txs-directly"
 
         denom = "del"
         commission_type = "base"
@@ -151,7 +152,6 @@ class DecimalAPI:
         tx_data = tx.message.get_message()
         validate_data(tx_data["value"])
         commission = self.__get_comission(tx, denom, FEES[tx.message.type], tx_data)
-
         fee_amount = Coin(denom.lower(), get_amount_uni(commission[commission_type]))
         wallet.nonce = json.loads(self.get_nonce_not_increasing(wallet.get_address()))["result"]
         tx.signer.chain_id = self.get_chain_id()
@@ -179,6 +179,7 @@ class DecimalAPI:
 
         payload["tx"]["memo"] = message
         payload["tx"]["signatures"] = []
+
         tx.sign(wallet)
         tx.msgs.clear()
         tx.signer.msgs.clear()
@@ -347,9 +348,9 @@ class DecimalAPI:
         if not coin["ok"]:
             raise Exception('Coin not found')
         coin = coin["result"]
-        reserve = int(get_amount_uni(int(coin["reserve"]), True))
-        supply = int(get_amount_uni(int(coin["volume"]), True))
-        crr = int(coin["crr"]) / 100
+        reserve = int(coin["reserve"]) * pow(10, -18)
+        supply = int(coin["volume"]) * pow(10, -18)
+        crr = coin["crr"] / 100
 
         amount = min(supply, 1)
 
@@ -359,14 +360,14 @@ class DecimalAPI:
         result = amount / supply
         result = 1 - result
         result = pow(result, 1 / crr)
-        result = (1 - result) * reserve * 1.03
+        result = (1 - result) * reserve
 
         return result
 
-    def __get_tx_size(self, tx: Transaction):
+    def __get_tx_size(self, tx: Transaction, denom: str):
         value = {"msg": [tx.message.get_message()]}
-        value["fee"] = {"amount": [], "gas": "0"}
         value["memo"] = tx.memo
+        value["fee"] = {"amount": [{"amount": "0", "denom": denom}], "gas": "0"}
         preparedTx = {
             "type": 'cosmos-sdk/StdTx',
             "value": value
@@ -395,7 +396,8 @@ class DecimalAPI:
                 operation_fee = 100
 
         ticker = fee_coin
-        text_size = self.__get_tx_size(tx)
+
+        text_size = self.__get_tx_size(tx, fee_coin)
         fee_for_text = text_size * 2
         fee_in_base = (operation_fee + fee_for_text + 20) / 1000
 
@@ -409,7 +411,7 @@ class DecimalAPI:
 
         try:
             coin_price = self.get_coin_price(ticker)
-            fee_in_custom = fee_in_base / coin_price
+            fee_in_custom = fee_in_base / coin_price * 1.03
 
         except:
             fee_in_custom = 0
