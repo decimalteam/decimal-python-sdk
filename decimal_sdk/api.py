@@ -1,7 +1,6 @@
 import base64
 import datetime
 import json
-import math
 from hashlib import sha256
 
 import base58
@@ -153,7 +152,6 @@ class DecimalAPI:
         tx_data = tx.message.get_message()
         validate_data(tx_data["value"])
         commission = self.__get_comission(tx, denom, FEES[tx.message.type], tx_data)
-
         fee_amount = Coin(denom.lower(), get_amount_uni(commission[commission_type]))
         wallet.nonce = json.loads(self.get_nonce_not_increasing(wallet.get_address()))["result"]
         tx.signer.chain_id = self.get_chain_id()
@@ -189,7 +187,6 @@ class DecimalAPI:
         for sig in tx.signatures:
             payload["tx"]["signatures"].append(sig.get_signature())
 
-        pprint(payload)
         return self.__request(url, 'post', json.dumps(payload))
 
     def issue_check(self, wallet, data):
@@ -367,10 +364,10 @@ class DecimalAPI:
 
         return result
 
-    def __get_tx_size(self, tx: Transaction):
+    def __get_tx_size(self, tx: Transaction, denom: str):
         value = {"msg": [tx.message.get_message()]}
         value["memo"] = tx.memo
-        value["fee"] = {"amount": [tx.signer.fee.amount[0].__dict__()], "gas": "0"}
+        value["fee"] = {"amount": [{"amount": "0", "denom": denom}], "gas": "0"}
         preparedTx = {
             "type": 'cosmos-sdk/StdTx',
             "value": value
@@ -400,7 +397,7 @@ class DecimalAPI:
 
         ticker = fee_coin
 
-        text_size = self.__get_tx_size(tx)
+        text_size = self.__get_tx_size(tx, fee_coin)
         fee_for_text = text_size * 2
         fee_in_base = (operation_fee + fee_for_text + 20) / 1000
 
@@ -414,7 +411,7 @@ class DecimalAPI:
 
         try:
             coin_price = self.get_coin_price(ticker)
-            fee_in_custom = fee_in_base / coin_price
+            fee_in_custom = fee_in_base / coin_price * 1.03
 
         except:
             fee_in_custom = 0
