@@ -109,7 +109,7 @@ api.send_tx(tx, wallet, options)
 ```
 
 ## Send All Coin Transaction
-###### Commission is paid by coin
+
 ```python
 from decimal_sdk.methods import SendAllCoin
 from decimal_sdk import Wallet
