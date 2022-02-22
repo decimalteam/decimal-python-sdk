@@ -11,14 +11,15 @@ def SendAllCoin(api: DecimalAPI, wallet: Wallet, receiver: str, coin_name: str, 
     try:
         wallet_data = json.loads(api.get_address(wallet.get_address()))
         balance = '0'
+        denom = 'del'
+
+        if (options.get('denom') is not None):
+            denom = options['denom']
+
         if wallet_data["ok"]:
             balance = wallet_data["result"]["address"]["balance"][coin_name]
 
         balance = int(balance) * pow(10, -18)
-
-        denom = 'del'
-        if(options.get('denom') is not None):
-            denom = options['denom']
 
         if denom is coin_name:
             tx = SendCoinTransaction(wallet.get_address(), receiver, coin_name, balance) #transaction for calculation commission
