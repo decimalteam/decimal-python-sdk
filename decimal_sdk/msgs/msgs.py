@@ -548,7 +548,7 @@ class SwapInitMsg(BaseMsg):
                 'amount': self.amount,
                 'token_symbol': self.token_symbol,
                 'transaction_number': str(round(time.time() * 1000)),
-                'from_chain': self.dest_chain,
+                'from_chain': self.from_chain,
                 'dest_chain': self.dest_chain,
             }
         }

@@ -14,6 +14,9 @@ class Wallet:
     Decimal wallet class
     """
 
+    nonce = None
+    nonce_time = None
+
     def __init__(self, mnemonic: str = None):
         mnemo = Mnemonic('english')
         if not mnemonic:
