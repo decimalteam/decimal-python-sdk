@@ -268,7 +268,7 @@ class SwapRedeemTransaction(Transaction):
 class SwapInitTransaction(Transaction):
     message: SwapInitMsg
 
-    def __init__(self, sender: str, recipient: str, amount: Union[int, float], token_symbol: str, from_chain: str, dest_chain, **kwargs):
+    def __init__(self, sender: str, recipient: str, amount: Union[int, float, str], token_symbol: str, from_chain: str, dest_chain: str, **kwargs):
         self.message = SwapInitMsg(sender, recipient, str(amount), token_symbol, from_chain, dest_chain)
         super().__init__(**kwargs)
 

@@ -7,7 +7,7 @@ from decimal_sdk.transactions import SendCoinTransaction, BuyCoinTransaction, Cr
 
 class TransactionsTest(unittest.TestCase):
     def setUp(self) -> None:
-        self.wallet = Wallet('hollow luggage slice soup leg vague icon walnut session candy improve struggle')
+        self.wallet = Wallet('ladder repeat ticket floor physical second social veteran torch kiss opera sheriff lunch tribe cause weasel stable oppose sugar visa visa warfare capital meat')
 
     def test_send_coin(self):
         tx = SendCoinTransaction(sender=self.wallet.get_address(),

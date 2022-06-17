@@ -20,8 +20,7 @@ from .types import FEES
 from .utils.fields_validator import validate_data
 from .utils.helpers import get_amount_uni, from_words
 from .wallet import Wallet
-
-from pprint import pprint
+from datetime import datetime, timedelta
 
 
 class DecimalAPI:
@@ -115,7 +114,7 @@ class DecimalAPI:
     def get_tx_by_hash(self, hash: str):
         return self.__request(f'tx/{hash}')
 
-    def estimate_tx_fee(self, tx: Transaction, wallet: Wallet, options={}):
+    def estimate_tx_fee(self, tx: Transaction, wallet: Wallet, options={}, ):
         """Method to sign and send prepared transaction"""
         url = "rpc/txs-directly"
 
@@ -139,9 +138,10 @@ class DecimalAPI:
 
         denom = "del"
         commission_type = "base"
-        # if "denom" in options:
-        #     denom = options["denom"]
-        #     commission_type = "value"
+
+        if "denom" in options:
+            denom = options["denom"]
+            commission_type = "value"
 
         if "memo" in options:
             options["memo"] = options["memo"]
@@ -153,7 +153,23 @@ class DecimalAPI:
         validate_data(tx_data["value"])
         commission = self.__get_comission(tx, denom, FEES[tx.message.type], tx_data)
         fee_amount = Coin(denom.lower(), get_amount_uni(commission[commission_type]))
-        wallet.nonce = json.loads(self.get_nonce_not_increasing(wallet.get_address()))["result"]
+
+        if wallet.nonce:
+            sequence = wallet.nonce["value"]["sequence"]
+            wallet.nonce = json.loads(self.get_nonce_not_increasing(wallet.get_address()))["result"]
+
+            if datetime.now() - timedelta(seconds=7) > wallet.nonce_time:
+                wallet.nonce_time = datetime.now()
+            else:
+                wallet.nonce["value"]["sequence"] = str(int(sequence) + 1)
+        else:
+            wallet.nonce = json.loads(self.get_nonce_not_increasing(wallet.get_address()))["result"]
+            wallet.nonce_time = datetime.now()
+
+        if "sequence" in options:
+            tx.signer.sequence = str(options["sequence"])
+            wallet.nonce["value"]["sequence"] = options["sequence"]
+
         tx.signer.chain_id = self.get_chain_id()
         tx.signer.account_number = str(wallet.nonce["value"]["account_number"])
         tx.signer.sequence = str(wallet.nonce["value"]["sequence"])
@@ -171,7 +187,7 @@ class DecimalAPI:
 
         payload = {"tx": {}, "mode": "sync"}
         payload["tx"]["msg"] = [tx_data]
-        # payload["tx"]["fee"] = {"amount": [{'denom': 'del', 'amount': '0'}], "gas": "0"}
+
         if denom == "del" or denom == "tdel":
             payload["tx"]["fee"] = {"amount": [], "gas": "0"}
         else:
