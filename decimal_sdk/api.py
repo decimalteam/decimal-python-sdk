@@ -166,13 +166,13 @@ class DecimalAPI:
             wallet.nonce = json.loads(self.get_nonce_not_increasing(wallet.get_address()))["result"]
             wallet.nonce_time = datetime.now()
 
-        tx.signer.chain_id = self.get_chain_id()
-        tx.signer.account_number = str(wallet.nonce["value"]["account_number"])
-        tx.signer.sequence = str(wallet.nonce["value"]["sequence"])
-
         if "sequence" in options:
             tx.signer.sequence = str(options["sequence"])
             wallet.nonce["value"]["sequence"] = options["sequence"]
+
+        tx.signer.chain_id = self.get_chain_id()
+        tx.signer.account_number = str(wallet.nonce["value"]["account_number"])
+        tx.signer.sequence = str(wallet.nonce["value"]["sequence"])
 
         if denom == "del" or denom == "tdel":
             tx.fee.amount = []
