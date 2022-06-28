@@ -195,6 +195,22 @@ api.send_tx(tx3, wallet)
 
 ```
 
+## Update Coin Transaction
+```python
+
+from decimal_sdk import Wallet
+from decimal_sdk import DecimalAPI
+from decimal_sdk import BurnCoinTransaction
+wallet = Wallet("hollow luggage slice soup leg vague icon walnut session candy improve struggle")
+api = DecimalAPI("https://devnet-gate.decimalchain.com/api")
+
+tx = BurnCoinTransaction(sender=wallet.get_address(),
+                                 denom='del',
+                                 amount=1)
+api.send_tx(tx, wallet)
+
+```
+
 ## Sell All Coins Transaction
 ```python
 
