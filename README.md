@@ -195,7 +195,7 @@ api.send_tx(tx3, wallet)
 
 ```
 
-## Update Coin Transaction
+## Burn Coin Transaction
 ```python
 
 from decimal_sdk import Wallet
