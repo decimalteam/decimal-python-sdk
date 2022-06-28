@@ -13,6 +13,7 @@ from decimal_sdk.msgs.msgs import (SendCoinMsg, BuyCoinMsg, CreateCoinMsg, Updat
                                    SubmitProposalMsg, VoteProposalMsg,
                                    SwapRedeemMsg, SwapInitMsg,
                                    NftMintMsg, NftBurnMsg, NftEditMetadataMsg, NftTransferMsg, NftDelegateMsg, NftUnboundMsg, NftUpdateReserveMsg,
+                                   BurnCoinMsg
                                    )
 
 
@@ -271,4 +272,14 @@ class SwapInitTransaction(Transaction):
     def __init__(self, sender: str, recipient: str, amount: Union[int, float, str], token_symbol: str, from_chain: str, dest_chain: str, **kwargs):
         self.message = SwapInitMsg(sender, recipient, str(amount), token_symbol, from_chain, dest_chain)
         super().__init__(**kwargs)
+
+
+class BurnCoinTransaction(Transaction):
+    message: BurnCoinMsg
+
+    def __init__(self, sender: str, denom: str, amount: Union[int, float], **kwargs):
+        coin = Coin(denom, get_amount_uni(amount))
+        self.message = BurnCoinMsg(sender, coin)
+        super().__init__(**kwargs)
+
 

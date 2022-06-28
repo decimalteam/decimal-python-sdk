@@ -2,7 +2,7 @@ import unittest
 
 from decimal_sdk import Wallet
 from decimal_sdk.transactions import SendCoinTransaction, BuyCoinTransaction, CreateCoinTransaction, \
-    DelegateTransaction, UnbondTransaction
+    DelegateTransaction, UnbondTransaction, BurnCoinTransaction
 
 
 class TransactionsTest(unittest.TestCase):
@@ -46,6 +46,12 @@ class TransactionsTest(unittest.TestCase):
                                amount=10,
                                denom='del')
         self.check_tx(tx3, '')
+
+    def test_burn_coin(self):
+        tx = BurnCoinTransaction(sender=self.wallet.get_address(),
+                                 denom='del',
+                                 amount=12)
+        # self.check_tx(tx, '')
 
     # def check_tx(self, tx, signature):
     #     tx.sign(self.wallet)
