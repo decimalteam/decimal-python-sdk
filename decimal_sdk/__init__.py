@@ -10,6 +10,7 @@ from .transactions import (Transaction,
                            SubmitProposalTransaction, VoteProposalTransaction,
                            SwapRedeemTransaction, SwapInitTransaction,
                            NftMintTransaction, NftBurnTransaction, NftEditMetadataTransaction, NftTransferTransaction, NftDelegateTransaction, NftUnboundTransaction, NftUpdateReserveTransaction,
+                           BurnCoinTransaction
                            )
 
 from .methods import (SendAllCoin)

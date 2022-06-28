@@ -7,6 +7,7 @@ COIN_MULTISEND = 'coin/multi_send_coin'
 COIN_SELL_ALL = 'coin/sell_all_coin'
 COIN_REDEEM_CHECK = 'coin/redeem_check'
 COIN_ISSUE_CHECK = 'coin/issue_check'
+COIN_BURN = 'coin/burn_coin'
 
 VALIDATOR_CANDIDATE = 'validator/declare_candidate'
 VALIDATOR_DELEGATE = 'validator/delegate'

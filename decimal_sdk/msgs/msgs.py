@@ -758,3 +758,22 @@ class NftUpdateReserveMsg(BaseMsg):
                 "sub_token_ids": self.sub_token_ids,
             }
         }
+
+
+class BurnCoinMsg(BaseMsg):
+    type = COIN_BURN
+    sender: str
+    coin: Coin
+
+    def __init__(self, sender: str, coin: Coin):
+        self.sender = sender
+        self.coin = coin
+
+    def __dict__(self):
+        return {
+            'type': self.type,
+            'value': {
+                'sender': self.sender,
+                'coin': self.coin.__dict__()
+            }
+        }
