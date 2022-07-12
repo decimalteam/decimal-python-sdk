@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
-#### 1.0.0 - 2022-07-12
+#### Unreleased - 2022-07-12
 
 -  [`#6`](https://bitbucket.org/decimalteam/decimal-python-sdk/pull-requests/6) Feature/32301 master
 -  [`#5`](https://bitbucket.org/decimalteam/decimal-python-sdk/pull-requests/5) Feature/31625 master
@@ -11,3 +11,139 @@ All notable changes to this project will be documented in this file. Dates are d
 -  [`d4cf271`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/d4cf2717a9ff34606e7aec1f93527ee0d7d55a4b) formatted readme after performing tests
 -  [`5989fa5`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/5989fa51306e501379b5986d125a8d3a99e16062) added address validation, added NftUpdateReserveTransaction
 -  [`c626819`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/c62681958fe7c623a71fdd01edc5a34a529e122e) fix on sell_all_coins
+-  [`ea9045d`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/ea9045dd00c8bbe113d62ffebacf43f829384b6f) fix on send_all
+-  [`5fb7759`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/5fb7759ed80135320280d251140ba2111bb57ccb) fix on sell_all_coins
+-  [`c91382f`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/c91382f6e3458f9607dfdb8737cf89618009baab) fix on check redeem
+-  [`ea9ae95`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/ea9ae95b3060aa7a781a6f545639fc47d2a7ed69) change README.md
+-  [`c2fef88`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/c2fef88cc9ebeeb4f81c19e87155cc079feb667a) added decoding to utf-8 for check and fixed err with float on multysend
+-  [`c139eeb`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/c139eeb7f3395d30739c2e4853763971eb1730d5) added swap
+-  [`b9290d5`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/b9290d5e1cd1e96d3483f35aa9db469ec0a9b142) fix on sell_all_coins
+-  [`4c31c67`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/4c31c67d27852b2cb90f4f71eb524d12aed8a724) Merged in feature/22258-master (pull request #4)
+-  [`4cc31e8`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/4cc31e8ce76df6d8c867dd629a2a184638f8de8e) updated "get_nft()" method
+-  [`8793854`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/8793854bcd0751ee41d4a0891c8c8e10efa78435) added estimate_tx_fee
+-  [`3144195`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/31441957d4477160e08f468a8933bfc95700e2ee) feat: added new transaction type - burn coin
+-  [`a7df1ab`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/a7df1ab9c1feffb9c88fe1d291ae5d54826aaeb6) feat: added automatically nonce
+-  [`560a584`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/560a584d874d7c66bc343253c59838b38abdd291) fixed get_tx() and readme formating
+-  [`a85b3ff`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/a85b3ff702ac8a199ed7b1e4d55edce1a92d4da9) added SendAllCoin method
+-  [`776d251`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/776d251c6a03d82b6c8b38e5d21ca961a8dbf15f) bug fix with amount for transactions
+-  [`3da2469`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/3da2469c7d88a86094d056344de08b1dd1636ac1) replaced logic in setup.py
+-  [`0ee908f`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/0ee908fa641c069df2c06c77f62dfc7f67e2cd56) deleted prints
+-  [`a1137ed`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/a1137ed8555c9e054a75f28d9b35d8c8ad3b2969) fix: fix swap methods
+-  [`6c867c3`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/6c867c3b561c470cfa6b9b465565ae991a294505) feat: update readme
+-  [`513aa7e`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/513aa7e61635e6ca6070974efe3bad62a98af0c8) change SendAllCoin method and fix msgs for sent_tx
+-  [`783f28f`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/783f28f5e38d3ef2006b00b66ed33d3a3004c875) fixed on multisend commission estimation
+-  [`1a4b7e5`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/1a4b7e539bc8b1fcf657836cfc2245ca84b0a424) fixed problem with cyrillic text
+-  [`553f79e`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/553f79ef81cac73b67fd9aa379f3a6a248ff0147) added api method get_nft_stakes(wallet.get_address())
+-  [`915d8d2`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/915d8d21e9c6d0c02ea48d61f99f9d9dea733304) feat: update package version
+-  [`192eee8`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/192eee8e590858fed9f5e435e6ebd463eb1a3de9) feat(): update version
+-  [`3bb1abb`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/3bb1abb5fbfa061a0e64ebb95f21c40f5cd8acf5) added decoding to utf-8 for check and fixed err with float on multysend
+-  [`2e27e6d`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/2e27e6dbdc460f25cfd87e72927b53a5e9c70495) fix on send_all
+-  [`695070d`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/695070d5c43c326b035af339cbe6f5ad7d6c1eee) feat: update package version
+-  [`7167be7`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/7167be76d7952217bb29501880321d6f32bbae4c) feat(): update version
+-  [`00d17da`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/00d17da90d8cdbed8d28bb2e9a77a25722ce69d9) Added SendAllCoinTransaction instance, some funcs refactored
+-  [`7a232c4`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/7a232c419b81ea4ff50402ac17b66981957ccb01) Added delegate and unbount NFT transactions
+-  [`7688cf3`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/7688cf39637d3760112ced7e9e29c28ec9838e30) Added delegate and unbount NFT transactions
+-  [`edf45f5`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/edf45f5bfb51398b27474413c08914911948d191) signatures multiplication fixed
+-  [`017427a`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/017427a6942171223b02b0ca66be5a4b0e9d5deb) NFT txs WIP
+-  [`5168337`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/5168337bfec398d490d6b007008c41114ec7dea3) issue works
+-  [`4c806d9`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/4c806d9981c59deff4541a153e1f39a6290d86e8) issue works
+-  [`783c25f`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/783c25fb348f3d61410b7bf00e56a9e02b3f8117) issue works
+-  [`0aab0c1`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/0aab0c1e5b8e6c6609f30a9eaaf761bcc9bb0963) rewrite structure
+-  [`fb7d672`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/fb7d6729a204474f93cf89912168e3378c2f52a0) Transactions added
+-  [`3c608f3`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/3c608f353b6c981e5712df4bf14fff692540ed14) Finished messages
+-  [`72397bd`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/72397bd1dd8bdb0594e751afb836e128f5c94ee9) rewrite on classes
+-  [`02fe775`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/02fe775e227e6a9271129ea7d9328d95d9b6d913) memo fixed
+-  [`a04c3ac`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/a04c3ac2ddcc19c3394d2710f17fcad97983a448) WIP messages
+-  [`cda656a`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/cda656aebb861e5dce7913b8e95666122040b7fa) NFT works fine
+-  [`f73afd1`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/f73afd107dc2f074d8341a1e9dfa4f9ffb0de43b) fees reworked
+-  [`8bab132`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/8bab1328879c6827a026bdd1c6c802effc35f778) added 2 unbound and delegate NFT transactions
+-  [`d228853`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/d228853665ba6fe0375a4b31cc8fca1b4e4ac1e3) upd: rework signing interface
+-  [`9594e3f`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/9594e3f3e16a0cb27263b8c6ee4b441b4c58adb1) extracting check logick into one class
+-  [`2cdbb98`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/2cdbb98b549151a1a8b07da528282a12074ccc3a) some improvements on sdk readme
+-  [`585074e`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/585074e8364a6f8e4521fff669df9dbd94194377) Added Update coin transaction
+-  [`83b39b8`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/83b39b87141a4ba024b47632658c57b833227e06) Added delegate and unbount NFT transactions
+-  [`fcdbd6f`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/fcdbd6f8965133f318754407c82ebe691cca2148) Revert "upd: start uniting txs"
+-  [`9c63f3e`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/9c63f3e7e78a7cdb94bf5a95af1e31ed9925464b) upd: start uniting txs
+-  [`7c591f4`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/7c591f4458e49451b40f525df3f3f85fe82f6bd8) WIP check rework
+-  [`fad0845`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/fad0845b973f1cc46351cb3985c6381dfe0c10c7) txs almost ready
+-  [`a2a18d5`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/a2a18d581c794489ad7fcdbe9a9aaff2ca20d918) coin msgs
+-  [`67a2f0e`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/67a2f0e965a3d16b170afd68acb9c13feff20fab) checks almost ready
+-  [`d6c6c12`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/d6c6c12e422c018c96c545e695944469ebffeafb) upd: tx issues
+-  [`76be390`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/76be390a54c47e3ea9100a97dcc28b450ab96061) upd: cleaning up a bit
+-  [`95073f9`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/95073f9523d4fe5e584dff7bc20177970a6a9d62) WIP redeem
+-  [`08500a0`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/08500a08eadf440680850a7b0b0e1940409ab7b5) txs implemented somehow
+-  [`841d00d`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/841d00dc364bdd66772afe87157a3f689ed33ead) fee in progress
+-  [`cf07519`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/cf0751960520a591c426cafc73e01e897f423f2a) upd: tests boilerplate
+-  [`0f4953e`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/0f4953eb7bb33866e3577eecd08d1948b1ec9dea) wip commission
+-  [`1747893`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/174789359e90e7ac8668119786733359a69a481f) upd: some methods and address validation
+-  [`6fcdd43`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/6fcdd43252f6f251529aed143959ef145ec709ca) wip check
+-  [`ba81ab5`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/ba81ab58b14b6b0fb163454bbffb497bf2ff5495) added limit and offset to txs
+-  [`0f7373a`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/0f7373a84e0c27e0075022ec8a0b00cd4222c2c3) price fix
+-  [`9f55f03`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/9f55f03e77fb4620ea9c9f5e0b00eaffc9563265) added methods to DecimalAPI
+-  [`22e293a`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/22e293a2a84074528663057fd4b2e682e22b4f1e) NFT txs WIP
+-  [`a01003a`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/a01003a1927ab13721b42ab1bf7c44dd9f3828d1) added limit and offset to txs
+-  [`984595b`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/984595bec95e2ad78f19a302fc1f022cdcf019d5) upd: some txs boilerplate
+-  [`9846957`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/9846957a9cd71212250c7961c603f64f0e6e67a9) WIP redeem
+-  [`4707629`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/47076291acae24fce86870e0e6e897148857392e) fee in progress
+-  [`8e599e4`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/8e599e4307bace97e5111a74f7b0054e4a8231d6) upd: add some boilerplate classes
+-  [`4b5815b`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/4b5815bd8252c1edccfa062a03c98b2308e91f07) some improvements on sdk readme
+-  [`2821f71`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/2821f711728cd19affd822e3bac280c7940f1f01) upd: break everything
+-  [`b9843ec`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/b9843ecc0a8e41eea1fac0768a82df6f3eb84e04) WIP check rework
+-  [`8949a71`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/8949a71207c26ad45192c629a0a26c195d02c056) small bugfixes
+-  [`5e6f320`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/5e6f320332d9664fde2ac5ab61d390083230b9e4) added options
+-  [`da796e0`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/da796e00e18ff0209a798a19d8afe3220e26b0d7) Multisend tx
+-  [`12949e1`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/12949e1202e7e4f204ebedb36118af5c06e21340) fixed fee
+-  [`bd1db4e`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/bd1db4e28403fa5a0beb9097b3509d17d2f09d98) WIP fees
+-  [`6783e3f`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/6783e3f520c71490a92df3eaea5076439c00f8cb) NFT txs WIP
+-  [`79f99dd`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/79f99ddb33f17946c07d8b2a5bdfc9c7745c6607) upd: start working on transactions
+-  [`31762db`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/31762db50fd3a1e11325eba6e0ddd758fe5983d4) upd: set default meta values
+-  [`6762061`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/6762061a9ffb3dd773bb30b9a67db09d0e198a3a) wip check
+-  [`4683816`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/4683816ecf53325077d91d8c7c8a5b449ad8cc8a) upd: still working on transactions
+-  [`2028d6f`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/2028d6f477182a89b38d3c0444a3c77aef76950f) upd: set up some workflow
+-  [`47f19a4`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/47f19a43f46b6eb2c0966ce2709c71ebb1f9eb70) tx data jamming fixed
+-  [`c7d7c23`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/c7d7c2397a2225d5da8bdc30920ccd20b5c8ade8) WIP signature
+-  [`30f55c6`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/30f55c681835ddd5e7ef3aec800480a730638990) upd: start building simple api class
+-  [`44e8451`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/44e8451d2cb723c4c8113dea41ced0de41bbfc8f) upd: wallet refactoring
+-  [`55ced04`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/55ced0410efec8ae78d38010bfab21ead407daf8) upd: add setup file
+-  [`c32f178`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/c32f17825d38f533c99aa7536f5933223f06ad31) nonce
+-  [`b9cdeb0`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/b9cdeb0e39e84a3c74fcc4fa89f5f02d6654dba4) upd: upgrade
+-  [`ac24753`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/ac2475362dfe60a80f725267395b17e9d4f532df) test: start wallet unittest
+-  [`b6afb17`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/b6afb17997df02d11ce26937dd0cdb01031796f6) added options
+-  [`d85993d`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/d85993dcdae87d06f3915ecefaf4ad4acab9554f) upd: generate address
+-  [`8f2698c`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/8f2698cbec5f40d0f53ff269e3de671bdd0fb68a) init: initial commit
+-  [`f5958d1`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/f5958d12ec0b1f7e7d760a3d288d19e6cb4ee7ee) upd: transactions boilerplate
+-  [`ce47c3e`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/ce47c3ea9cd02e48f8ea3f6f652de608f742e0a1) fix on custom fee
+-  [`c9de48b`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/c9de48be5a0bdd0ef5ecc145b5506460e8cde59e) sign fixed
+-  [`294dbff`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/294dbff555f9a0f615112e66f444395b3e426bc8) upd: refactor wallet test
+-  [`811f7df`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/811f7dfc1c3fcdeef84f1675e3c4ca5e620a8f3e) fixed signatures multiplication
+-  [`d27b931`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/d27b931f8dadab0968d3787e53294916192c754a) fixes
+-  [`24576f6`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/24576f63da2b6c3e175d53c84dc4b38c0bff231c) upd: generate seed, derive key
+-  [`14363e2`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/14363e2bdaabaad932f55d3ddbdcd3657a51be0f) txs works
+-  [`e7dc641`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/e7dc64185a630f489734671a8e2ce59092ad9b01) working signature
+-  [`af153ea`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/af153eaf33a678c63f5eaa71e97e54312575061e) WORKING SIGNATURE!
+-  [`2f28964`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/2f289643b2d32661181392f33587053a037bf863) wip commission
+-  [`57e9a20`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/57e9a2077571bccbc05ce668fc8db7b7d8fdfe05) upd: small changes
+-  [`60e39d3`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/60e39d3d70c9d06599836e35773e9cf4054184d9) upd: test 1000 wallets
+-  [`1cb25be`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/1cb25be97a00d3e45e3590266571eebcfc9c8332) upd: create mnemonic if not provided
+-  [`334c99d`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/334c99dd8af3e0323b1fd6fb0f99df9a10f1c092) fix on some api metods in url
+-  [`c7bdb9a`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/c7bdb9aa24aa8fb0991ed6d0f4480829d837f2bf) tx data jamming fixed
+-  [`cb1147e`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/cb1147e578c4b1166baa893a01412a6123c526ab) upd: add wallet mnemonic validation
+-  [`4852477`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/4852477c8e0c279081fabc74a9b955cc53812110) Added delegate and unbount NFT transactions
+-  [`3e0000a`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/3e0000a1e25a8ec5f34aeb004e4e353873d4c101) nonce
+-  [`9bc798e`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/9bc798e07599d6fe43d6eeed311376b83d77dc9c) added check whether amount of NFT to create is round
+-  [`aa79451`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/aa7945171f4ae62b9207f52fdd6ac1c51fdc5579) fixed signatures multiplication
+-  [`2538148`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/25381484c3589f7f4a3e9a11a37a8855f999047b) upd: add api class
+-  [`8490655`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/849065585f79fe6f36b257adcd78d63a7ebdc72e) added validation on declare candidate
+-  [`1a7b033`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/1a7b033c2f6199ef65811b3ddb61b5424839c555) added get_nft() to api to get info about token
+-  [`8a91cc7`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/8a91cc79e8543925c55bbfc68c4a56dcfb6fbdbb) added get_nft() to api to get info about token
+-  [`140a8ab`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/140a8aba45c89b601908f1d7e47f95385a42c46c) gitignore upd
+-  [`a5c0cdf`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/a5c0cdfd4e8fb8160e042f6be56c8e4a5807f47d) excluded *.pyc
+-  [`8bc46ef`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/8bc46efc288ff6a0f5f721c450ba4e71f42e7a00) excluded .pyc
+-  [`dedb15d`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/dedb15d0c025a337a5e75f56a8f9e9e08d9a5ab7) upd: reformat file
+-  [`0c0662c`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/0c0662cb98c33d2f34e6f6d42d39a08ff00d0e26) wip commission
+-  [`5da1b3c`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/5da1b3cd65e0166e9afc4e9cd421332b9f762043) some improvements on sdk readme
+-  [`7b5ea78`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/7b5ea78715cae8a404c2c12f03409be8343bcfbf) NFT transactions added
+-  [`e47c262`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/e47c262743abae4337a9f4f92a673330b05389ea) fee in progress
+-  [`f69d5d1`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/f69d5d1aadb2846e434e0f7bffea11f824e7d3c1) nonce added
+-  [`b163283`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/b163283b950fd7ded474558c21bd4406c11685da) before merge
+-  [`7edaa3d`](https://bitbucket.org/decimalteam/decimal-python-sdk/commits/7edaa3dbaaf66be598e360ae751988c2577f2582) fee in progress
