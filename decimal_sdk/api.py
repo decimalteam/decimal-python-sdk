@@ -427,7 +427,7 @@ class DecimalAPI:
 
         try:
             coin_price = self.get_coin_price(ticker)
-            fee_in_custom = fee_in_base / coin_price * 1.03
+            fee_in_custom = fee_in_base / coin_price * 1.1
 
         except:
             fee_in_custom = 0
